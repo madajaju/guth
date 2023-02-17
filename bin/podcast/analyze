@@ -1,0 +1,28 @@
+#!/user/bin/env node
+const request = require('request');
+
+var url = 'https://www.youtube.com/get_video_info?html5=1&video_id=Q-Sc4No5Q7o';
+
+request(url, function(err, res, body) {
+    if (!err && res.statusCode == 200) {
+        console.log(body);
+    } else {
+        console.log('(youtube.get-video.info) HTTP response not 200/OK');
+        console.log(res);
+    }
+});
+/*
+const bent = require('bent');
+let url = "https://www.youtube.com/get_video_info?html5=1&video_id=Q-Sc4No5Q7o";
+let params = '';
+const post = bent(url, 'GET', 'json', 200);
+(async () => {
+    const response = await post(params, "");
+    console.log("Response", response);
+})().catch(e => {
+    // Deal with the fact the chain failed
+    console.error("Response Error:", e);
+});
+
+
+ */

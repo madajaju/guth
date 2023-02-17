@@ -1,0 +1,85 @@
+#!/user/bin/env node
+const bent = require('bent');
+const program = require('commander');
+const YAML = require('yamljs');
+const fs = require('fs');
+global.ailtire = {config: require('../../.ailtire.js')};
+program.command('create [options]', 'create entity')
+    .option('--name <string>', 'Name of the podcast')
+    .option('--file <YAML>', 'file with the definition')
+    .option('--title <string>', 'Title of the podcast')
+    .option('--summary <string>', 'Name of the podcast');
+program.parse(process.argv);
+let url = global.ailtire.config.host;
+let args = {};
+let params = '/podcast/create?';
+params += 'mode=json';
+if (program['name']) {
+    args['name'] = program['name'];
+}
+if (program['file']) {
+    args['file'] = YAML.load(program['file']);
+}
+if (program['title']) {
+    args['title'] = program['title'];
+}
+if (program['summary']) {
+    args['summary'] = program['summary'];
+}
+
+const post = bent(url, 'POST', 'json', 200);
+(async () => {
+    const response = await post(params, args);
+    console.log("Created Podcast:", response.results.id);
+    // Now look at the worflows.
+    // For each workflow in the YAML file add it to the podcast.
+    if (args.file.blueprint && args.file.blueprint.workflows) {
+        let workflows = args.file.blueprint.workflows;
+        let wparams =  '/podcast/createworkflow'
+        for (let wname in workflows) {
+            let workflow = workflows[wname];
+            if(workflow) {
+                try {
+                    if (workflow.file) {
+                        let wargs = {
+                            podcast: response.results.id,
+                            name: wname,
+                            file: fs.readFileSync(workflow.file, 'utf8')
+                        }
+                        let response2 = await post(wparams, wargs);
+                        console.log("Workspace Create", response2.results.name);
+                        if(workflow.mappings) {
+                            processMappings(response2.results, workflow.mappings);
+                        }
+                    }
+                } catch (e) {
+                    console.log("Creating Workspace Error:", e);
+                }
+            }
+        }
+    }
+})().catch(e => {
+    // Deal with the fact the chain failed
+    console.error("Response Error:", e);
+});
+
+async function processMappings(workflow, mappings) {
+    let mparams =  '/businessflow/createmapping'
+    for(let mname in mappings) {
+        let mapping = mappings[mname];
+        try {
+            let margs = {
+                workflow: workflow.id,
+                template: fs.readFileSync(mapping.template, 'utf8'),
+                inputs: mapping.inputs,
+                output: mapping.output,
+                name: mname
+            }
+            let response = await post(mparams, margs);
+            console.log("Mapping Created", response.results.name);
+        }
+        catch(e) {
+            console.error("Mapping creation error:", e);
+        }
+    }
+}

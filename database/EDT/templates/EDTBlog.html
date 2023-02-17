@@ -1,0 +1,107 @@
+<html>
+
+<style>
+   .theader {
+       background-color: blue;
+       color: white;
+   }
+   table {
+       border-width: 1px;
+       border-spacing: 0;
+   }
+   body {
+       font-family: Arial;
+   }
+</style>
+<body>
+<img src="<%= episode.thumbnail %>"><br>
+<div id="body">
+    <video width="320" height="240" controls>
+        <source src="<%= episode.assets.youtube.url %>" tyoe="video/mp4">
+    </video><br>
+    <p><%= episode.summary %>. Check the blog at
+        <a href="<%= episode.assets.intelBlog.url %>"><%= episode.title %></a>
+    </p>
+
+</div>
+
+<p>Intel.com: Embracing Digital Transformation Article</p>
+<p>June 12,2020</p>
+<p>Version 2</p>
+<p></p>
+<h1>Intel.com Article Page - DRAFT</h1>
+<table border="1px">
+    <tr class="theader">
+        <td colspan="2">PAGE INFORMATION</td>
+        <td>NOTES</td>
+    </tr>
+    <tr>
+        <td>Page URL</td>
+        <td>https://www.intel.com/content/www/us/en/government/podcasts/embracing-digital-transformation-episode<%= episode.name %>.html</td>
+        <td>New page</td>
+    </tr>
+    <tr>
+        <td>Page title</td>
+        <td><%= episode.title %> | Episode <%= episode.name %></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Meta description</td>
+        <td><%= episode.meta %></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Template</td>
+        <td>Article page</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Hero image</td>
+        <td><img src="<%= thumbnail.url %>" /></td>
+        <td></td>
+    </tr>
+    <tr class="theader">
+        <td>ELEMENT</td>
+        <td>COPY</td>
+        <td>NOTES</td>
+    </tr>
+    <tr>
+        <td>Masthead</td>
+        <td><%= episode.title %></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Summary</td>
+        <td><p><%= episode.summary %></p><p><a href="<%= podcast.url %>">Listen to the podcast now</a></p></td>
+        <td>Listen to podcast now should be a button under the summary.</td>
+    </tr>
+    <tr>
+        <td>Article paragraph</td>
+        <td>
+            <p><a herf="<%= video.url %>">Youtube Video</a></p>
+            <p><%= episode.notes %></p>
+        </td>
+        <td>Video should be shown before the article</td>
+    </tr>
+    <tr>
+        <td>Promotions blade:Related content</td>
+        <td>
+            <p> Additional Resources</p>
+        </td>
+        <td>Add links for the pdf files in the jira ticket.</td>
+    </tr>
+    <tr>
+        <td>Legal and disclaimers</td>
+        <td>
+            <p>Intel® technologies may require enabled hardware, software, or service activation.</p>
+            <p>No product or component can be absolutely secure.</p>
+            <p>Your costs and results may vary.</p>
+            <p>Intel does not control or audit third-party data. You should consult other sources to evaluate
+                accuracy.</p>
+        </td>
+        <td></td>
+    </tr>
+</table>
+
+</body>
+</html>

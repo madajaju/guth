@@ -1,0 +1,104 @@
+name: EDT-61
+title: Data Breaches & Secure Supply Chain
+summary: Darren Pulsipher, Chief Solution Architect, Intel, discusses data breaches & secure supply chain with frequent guest Steve Orrin, CTO of Intel, Federal.
+meta: Steve Orrin, CTO of Intel, Federal discusses security trends data breaches and secure supply chain.
+artifacts:
+  Transcript:
+    type: Blog
+    url: ./EDT-61.md
+    summary: Darren Pulsipher, Chief Solution Architect, Intel, discusses data breaches & secure supply chain with frequent guest Steve Orrin, CTO of Intel, Federal.
+  Audio:
+    type: Podcast
+    url: https://darpai-my.sharepoint.com/:u:/g/personal/darren_pulsipher_org/EXU_sgfvpudMgF2PlNzVfQsBuAURm3PgMLvfJ5B0SMznrA?e=I51Xu1
+    summary: Darren Pulsipher, Chief Solution Architect, Intel, discusses data breaches & secure supply chain with frequent guest Steve Orrin, CTO of Intel, Federal.
+  PrimaryVideo:
+    type: Video
+    url: https://darpai-my.sharepoint.com/:v:/g/personal/darren_pulsipher_org/EefvOf-oQ_tAjXD1mFAc-WEBQh2e2ghX3MnWZTfrbFC6rg?e=n2dB8R
+    summary: Darren Pulsipher, Chief Solution Architect, Intel, discusses data breaches & secure supply chain with frequent guest Steve Orrin, CTO of Intel, Federal.
+  Short1:
+    type: Video
+    url: https://darpai-my.sharepoint.com/:v:/g/personal/darren_pulsipher_org/Ed7K8DJP471Kk1N6E3hY370BmXsMV0l2omG_jPyGL-R9xw?e=WKuu5w
+    summary:
+  Short2:
+    type: Video
+    url: https://darpai-my.sharepoint.com/:v:/g/personal/darren_pulsipher_org/EQt9Bcq4ErlGj6NFQ3JGhUQBp93Z69Y6Kva42jdQHxidHg?e=u8LJfs
+    summary:
+  Short3:
+    type: Video
+    url: https://darpai-my.sharepoint.com/:v:/g/personal/darren_pulsipher_org/ESJ-sitEeDNMv7oLFbv44TkBiDZONFYCUbHEYmy6vugvcg?e=kzmeCd
+    summary:
+  Short4:
+    type: Video
+    url: https://darpai-my.sharepoint.com/:v:/g/personal/darren_pulsipher_org/EewcSeA1yKxLgJwdWVG-SLIBouF1YqBG_IqAd8bmiToMKQ?e=LTAkB7
+    summary:
+  PDF:
+    type: Blog
+    url: https://darpai-my.sharepoint.com/:b:/g/personal/darren_pulsipher_org/EfmzYTxfXMBKsMC84pxRlOEBa7ipC_gKL99BkpzhEa_Juw?e=3Ile09
+    summary:
+assets:
+  Podcast:
+    type: Podcast
+    url: https://soundcloud.com/embracingdigital/data-breaches-secure-supply-chain-61
+    channel: SoundCloud
+    artifact: Audio
+    summary: Darren Pulsipher, Chief Solution Architect, Intel, discusses data breaches & secure supply chain with frequent guest Steve Orrin, CTO of Intel, Federal.
+  YouTubeVideo:
+    type: Video
+    url: https://youtu.be/zB6-pf_N4u8
+    channel: IntelYouTube
+    artifact: PrimaryVideo
+    summary:  Darren Pulsipher, Chief Solution Architect, Intel, outlines the common problems throughout edge to data center architectures that he’s observed and discussed with customers in the public sector. He lays out the ideal architecture to resolve these issues.
+  IntelBlog:
+    type: Blog
+    url: https://intel.com/content/www/us/en/government/podcasts/embracing-digital-transformation-episode60.html
+    channel: IntelBlog
+    artifact: Transcript
+  LinkedInDoc:
+    type: file
+    summary: Darren Pulsipher, Chief Solution Architect, Intel, discusses data breaches & secure supply chain with frequent guest Steve Orrin, CTO of Intel, Federal.
+    url:
+    channel: LinkedIn
+    artifact: Transcript
+  Short1:
+    type: Video
+    url: https://youtu.be/H_c0gVKu5vM
+    summary: Organized crime is well organized and is purchasing legitimate software tools to turn well used tools into spyware and malware? How do you know if your supplier is still legitimate?
+    channel: Youtube
+    artifact: Short1
+  Short2:
+    type: Video
+    url: https://youtu.be/2YwDPcWMGIY
+    summary: Is opensource secure? Who is checking code into the baseline of opensource?  Malware and security vulnerabilities are introduced all the time? Who is responsible for making sure it is secure? Is it the community?
+    channel: Youtube
+    artifact: Short2
+  Short3:
+    type: Video
+    url: https://youtu.be/Bso7KUgHiig
+    summary: Microsegmentation of your network is an old idea that must be used today to harden the inside of your datacenter. Container tools like swarm and kubernetes offer micro-segmentation with the simple command "Deploy".
+    channel: YouTube
+    artifact: Short3
+  Short4:
+    type: Video
+    url: https://youtu.be/SNNV5z9EK1Q
+    summary: Is Zero Trust the latest security trendy term? Is it even real? Steve Orrin has finally bought into the why it is so important. Default deny and trust no one needs to be part of your security profiles.
+    channel: YouTube
+    artifact: Short4
+
+products:
+  - SGX
+tags:
+  - cybersecurity
+  - security
+  - ransomware
+  - cloudsecurity
+  - databreach
+  - supplychain
+  - IamIntel
+  - EDT60
+  - embracingdigital
+solutions:
+  - Six Pillars of Security
+people:
+  - Darren Pulsipher
+  - Steve Orrin
+thumbnail: ./thumbnail.png

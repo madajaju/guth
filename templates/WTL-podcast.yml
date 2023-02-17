@@ -1,0 +1,49 @@
+title: Wheres the Lemonade
+name: WTL
+channels:
+  facebook:
+    type: Facebook
+    user: darren@pulsipher.org
+    creds: 1234567890
+    url: https://www.facebook.com/Wheres-the-Lemonade-1061203680747859
+    types:
+      - ShortVideo
+      - Blog
+      - Post
+  linkedin:
+    type: Linkedin
+    user: darren@pulsipher.org
+    creds: 1234567890
+    url: https://www.linkedin.com/company/72305574/admin/
+    types:
+      - shortVideo
+      - blog
+      - post
+  transistor:
+    type: Transistor
+    user: contact@wheresthelemonade.org
+    creds: 1234567890
+    url: https://dashboard.transistor.fm/shows/wheres-the-lemonade
+    rss-feed: https://feeds.transistor.fm/wheres-the-lemonade
+    types:
+      - audio
+      - blog
+  youtube:
+    type: Youtube
+    user: contact@wheresthelemonade.org
+    creds: 1234567890
+    url: https://www.youtube.com/channel/UCnBegxekBptVVfIIyO2WRzQ
+    rss-feed: https://www.youtube.com/feeds/videos.xml?channel_id=UCnBegxekBptVVfIIyO2WRzQ
+    types:
+      - video
+      - ShortVideo
+  wordpress:
+    type: WordPress
+    user: darren@pulsipher.org
+    url: https://wordpress.com/home/wheres-the-lemonade.com
+    rss-feed: https://wheres-the-lemonade.com/feed/
+    creds: 1234567890
+    types:
+      - blog
+      - image
+thumbnail: ./thumbnail.png

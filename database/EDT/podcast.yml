@@ -1,0 +1,101 @@
+title: Embracing Digital Transformation
+name: EDT
+summary: Darren Pulsipher, Chief Solution Architect for Public Sector at Intel, investigates effective change leveraging people, process, and technology.
+descrition:
+channels:
+  github:
+    type: github
+    user: madajaju
+    creds: 1234567890
+    types:
+      - blog
+  linkedin:
+    type: Linkedin
+    user: darren.pulsipher
+    creds: 1234567890
+    types:
+      - shortVideo
+      - blog
+      - post
+  soundcloud:
+    type: SoundCloud
+    user: darren.pulsipher
+    creds: 1234567890
+    types:
+      - audio
+  intelYouTube:
+    type: IntelYouTube
+    user: darren.w.pulsipher@intel.com
+    creds: 1234567890
+    types:
+      - video
+  youTube:
+    type: YouTube
+    user: edt@pulsipher.org
+    creds: 1234567890
+    types:
+      - video
+      - shortvideo
+  intelBlog:
+    type: IntelBlog
+    user: darren.w.pulsipher@intel.com
+    creds: 1234567890
+    types:
+      - blog
+      - image
+  twitter:
+    type: Twitter
+    user: edt@pulsipher.org
+    creds: 1234556
+    url: https://twitter/embracingedt
+    types:
+      - blog
+      - image
+thumbnail: ./thumbnail.png
+blueprint:
+  workflows:
+    createEpisode:
+      file: ./workflows/createEpisode.js
+    generateArtifacts:
+      file: ./workflows/generateArtifacts.js
+      mappings:
+        IntelBlog:
+          template: ./templates/IntelBlog.html
+          inputs:
+            blog: Blog
+            video: PrimaryVideo
+            podcast: Podcast
+            thumbnail: Thumbnail
+          output:
+            name: IntelBlog
+            type: Blog
+        PDF:
+          template: ./templates/PDF.html
+          inputs:
+            blog: Blog
+            video: PrimaryVideo
+            podcast: Podcast
+            thumbnail: Thumbnail
+          output:
+            name: PDF
+            type: PDF
+    createPrimaryAssets:
+      file: ./workflow/createAssets.js
+      mappings:
+        IntelYouTube:
+          template: ./templates/IntelYouTube.txt
+          inputs:
+            blog: Blog
+          output:
+            name: IntelYouTube
+            type: Video
+        Podcast:
+          template: ./templates/Podcast.txt
+          inputs:
+            blog: Blog
+          output:
+            name: IntelYouTube
+            type: Video
+    publishAssets:
+    promote:
+    crossPromote:

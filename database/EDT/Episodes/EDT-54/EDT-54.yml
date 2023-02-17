@@ -1,0 +1,65 @@
+name: EDT-54
+title: People and Process Part 2
+summary: Darren Pulsipher, Chief Solution Architect, Intel, asks his guest, Ann Madea, former CIO of HSBC, to reflect on the process of big transformational changes she spearheaded in organizations. Part one of two.
+meta: Ann Madea, former CIO of HSBC, reflects on the process of big transformational changes she spearheaded in organizations.
+artifacts:
+  PDF:
+    type: Blog
+    url: https://darpai-my.sharepoint.com/:b:/g/personal/darren_pulsipher_org/EXtFR6wL7lJKjDsYXTM5b3MBdZnb4JYYxVQtimrgcEX_9Q?e=DnBYp0
+    summary: Darren Pulsipher, Chief Solution Architect, Intel, and Ann Madea, former CIO of HSBC, talk about communication during organizational transformation. Part two of two.
+  Transcript:
+    type: Blog
+    url: ./EDT-54.md
+    summary: Darren Pulsipher, Chief Solution Architect, Intel, and Ann Madea, former CIO of HSBC, talk about communication during organizational transformation. Part two of two.
+  Audio:
+    type: Podcast
+    url: https://darpai-my.sharepoint.com/:u:/g/personal/darren_pulsipher_org/EcaFmErGsAJEu95Ti9FFYb8BETmeSpZBT_pvqsoNKrbWIw?e=CCRL3t
+    summary: Darren Pulsipher, Chief Solution Architect, Intel, asks his guest, Ann Madea, former CIO of HSBC, to reflect on the process of big transformational changes she spearheaded in organizations. Part one of two.
+  PrimaryVideo:
+    type: Video
+    url: https://darpai-my.sharepoint.com/:v:/g/personal/darren_pulsipher_org/EccynSX85FBJo79t14LAmiEBwO8GoH0dMFMPq4GwhngWrw?e=SmvNbJ
+    summary: In this episode, part one of two, Darren and Intel Cloud Solution Architects Dave Shrestha and Kevin Bleckman talk about the importance of a cloud broker organization. Dave and Kevin founded Intel’s cloud brokerage team about seven years ago. Intel workers were consuming the public cloud, and it was like the wild wild West with people just swiping their credit cards for access. Security was an issue and spending got out of control. To rein in the chaos, they created a cloud broker organization.
+  Short1:
+    type: Video
+    url: https://darpai-my.sharepoint.com/:v:/g/personal/darren_pulsipher_org/EXdBV7hb4DlAv22aW4YZvE4BRAzscYqL4LKBHvr1J9hwGQ?e=gmLMHE
+    summary: Assesement of budget, plan, leadership team, business perceptions, business objectives and metrics are critical to turning a program around.
+  Short2:
+    type: Video
+    url: https://darpai-my.sharepoint.com/:v:/g/personal/darren_pulsipher_org/EXdBV7hb4DlAv22aW4YZvE4BRAzscYqL4LKBHvr1J9hwGQ?e=gmLMHE
+    summary: Technology is important, but we cannot implement technology without alignment to our buiness partners.
+  Short3:
+    type: Video
+    url: https://darpai-my.sharepoint.com/:v:/g/personal/darren_pulsipher_org/EWbvShAl5nFNoY81QI46o14B6tshW1BoHY_JAUfTyuyJLw?e=IL7Jot
+    summary: Alignment of the message up through and across management heiarchies is critical to program success.
+assets:
+  IntelBlog:
+    type: Blog
+    url: https://intel.com/content/www/us/en/government/podcasts/embracing-digital-transformation-episode54.html
+    summary: In part one of two, Darren Pulsipher, Chief Solution Architect, and Intel Cloud Solution Architects Dave Shrestha and Kevin Bleckman talk about the importance of a cloud broker organization.
+    channel: IntelWeb
+    artifact: Transcript
+  Podcast:
+    type: Podcast
+    url: https://soundcloud.com/embracingdigital/people-and-process-part-54
+    summary: In this episode, part two of two, Darren and guest Ann Madea, former CIO of HSBC, talk about communication during organizational transformation.
+    channel: SoundCloud
+    artifact: Audio
+  IntelVideo:
+    type: Video
+    url: https://youtu.be/EqX-aSQaZ68
+    summary: Darren Pulsipher, Chief Solution Architect, Intel, asks his guest, Ann Madea, former CIO of HSBC, to reflect on the process of big transformational changes she spearheaded in organizations.
+    channel: IntelYouTube
+    artifact: PrimaryVideo
+  LinkedinDocument:
+    type: Blog
+    url: https://www.linkedin.com/posts/embracing-digital-transformation_cloud-broker-organization-activity-6819028229664448513-pKU4
+    summary:  Darren Pulsipher, Chief Solution Architect, Intel, asks his guest, Ann Madea, former CIO of HSBC, to reflect on the process of big transformational changes she spearheaded in organizations.
+    channel: LinkedIn
+    artifact: PDF
+tags:
+  - Organizational Change
+  - Cloud Migration
+people:
+  - Darren Pulsipher
+  - Ann Madea
+thumbnail: ./thumbnail.png

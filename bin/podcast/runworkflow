@@ -1,0 +1,37 @@
+#!/user/bin/env node
+const bent = require('bent');
+const program = require('commander');
+const YAML = require('yamljs');
+const fs = require('fs');
+global.ailtire = { config: require('C:\\Users\\dwpulsip\\work\\guth\\bin\\lib/../../.ailtire.js') };
+program.command('runWorkflow [options]', 'Run a Workflow of a Podcast')
+	.option('--podcast <string>', 'Podcast Name')
+	.option('--workflow <string>', 'Name of the workflow')
+program.parse(process.argv);
+let url = global.ailtire.config.host;
+let args = {};
+let params = '/podcast/runworkflow?';
+params += 'mode=json';
+if(program['podcast']) { args['podcast'] = program['podcast']; }
+if(program['workflow']) { args['workflow'] = program['workflow']; }
+args.getParams = true;
+const post = bent(url, 'POST', 'json', 200);
+(async () => {
+    const response = await post(params, args);
+    for(let name in response) {
+        program.option(`--${name} <${response[name].type}> ${response[name].description}`);
+    }
+    program.parse(process.argv);
+    // Remove the getParams so it is not passed back into the server.
+    delete args.getParams;
+    for(let name in response) {
+        if(program[name] && typeof program[name] === 'string') {
+            args[name] = program[name];
+        }
+    }
+    const response2 = await post(params, args);
+    console.log(response2.results);
+})().catch(e => {
+    // Deal with the fact the chain failed
+    console.error("Response Error:", e);
+});

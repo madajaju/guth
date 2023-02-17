@@ -1,0 +1,99 @@
+name: EDT-56
+title: Cloud Broker Organizations
+summary: In part one of two, Darren Pulsipher, Chief Solution Architect, and Intel Cloud Solution Architects Dave Shrestha and Kevin Bleckman talk about the importance of a cloud broker organization.
+meta: Intel Cloud Solution Architects, Dave Shrestha and Kevin Bleckman, talk about the importance of a cloud broker organization.
+artifacts:
+  Transcript:
+    type: Blog
+    url: ./EDT-56.md
+    summary: In part one of two, Darren Pulsipher, Chief Solution Architect, and Intel Cloud Solution Architects Dave Shrestha and Kevin Bleckman talk about the importance of a cloud broker organization.
+  Audio:
+    type: Podcast
+    url: https://darpai-my.sharepoint.com/:u:/g/personal/darren_pulsipher_org/ETFM2eN5BrFEvGKPAXt1w_MBrqZoyun3mlcJln0yivf2Pw?e=4oE6IM
+    summary: In this episode, part one of two, Darren and Intel Cloud Solution Architects Dave Shrestha and Kevin Bleckman talk about the importance of a cloud broker organization. Dave and Kevin founded Intel’s cloud brokerage team about seven years ago. Intel workers were consuming the public cloud, and it was like the wild wild West with people just swiping their credit cards for access. Security was an issue and spending got out of control. To rein in the chaos, they created a cloud broker organization.
+  PrimaryVideo:
+    type: Video
+    url: https://darpai-my.sharepoint.com/:v:/g/personal/darren_pulsipher_org/EaNso2qNLTJGjn-vV83r3agBlSkUqKxkfQKxs-tPL_sjRA?e=SLBV0W
+    summary: In this episode, part one of two, Darren and Intel Cloud Solution Architects Dave Shrestha and Kevin Bleckman talk about the importance of a cloud broker organization. Dave and Kevin founded Intel’s cloud brokerage team about seven years ago. Intel workers were consuming the public cloud, and it was like the wild wild West with people just swiping their credit cards for access. Security was an issue and spending got out of control. To rein in the chaos, they created a cloud broker organization.
+  Short1:
+    type: Video
+    url: https://darpai-my.sharepoint.com/:v:/g/personal/darren_pulsipher_org/ESyM01mTJsFElj3l4jz0fg4BEDI0eFdLqI1btKZpVn9q-Q?e=vd7Wta
+    summary: Cloud Brokers are needed to optimize the intelligence migration to cloud, saving costs and time.
+  Short2:
+    type: Video
+    url: https://darpai-my.sharepoint.com/:v:/g/personal/darren_pulsipher_org/EYszRJlQH9ZGvTp8Z0KiMCMB7wpTOh9uK-h2YmzE5rma4g?e=Fa3Sd7
+    summary: How do you manage the 100s of services in the cloud service providers. How do you manage and provide expertise across these CSPs. Cloud Brokers can help.
+  Short3:
+    type: Video
+    url: https://darpai-my.sharepoint.com/:v:/g/personal/darren_pulsipher_org/ESqrOuxdj65KgcNB2mO1ZoABAhoafwwJ3vMQaW8u5NWeew?e=OA4Fav
+    summary: True Cloud Brokering is connecting people and teams with technology in the different clouds. Not knowing everything but knowing who to connect with whom.
+  Short4:
+    type: Video
+    url:  https://darpai-my.sharepoint.com/:v:/g/personal/darren_pulsipher_org/EbG4e30MSlBEhdstCHPGOAkB9lY2XRHM3c7bwPTlvOWKdg?e=dMVQfa
+    summary: Consolidation of CSP contracts, building and center of excellence, and connecting people with workloads and technologies are the benefits of a strong Cloud Broker organization.
+assets:
+  IntelBlog:
+    type: Blog
+    url: https://intel.com/content/www/us/en/government/podcasts/embracing-digital-transformation-episode56.html
+    summary: In part one of two, Darren Pulsipher, Chief Solution Architect, and Intel Cloud Solution Architects Dave Shrestha and Kevin Bleckman talk about the importance of a cloud broker organization.
+    channel: IntelWeb
+    artifact: Transcript
+  Podcast:
+    type: Podcast
+    url: https://soundcloud.com/embracingdigital/cloud-broker-organization-56
+    summary: In this episode, part one of two, Darren and Intel Cloud Solution Architects Dave Shrestha and Kevin Bleckman talk about the importance of a cloud broker organization. Dave and Kevin founded Intel’s cloud brokerage team about seven years ago. Intel workers were consuming the public cloud, and it was like the wild wild West with people just swiping their credit cards for access. Security was an issue and spending got out of control. To rein in the chaos, they created a cloud broker organization.
+    channel: SoundCloud
+    artifact: Audio
+  IntelVideo:
+    type: Video
+    url: https://youtu.be/o-pBcuqYmJE
+    summary: In this episode, part one of two, Darren and Intel Cloud Solution Architects Dave Shrestha and Kevin Bleckman talk about the importance of a cloud broker organization. Dave and Kevin founded Intel’s cloud brokerage team about seven years ago. Intel workers were consuming the public cloud, and it was like the wild wild West with people just swiping their credit cards for access. Security was an issue and spending got out of control. To rein in the chaos, they created a cloud broker organization.
+    channel: IntelYouTube
+    artifact: PrimaryVideo
+  EDTShort1:
+    type: Video
+    url: https://youtu.be/du20--GFLiE
+    summary: Cloud Brokers are needed to optimize the intelligence migration to cloud, saving costs and time.
+    channel: EDTYouTube
+    artifact: Short1
+  EDTShort2:
+    type: Video
+    url: https://youtu.be/MWOSFrK_8BM
+    summary: How do you manage the 100s of services in the cloud service providers. How do you manage and provide expertise across these CSPs. Cloud Brokers can help.
+    channel: EDTYouTube
+    artifact: Short2
+  EDTShort3:
+    type: Video
+    url: https://youtu.be/IcICgzX4QCY
+    summary: True Cloud Brokering is connecting people and teams with technology in the different clouds. Not knowing everything but knowing who to connect with whom.
+    channel: EDTYouTube
+    artifact: Short3
+  EDTShort4:
+    type: Video
+    url: https://youtu.be/BszBSljPZfQ
+    summary: Consolidation of CSP contracts, building and center of excellence, and connecting people with workloads and technologies are the benefits of a strong Cloud Broker organization.
+    channel: EDTYouTube
+    artifact: Short4
+  LinkedinDocument:
+    type: Blog
+    url: https://www.linkedin.com/posts/embracing-digital-transformation_cloud-broker-organization-activity-6819028229664448513-pKU4
+    summary: Consolidation of CSP contracts, building and center of excellence, and connecting people with workloads and technologies are the benefits of a strong Cloud Broker organization.
+    channel: EDTYouTube
+    artifact: Transcript
+products:
+  - Xeon
+tags:
+  - Cloud Broker
+  - AWS
+  - Azure
+  - GCP
+  - Organizational Change
+  - Cloud Migration
+  - Multi Hybrid Cloud
+solutions:
+  - Multi Hybrid Cloud
+people:
+  - Darren Pulsipher
+  - Dave Shrestha
+  - Kevin Bleckman
+thumbnail: ./thumbnail.png

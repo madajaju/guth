@@ -1,0 +1,41 @@
+title: Rise of the Stack Developer
+name: RSD
+channels:
+  facebook:
+    type: Facebook
+    user: darren.pulsipher
+    creds: 1234567890
+    types:
+      - ShortVideo
+      - Blog
+      - Post
+  linkedin:
+    type: Linkedin
+    user: darren.pulsipher
+    creds: 1234567890
+    types:
+      - shortVideo
+      - blog
+      - post
+  transistor:
+    type: Transistor
+    user: darren.pulsipher
+    creds: 1234567890
+    types:
+      - audio
+      - blog
+  youtube:
+    type: Youtube
+    user: darren@pulsipher.org
+    creds: 1234567890
+    types:
+      - video
+      - ShortVideo
+  wordpress:
+    type: WordPress
+    user: darren@pulsipher.org
+    creds: 1234567890
+    types:
+      - blog
+      - image
+thumbnail: ./thumbnail.png

@@ -1,0 +1,92 @@
+name: EDT-57
+title: Cloud Broker Organizations Part 2
+summary: In part two of two, Darren Pulsipher, Chief Solution Architect, and Intel Cloud Solution Architects Dave Shrestha and Kevin Bleckman talk about the benefits and services of a cloud broker organization.
+meta: Intel Cloud Solution Architects Dave Shrestha and Kevin Bleckman talk about the benefits and services of a cloud broker organization.
+artifacts:
+  Transcript:
+    type: Blog
+    url: ./EDT-57.md
+    summary: In part one of two, Darren Pulsipher, Chief Solution Architect, and Intel Cloud Solution Architects Dave Shrestha and Kevin Bleckman talk about the importance of a cloud broker organization.
+  Audio:
+    type: Podcast
+    url: https://darpai-my.sharepoint.com/:u:/g/personal/darren_pulsipher_org/EURrZQBcUnhKpShB1HwWpzIB-QUc2GhIvfTe7REVDq9LMw?e=TBoCAh
+    summary: In this episode, part one of two, Darren and Intel Cloud Solution Architects Dave Shrestha and Kevin Bleckman talk about the importance of a cloud broker organization. Dave and Kevin founded Intel’s cloud brokerage team about seven years ago. Intel workers were consuming the public cloud, and it was like the wild wild West with people just swiping their credit cards for access. Security was an issue and spending got out of control. To rein in the chaos, they created a cloud broker organization.
+  PrimaryVideo:
+    type: Video
+    url: https://darpai-my.sharepoint.com/:v:/g/personal/darren_pulsipher_org/EZ_WNR39bEVNqv8FsVT5kiwBews96T4cwkPsYcq4ak6yKQ?e=5bHUTb
+    summary: In this episode, part one of two, Darren and Intel Cloud Solution Architects Dave Shrestha and Kevin Bleckman talk about the importance of a cloud broker organization. Dave and Kevin founded Intel’s cloud brokerage team about seven years ago. Intel workers were consuming the public cloud, and it was like the wild wild West with people just swiping their credit cards for access. Security was an issue and spending got out of control. To rein in the chaos, they created a cloud broker organization.
+  Short1:
+    type: Video
+    url: https://darpai-my.sharepoint.com/:v:/g/personal/darren_pulsipher_org/EfrLp3bi9jFDriDdt3SE6j8BY0Z6AwpcOkNF5OYF-VlXbQ?e=zavtqL
+    summary: Cloud Service Providers are trying to stay competitive through differentiation by providing additional services, but they have become more similar than different.
+  Short2:
+    type: Video
+    url: https://darpai-my.sharepoint.com/:v:/g/personal/darren_pulsipher_org/EckeWpbjoSZBo2h2CBUnwX8BVRJsdcI48UEJuIWgNvHZ2A?e=ohmnMJ
+    summary: Cloud Service Providers have built security tools into their platforms, but they still have some gaps that need to be covered.
+  Short3:
+    type: Video
+    url: https://darpai-my.sharepoint.com/:v:/g/personal/darren_pulsipher_org/EX-Z90mDKXdOncEGOn36NasBOTXDSyGCHeFZUOgaxJElig?e=3bH4IA
+    summary: When should you keep workloads on prem? Look at data affinity. If part of the workload data is on prem then keep the whole workload on prem.
+  PDF:
+    type: Blog
+    url: https://darpai-my.sharepoint.com/:b:/g/personal/darren_pulsipher_org/EfmzYTxfXMBKsMC84pxRlOEBa7ipC_gKL99BkpzhEa_Juw?e=3Ile09
+    summary: In this episode, part two of two, Darren and Intel Cloud Solution Architects Dave Shrestha and Kevin Bleckman talk about the importance of a cloud broker organization.
+assets:
+  Podcast:
+    type: Podcast
+    url: https://soundcloud.com/embracingdigital/cloud-broker-organization-57
+    channel: SoundCloud
+    artifact: Audio
+    summary:  In part two of two, Darren Pulsipher, Chief Solution Architect, and Intel Cloud Solution Architects Dave Shrestha and Kevin Bleckman talk about the benefits and services of a cloud broker organization. Blog:  https://intel.com/content/www/us/en/government/podcasts/embracing-digital-transformation-episode57.html Video:
+  YouTubeVideo:
+    type: Video
+    url: https://youtu.be/9cZHCXE64Zs
+    channel: IntelYouTube
+    artifact: PrimaryVideo
+    summary: In part two of two, Darren Pulsipher, Chief Solution Architect, and Intel Cloud Solution Architects Dave Shrestha and Kevin Bleckman talk about the benefits and services of a cloud broker organization.
+  IntelBlog:
+    type: Blog
+    url: https://intel.com/content/www/us/en/government/podcasts/embracing-digital-transformation-episode57.html
+    channel: IntelBlog
+    artifact: Transcript
+  LinkedInDoc:
+    type: file
+    summary: In this episode, part two of two, Darren and guest Ann Madea, former CIO of HSBC, talk about communication during organizational transformation.
+    url: https://www.linkedin.com/feed/update/urn:li:activity:6819347347747807232
+    channel: LinkedIn
+    artifact: Transcript
+  Short1:
+    type: Video
+    url: https://youtu.be/I0WkaF-vGm0
+    summary: Cloud Service Providers are trying to stay competitive through differentiation by providing additional services, but they have become more similar than different.
+    channel: Youtube
+    artifact: Short1
+  Short2:
+    type: Video
+    url: https://youtu.be/MHrBOmpj8uo
+    summary: Cloud Service Providers have built security tools into their platforms, but they still have some gaps that need to be covered.
+    channel: Youtube
+    artifact: Short2
+  Short3:
+    type: Video
+    url: https://youtu.be/0oAT_tA-pCU
+    summary: When should you keep workloads on prem? Look at data affinity. If part of the workload data is on prem then keep the whole workload on prem.
+    channel: YouTube
+    artifact: Short3
+products:
+  - Xeon
+tags:
+  - Cloud Broker
+  - AWS
+  - Azure
+  - GCP
+  - Organizational Change
+  - Cloud Migration
+  - Multi Hybrid Cloud
+solutions:
+  - Multi Hybrid Cloud
+people:
+  - Darren Pulsipher
+  - Dave Shrestha
+  - Kevin Bleckman
+thumbnail: ./thumbnail.png

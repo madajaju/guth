@@ -1,0 +1,29 @@
+name: EDT-1
+title: History of Data-Centric Architecture
+summary: In this episode find out how changes in software development has changed the way we architect, design, deploy and manage hardware and software assets in data centers. We also look at the future where data centers no longer have walls where data and compute are spread over thousands of IoT devices and across public and private clouds.
+meta: Data management across an edge to datacenter architectures.
+artifacts:
+  MyBlog:
+    type: Blog
+    url: https://www.intel.com/content/www/us/en/government/embracing-digital-transformation-episode1.html
+  MyPodcast:
+    type: Podcast
+    url: https://soundcloud.com/embracingdigital/history-of-data-centric-architecture
+  MyVideo:
+    type: Podcast
+    url: https://youtu.be/SZyyG2AGM6g
+products:
+  - Xeon
+tags:
+  - Data Architecture
+  - Edge
+  - IoT
+  - Application Development
+  - DevOps
+  - DataOps
+solutions:
+  - Smart Edge
+people:
+  - Darren Pulsipher
+thumbnail: ./thumbnail.png
+

@@ -1,0 +1,15 @@
+assets:
+  video:
+  - youtube
+  audio:
+  - soundcloud
+  written:
+  - linkedin
+  - intelBlog
+promotion:
+  video:
+    - linkedin
+    - youtube
+  written:
+    - linkedin
+    - twitter

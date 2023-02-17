@@ -1,0 +1,110 @@
+title: Embracing Digital Transformation
+name: EDT
+channels:
+  facebook:
+    type: Facebook
+    user: darren@pulsipher.org
+    creds: 1234567890
+    url: https://www.facebook.com/Embracing-Digital-Transformation-108059227469282
+    types:
+      - ShortVideo
+      - Blog
+      - Post
+  linkedin:
+    type: LinkedIn
+    user: darren@pulsipher.org
+    creds: 1234567890
+    url: https://www.linkedin.com/company/embracing-digital-transformation
+    types:
+      - shortVideo
+      - blog
+      - post
+  transistor:
+    type: SoundCloud
+    user: edt@pulsipher.org
+    url: https://soundcloud.com/embracingdigital
+    rss-feed: https://feeds.soundcloud.com/users/soundcloud:users:849124657/sounds.rss
+    creds: 1234567890
+    types:
+      - audio
+      - blog
+  youtube:
+    type: Youtube
+    user: edt@pulsipher.org
+    creds: 1234567890
+    url: https://www.youtube.com/channel/UCveOcNne1kP_ZccC8kOZcDA
+    rss-feed: https://www.youtube.com/feeds/videos.xml?channel_id=UCveOcNne1kP_ZccC8kOZcDA
+    types:
+      - shortvideo
+  intelYoutube:
+    type: IntelYoutube
+    user: darren.w.pulsipher@intel.com
+    creds: 1234567890
+    url: https://youtube.com/playlist?list=PLj-81kG3zG5YC2Z4aBncmOpZGh6umLy0n
+    rss-feed: https://www.youtube.com/playlist?list=PLj-81kG3zG5YC2Z4aBncmOpZGh6umLy0n
+    types:
+      - video
+  twitter:
+    type: Twitter
+    user: edt@pulsipher.org
+    creds: 1234567890
+    url: https://twitter.com/embracingdt
+    types:
+      - blog
+      - image
+  intelblog:
+    type: IntelBlog
+    user: darren.w.pulsipher@intel.com
+    url: https://www.intel.com/content/www/us/en/government/embracing-digital-transformation-overview.html
+    creds: 1234567890
+    types:
+      - blog
+      - image
+thumbnail: ./thumbnail.png
+blueprint:
+  workflows:
+    createEpisode:
+      file: ./database/EDT/workflows/createEpisode.js
+    generateArtifacts:
+      file: ./database/EDT/workflows/generateArtifacts.js
+      mappings:
+        IntelBlog.html:
+          template: ./database/EDT/templates/IntelBlog.html
+          inputs:
+            blog: Blog
+            video: VideoPrimary
+            podcast: Podcast
+            thumbnail: Thumbnail
+          output:
+            name: IntelBlog
+            type: Blog
+        IntelBlog.pdf:
+          template: ./database/EDT/templates/PDF.html
+          inputs:
+            blog: Blog
+            video: PrimaryVideo
+            podcast: Podcast
+            thumbnail: Thumbnail
+          output:
+            name: PDF
+            type: PDF
+    createPrimaryAssets:
+      file: ./database/EDT/workflows/createAssets.js
+      mappings:
+        IntelYouTube:
+          template: ./database/EDT/templates/IntelYouTube.txt
+          inputs:
+            blog: Blog
+          output:
+            name: IntelYouTube
+            type: Video
+        Podcast:
+          template: ./database/EDT/templates/Podcast.txt
+          inputs:
+            blog: Blog
+          output:
+            name: IntelYouTube
+            type: Video
+    publishAssets:
+    promote:
+    crossPromote:

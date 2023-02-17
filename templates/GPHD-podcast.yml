@@ -1,0 +1,48 @@
+title: The Golden PhD
+name: GPHD
+channels:
+  facebook:
+    type: Facebook
+    user: darren@pulsipher.org
+    creds: 1234567890
+    url: https://www.facebook.com/thegoldenphd
+    types:
+      - ShortVideo
+      - Blog
+      - Post
+  linkedin:
+    type: Linkedin
+    user: darren@pulsipher.org
+    creds: 1234567890
+    url: https://www.linkedin.com/company/72305574/admin/
+    types:
+      - shortVideo
+      - blog
+      - post
+  transistor:
+    type: Transistor
+    user: contact@wheresthelemonade.org
+    creds: 1234567890
+    url: https://dashboard.transistor.fm/shows/the-golden-ph-d
+    rss-feed: https://feeds.transistor.fm/the-golden-ph-d
+    types:
+      - audio
+      - blog
+  youtube:
+    type: Youtube
+    user: thegoldenphd
+    creds: 1234567890
+    url: https://www.youtube.com/channel/UCKWa23t7u5pwjQi0BmNOjSQ
+    rss-feed: https://www.youtube.com/feeds/videos.xml?channel_id=UCKWa23t7u5pwjQi0BmNOjSQ
+    types:
+      - video
+      - ShortVideo
+  wordpress:
+    type: WordPress
+    user: darren@pulsipher.org
+    creds: 1234567890
+    url: http://goldenphd.org
+    types:
+      - blog
+      - image
+thumbnail: ./thumbnail.png

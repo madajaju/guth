@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<%
+let hostURL = global.ailtire.config.host;
+/*
+if (global.ailtire.config.listenPort) {
+    hostURL += ':' + global.ailtire.config.listenPort;
+}
+ */
+%>
+<head>
+    <title>Guth</title>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.5.1/less.min.js"></script>
+    <link rel="stylesheet/less" type="text/css" href="styles/importer.less"/>
+    <base href="http://<%= hostURL %><%= global.ailtire.config.urlPrefix %>/">
+    <script type="module" src="js/ckeditor.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/w2ui.js"></script>
+    <link rel="stylesheet" href="styles/w2ui.css"/>
+    <!--  <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script> -->
+    <script src="js/aframe.js"></script>
+    <script src="js/three.js"></script>
+    <script src="js/3d-force-graph.js"></script>
+    <script src="js/d3-octree.js"></script>
+    <script src="js/d3-force-3d.js"></script>
+    <script src="js/Graph3D.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<script type="text/javascript">
+    document.write("<base href='" + window.location + "' />");
+</script>
+<body style="overflow: hidden;">
+
+<!--This is a garden of 3DObjects for the graphing-->
+<div style="display:none;">
+    <div id="scratchspace" style="display:none;">
+        <a-scene embedded height="0px" width="0px">
+            <a-entity id="ObjectGarden" position="-10 20 -100">
+                <a-sphere id="default3D" position="0 0 0" radius="10" color="#cccccc"></a-sphere>
+                <a-sphere id="default3DSelected" position="0 0 0" radius="10" color="#ffff00"></a-sphere>
+                <a-sphere id="default3DTargeted" position="0 0 0" radius="10" color="#ff0000"></a-sphere>
+                <a-sphere id="default3DSourced" position="0 0 0" radius="10" color="#00ff00"></a-sphere>
+                <% for(let cname in global.classes) {
+                    let cls = global.classes[cname];
+                if(cls.definition.view) {
+                %>
+                    <%- cls.definition.view.object3d() %>
+                <% } } %>
+            </a-entity>
+        </a-scene>
+    </div>
+</div>
+
+<div id="main" style="position: absolute; width: 100%; height: 100%; overflow: hidden;"></div>
+<script type="module">
+    import {AMainWindow} from './js/ailtire/index.js'
+    import EpisodeView from './views/EpisodeView.js';
+    import PodcastView from './views/PodcastView.js';
+    import PersonView from './views/PersonView.js';
+
+    let episodeView = new EpisodeView();
+    let podcastView = new PodcastView();
+    let personView = new PersonView();
+
+    $(function () {
+        // initialization
+        let config = {
+            title: "<%= global.ailtire.config.prefix %>",
+            toolbar: {
+                "background-color": "#bb8822",
+                "color": "#000000"
+            },
+            mainDiv: "#main",
+            graphDiv: "#modelGraph",
+            graph3D: {
+                div: "#modelGraph",
+                color: "#441100"
+            },
+            objectEditors: {
+                Episode: EpisodeView.getEditForm,
+                Podcast: PodcastView.getEditForm,
+                Person: PersonView.getEditForm,
+            }
+        }
+        AMainWindow.initialize(config);
+    });
+
+</script>
+</body>
+</html>

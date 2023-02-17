@@ -1,0 +1,104 @@
+name: EDT-58
+title: Understanding Edge to Data Center Problems
+summary: Darren Pulsipher, Chief Solution Architect, Intel, outlines the common problems throughout edge to data center architectures that he’s observed and discussed with customers in the public sector. He lays out the ideal architecture to resolve these issues.
+meta: Darren Pulsipher, Chief Solution Architect, Intel, outlines the common problems throughout edge to data center architectures that he’s observed and discussed with customers in the public sector.
+artifacts:
+  Transcript:
+    type: Blog
+    url: ./EDT-58.md
+    summary: Darren Pulsipher, Chief Solution Architect, Intel, outlines the common problems throughout edge to data center architectures that he’s observed and discussed with customers in the public sector. He lays out the ideal architecture to resolve these issues.
+  Audio:
+    type: Podcast
+    url: https://darpai-my.sharepoint.com/:u:/g/personal/darren_pulsipher_org/EZR3lziUqYNBvEe4jiz9dmIBK0Zja6Uac3yTm3ttkloQjg?e=aRZJIX
+    summary: Darren Pulsipher, Chief Solution Architect, Intel, outlines the common problems throughout edge to data center architectures that he’s observed and discussed with customers in the public sector. He lays out the ideal architecture to resolve these issues.
+  PrimaryVideo:
+    type: Video
+    url: https://darpai-my.sharepoint.com/:v:/g/personal/darren_pulsipher_org/EcwMxhByxPFLkXuQXhE4ehgB-mDhL3ecMr4de4kRrVECbA?e=Tn02mP
+    summary: Darren Pulsipher, Chief Solution Architect, Intel, outlines the common problems throughout edge to data center architectures that he’s observed and discussed with customers in the public sector. He lays out the ideal architecture to resolve these issues.
+  Short1:
+    type: Video
+    url: https://darpai-my.sharepoint.com/:v:/g/personal/darren_pulsipher_org/ETlZS1PsO5hKu8XNHdoN3I8BTzKkv6A9Ulya0PEFkgRUOg?e=JFd9ZG
+    summary: 5G did not solve the Edge connectivity problem because edge devices continue to gather more than we can collect.
+  Short2:
+    type: Video
+    url: https://darpai-my.sharepoint.com/:v:/g/personal/darren_pulsipher_org/EXyOQdLfDiRDjXAIFVmtOiIBzVln86HSnIaNCA0-MCG0Xw?e=y8Cnsm
+    summary: We need to move data intelligently, not all of the data. We need to push analytics to the edge as much as possible.
+  Short3:
+    type: Video
+    url: https://darpai-my.sharepoint.com/:v:/g/personal/darren_pulsipher_org/EbjxRoUEFwRLlKMhju6fVrcBpSkbvwg5_2i-VgoulPenXQ?e=9noJpl
+    summary: Identity and security are twins that work together to include reliability, trusted data and compliance.
+  Short4:
+    type: Video
+    url: https://darpai-my.sharepoint.com/:v:/g/personal/darren_pulsipher_org/EWF29N8NHURAolwt0NgQ-VcBvLLSC9WM_MTp3r1PhTgiXg?e=huDsB8
+    summary: Understanding where the tools fit in your architecture is key to having a successful deployment of edge technology.
+  PDF:
+    type: Blog
+    url: https://darpai-my.sharepoint.com/:b:/g/personal/darren_pulsipher_org/EfmzYTxfXMBKsMC84pxRlOEBa7ipC_gKL99BkpzhEa_Juw?e=3Ile09
+    summary:
+assets:
+  Podcast:
+    type: Podcast
+    url: https://soundcloud.com/embracingdigital/edt-58
+    channel: SoundCloud
+    artifact: Audio
+    summary:  Darren Pulsipher, Chief Solution Architect, Intel, outlines the common problems throughout edge to data center architectures that he’s observed and discussed with customers in the public sector. He lays out the ideal architecture to resolve these issues.
+  YouTubeVideo:
+    type: Video
+    url: https://youtu.be/CVeyd3pZTkA
+    channel: IntelYouTube
+    artifact: PrimaryVideo
+    summary:  Darren Pulsipher, Chief Solution Architect, Intel, outlines the common problems throughout edge to data center architectures that he’s observed and discussed with customers in the public sector. He lays out the ideal architecture to resolve these issues.
+  IntelBlog:
+    type: Blog
+    url: https://intel.com/content/www/us/en/government/podcasts/embracing-digital-transformation-episode58.html
+    channel: IntelBlog
+    artifact: Transcript
+  LinkedInDoc:
+    type: file
+    summary: In this episode, part two of two, Darren and guest Ann Madea, former CIO of HSBC, talk about communication during organizational transformation.
+    url: https://www.linkedin.com/feed/update/urn:li:activity:6819347347747807232
+    channel: LinkedIn
+    artifact: Transcript
+  Short1:
+    type: Video
+    url: https://youtu.be/BvYQbC79bA8
+    summary: 5G did not solve the Edge connectivity problem because edge devices continue to gather more than we can collect.
+    channel: Youtube
+    artifact: Short1
+  Short2:
+    type: Video
+    url: https://youtu.be/uxvxLkh4Gmc
+    summary: We need to move data intelligently, not all of the data. We need to push analytics to the edge as much as possible.
+    channel: Youtube
+    artifact: Short2
+  Short3:
+    type: Video
+    url: https://youtu.be/aweIGr7mMRY
+    summary: Identity and security are twins that work together to include reliability, trusted data and compliance.
+    channel: YouTube
+    artifact: Short3
+  Short4:
+    type: Video
+    url: https://youtu.be/4-ZIZbRRl5E
+    summary: Understanding where the tools fit in your architecture is key to having a successful deployment of edge technology.
+    channel: YouTube
+    artifact: Short4
+
+products:
+  - Xeon
+  - SGX
+  - Atom
+tags:
+  - Edgemere
+  - EdgeToCloud
+  - DataManagement
+  - EdgeProblems
+  - EdgeSecurity
+  - EmbracingDigital
+  - EDT58
+  - EdgeIdentity
+solutions:
+  - Edgemere
+people:
+  - Darren Pulsipher
+thumbnail: ./thumbnail.png

@@ -1,0 +1,40 @@
+@startuml
+
+Person -> Guth : pulish Episode
+Guth -> BluePrintManager : activateBusinessFlow("publish.Episode", "RSD-1")
+BluePrintManager -> BluePrint : publish("Episode", "RSD-1")
+BluePrint -> BluePrint : mapToFields("Episode", "RSD-1");
+BluePrint -> BluePrint : publish on SoundCloud
+BluePrint -> SoundCloud : upload audio file
+BluePrint -> SoundCloud : change title Episode Name | #episode autonumber
+BluePrint -> SoundCloud: Add Description based on template
+BluePrint -> SoundCloud: Add Caption based on template
+BluePrint -> SoundCloud : Additional Tags
+BluePrint -> SoundCloud : Genre = Technology
+
+BluePrintManager -> BluePrintManager : publish on Youtube
+BluePrintManager -> Youtube : upload video file
+BluePrintManager -> Youtube : change Title Episode Name | #episode autonumber
+BluePrintManager -> Youtube : Add Description based on template
+loop n times
+BluePrintManager -> Youtube : Upload videoshort1 file
+BluePrintManager -> Youtube : Change Title Episode Name Short # | #episode autonumber
+BluePrintManager -> Youtube : Add Description based on template. Include link to Youtube published item.
+end
+
+
+
+BluePrintManager -> BluePrintManager : publish on Transitor
+BluePrintManager -> Transitor : upload audio file
+BluePrintManager -> Transitor : change Title Episode Name | #episode autonumber
+BluePrintManager -> Transitor : Add Summary based on template
+BluePrintManager -> Transitor : Add Full Description based on template
+
+BluePrintManager -> BluePrintManager : publish on LinkedIn
+loop n times
+BluePrintManager -> LinkedIn : upload videoshort1 file
+BluePrintManager -> LinkedIn : Add post description based on template.
+end
+
+
+@enduml

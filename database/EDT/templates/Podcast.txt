@@ -1,0 +1,9 @@
+<%= episode.summary %>
+
+Blog: <%= blog.url %>
+Video: <%= videoPrimary.url %>
+
+<% for(let i in episode.tags) { %>
+ #<%= episode.tags[i] %>,
+<% } %>
+#<%= episode.name %>, #EmbracingDigital

@@ -1,0 +1,104 @@
+name: EDT-60
+title: Managing Risk in the Face of Ransomware
+summary: On this episode, part one of two, Darren discusses security trends with frequent guest Steve Orrin, CTO of Intel, Federal. Over the past year, there has been a rise in the number and sophistication of cyber-attacks. The three key areas of recurring attacks are ransomware, supply chain attacks, and data breaches.
+meta: Darren Pulsipher, Chief Solution Architect, Intel, outlines the common problems throughout edge to data center architectures that he’s observed and discussed with customers in the public sector.
+artifacts:
+  Transcript:
+    type: Blog
+    url: ./EDT-60.md
+    summary: On this episode, part one of two, Darren discusses security trends with frequent guest Steve Orrin, CTO of Intel, Federal.
+  Audio:
+    type: Podcast
+    url:
+    summary: Darren Pulsipher, Chief Solution Architect, Intel, outlines the common problems throughout edge to data center architectures that he’s observed and discussed with customers in the public sector. He lays out the ideal architecture to resolve these issues.
+  PrimaryVideo:
+    type: Video
+    url: https://darpai-my.sharepoint.com/:v:/g/personal/darren_pulsipher_org/EcwMxhByxPFLkXuQXhE4ehgB-mDhL3ecMr4de4kRrVECbA?e=Tn02mP
+    summary: Darren Pulsipher, Chief Solution Architect, Intel, outlines the common problems throughout edge to data center architectures that he’s observed and discussed with customers in the public sector. He lays out the ideal architecture to resolve these issues.
+  Short1:
+    type: Video
+    url: https://darpai-my.sharepoint.com/:v:/g/personal/darren_pulsipher_org/ER72SSDKUoxOnmfRrke0L8gBDqrkVzbrOPtyvtY4RJfRlg?e=UQ7sbQ
+    summary: Adversaries are organized and run like multinational companies. Now is the time for you toget organized as well.
+  Short2:
+    type: Video
+    url: https://darpai-my.sharepoint.com/:v:/g/personal/darren_pulsipher_org/EeECPaLh6fhJjTjokzJ8C6QBSYQx4bkwSCgPH25QA0eMEg?e=JaetyD
+    summary: If the SolarWinds hack taught us anything is that thesupply chain is being attacked. The devOps pipeline needs to be security hardened much like your production environment.
+  Short3:
+    type: Video
+    url: https://darpai-my.sharepoint.com/:v:/g/personal/darren_pulsipher_org/Ed8UfuMFugdOgHm-OJVCVPsBslsTG68DSGInY9AEX0BXMw?e=TcnFQz
+    summary: Managed security providers (MSP) offer great services. However, you still need to have Security knowledge in your organizations. Someone to set policy and asset risk.
+  Short4:
+    type: Video
+    url: https://darpai-my.sharepoint.com/:v:/g/personal/darren_pulsipher_org/Ect9biQW5RlJu7Ymu5BKIWEBK6WW4g89_e2J-tF1cp4WoA?e=OaUXCD
+    summary: What are you going to do when you get hit with Ransomware? You need a plan for when you get hit with ransomware or a data breach. This should be part of your business continuity plan, must like a natural disaster.
+  PDF:
+    type: Blog
+    url: https://darpai-my.sharepoint.com/:b:/g/personal/darren_pulsipher_org/EfmzYTxfXMBKsMC84pxRlOEBa7ipC_gKL99BkpzhEa_Juw?e=3Ile09
+    summary:
+assets:
+  Podcast:
+    type: Podcast
+    url: https://soundcloud.com/embracingdigital/managing-risk-in-the-face-of-ransomware-60
+    channel: SoundCloud
+    artifact: Audio
+    summary:  Darren Pulsipher, Chief Solution Architect, Intel, outlines the common problems throughout edge to data center architectures that he’s observed and discussed with customers in the public sector. He lays out the ideal architecture to resolve these issues.
+  YouTubeVideo:
+    type: Video
+    url: https://youtu.be/JOw9LurVHJY
+    channel: IntelYouTube
+    artifact: PrimaryVideo
+    summary:  Darren Pulsipher, Chief Solution Architect, Intel, outlines the common problems throughout edge to data center architectures that he’s observed and discussed with customers in the public sector. He lays out the ideal architecture to resolve these issues.
+  IntelBlog:
+    type: Blog
+    url: https://intel.com/content/www/us/en/government/podcasts/embracing-digital-transformation-episode60.html
+    channel: IntelBlog
+    artifact: Transcript
+  LinkedInDoc:
+    type: file
+    summary: On this episode, part one of two, Darren Pulsipher discusses security trends with frequent guest Steve Orrin, CTO of Intel, Federal. Over the past year, there has been a rise in the number and sophistication of cyber-attacks. The three key areas of recurring attacks are ransomware, supply chain attacks, and data breaches.
+    url: https://www.linkedin.com/feed/update/urn:li:activity:6819347347747807232
+    channel: LinkedIn
+    artifact: Transcript
+  Short1:
+    type: Video
+    url: https://youtu.be/RGSE8guplHw
+    summary: Adversaries are organized and run like multinational companies. Now is the time for you toget organized as well.
+    channel: Youtube
+    artifact: Short1
+  Short2:
+    type: Video
+    url: https://youtu.be/Z4BHyLCtPRI
+    summary: If the SolarWinds hack taught us anything is that thesupply chain is being attacked. The devOps pipeline needs to be security hardened much like your production environment.
+    channel: Youtube
+    artifact: Short2
+  Short3:
+    type: Video
+    url: https://youtu.be/5jo_gE1oJWs
+    summary: Managed security providers (MSP) offer great services. However, you still need to have Security knowledge in your organizations. Someone to set policy and asset risk.
+    channel: YouTube
+    artifact: Short3
+  Short4:
+    type: Video
+    url: https://youtu.be/8HubUMybASc
+    summary: What are you going to do when you get hit with Ransomware? You need a plan for when you get hit with ransomware or a data breach. This should be part of your business continuity plan, must like a natural disaster.
+    channel: YouTube
+    artifact: Short4
+
+products:
+  - SGX
+tags:
+  - cybersecurity
+  - security
+  - ransomware
+  - cloudsecurity
+  - databreach
+  - supplychain
+  - IamIntel
+  - EDT60
+  - embracingdigital
+solutions:
+  - Six Pillars of Security
+people:
+  - Darren Pulsipher
+  - Steve Orrin
+thumbnail: ./thumbnail.png

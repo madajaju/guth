@@ -1,0 +1,9 @@
+name: Simple
+flows:
+  publish.Episode:
+mappings:
+  Episode:
+    Facebook:
+
+
+

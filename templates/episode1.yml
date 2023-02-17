@@ -1,0 +1,32 @@
+name: RSD-1
+title: Telework Securing your Home Office
+summary: The meteoric rise of remote work means security could be at risk. Get practical tips and advice from Steve Orrin, Federal CTO at Intel, on how to reduce your remote work security risk in the public sector.
+meta: Security is important, why aren't you paying attention.
+artifacts:
+  MyBlog:
+    type: Blog
+    url: https://www.intel.com/content/www/us/en/government/embracing-digital-transformation-episode9.html
+  MyPodcast:
+    type: Podcast
+    url: https://soundcloud.com/embracingdigital/telework-securing-your-home-office-episode-9
+  MyVideo:
+    type: Podcast
+    url: https://youtu.be/QIP4mdC_7Uw
+products:
+  - Xeon
+  - Optane
+  - SGX
+  - SmartNic
+tags:
+  - COVID
+  - Remote Work
+  - Security
+  - VPN
+solutions:
+  - VDI
+  - VPN
+  - MFA
+people:
+  - @darrenpulsipher
+  - @sorrin
+thumbnail: ./thumbnail.png
