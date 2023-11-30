@@ -14,9 +14,21 @@ class BluePrint {
             workflows: {
                 type: 'BusinessFlow',
                 cardinality: 'n',
+                composition: true,
+                owner: true,
+            },
+            mappings: {
+                type: 'Mapping',
+                cardinality: 'n',
+                composition: true,
+                owner: true,
+            },
+            podcast: {
+                type: 'Podcast',
+                cardinality: 1,
                 composition: false,
                 owner: false,
-            },
+            }
         },
     }
 }

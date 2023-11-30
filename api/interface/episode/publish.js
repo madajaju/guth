@@ -10,12 +10,10 @@ module.exports = {
             type: 'string', // string|boolean|number|json
             required: true
         },
-        channels: {
-            description: 'Channels to publish to. Comma Separated list',
-            type: 'ref',
-            required: true,
-            model: 'Channel',
-            cardinality: 'n'
+        releaseDate: {
+            description: 'Date to release the Episode',
+            type: 'string',
+            required: false,
         }
     },
 
@@ -27,18 +25,30 @@ module.exports = {
         }
     },
 
-    fn: function (inputs, env) {
+    fn: async function (inputs, env) {
         // inputs contains the obj for the this method.
         let episode = Episode.find(inputs.id);
+
         if(!episode) {
             env.res.json({error: "Episode Not Found:"+ inputs.id});
-            env.res.end("Done");
             return;
         }
-        episode.publish({channels: inputs.channels});
+
+        let podcast = episode.owner;
+        let workflows = podcast.blueprint.workflows;
+        let workflow = null;
+        for(let i in workflows) {
+            if(workflows[i].name === 'episode/publish') {
+                workflow = workflows[i];
+            }
+        }
+        if(workflow) {
+            await workflow.fn(inputs, env);
+        }
+        episode.state = "Published"
+        episode.saveMe();
 
         env.res.json({request: 'Episode Published!'});
-        env.res.end("Published");
-        return;
+        return episode;
     }
 };

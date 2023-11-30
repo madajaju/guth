@@ -11,15 +11,10 @@ module.exports = {
             type: 'ref', // string|boolean|number|json
             required: true
         },
-        text: {
+        body: {
             description: 'Text of the post for the promotion of the asset',
             type: 'string',
             required: false,
-        },
-        date: {
-            description: 'Date to publish the artifact, if not supplied, publish now',
-            type: 'string', // string|boolean|number|json
-            required: false
         },
     },
 
@@ -32,10 +27,24 @@ module.exports = {
     },
 
     fn: function (obj, inputs, env) {
-        let text = inputs.text || "Post:" + inputs.asset.name;
-        let post = new Post({text: text, name:'Post:' + inputs.asset.name, asset: inputs.asset});
-        obj.addToPosts(post);
-        inputs.asset.addToPosts(post);
-        return post;
+        let body = inputs.body;
+        if(inputs.asset) {
+            let post = new Post({
+                channel: obj,
+                text: body,
+                name: 'Post: ' + inputs.asset.name,
+                asset: inputs.asset,
+                episode: inputs.episode
+            });
+            obj.addToPosts(post);
+            if (inputs.asset) {
+                inputs.asset.addToPosts(post);
+            }
+            if (inputs.episode) {
+                post.episode.addToPosts(post);
+                post.epiosde.saveMe();
+            }
+        }
+        return {redirect: obj.url, message:"Cut and paste into Window"};
     }
 };

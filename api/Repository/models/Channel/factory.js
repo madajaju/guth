@@ -43,6 +43,9 @@ module.exports = {
         let obj;
         if(tcls) {
             obj = new tcls(inputs);
+        } else {
+            console.log("Channel type not found:", inputs.type);
+            obj = new Channel(inputs);
         }
         obj.type = inputs.type;
         return obj;

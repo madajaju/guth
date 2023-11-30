@@ -28,7 +28,7 @@ class Episode {
             tagline: {
                 type: 'string',
                 multiline: true,
-                limit: 150,
+                limit: 256,
                 description: 'Summary of the episode'
             },
             notes: {
@@ -140,6 +140,20 @@ class Episode {
         statenet: {
             Init: {
                 description: "Initial State",
+            },
+            Created: {
+                description: "Created State",
+                events: {
+                    save: {
+                        Created: {}
+                    },
+                    schedule: {
+                        Scheduled: {}
+                    },
+                   cancel: {
+                        Cancelled: {}
+                    }
+                }
             },
             Backlog: {
                 description: "Idea for episode",

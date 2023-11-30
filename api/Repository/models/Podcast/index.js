@@ -21,6 +21,10 @@ class Podcast {
             baseDirectory: {
                 type: 'string',
                 description: 'Location of the artifacts being managed',
+            },
+            lang: {
+                type: 'json',
+                description: "Languages supported"
             }
         },
         associations: {
@@ -35,13 +39,15 @@ class Podcast {
                 type: 'Channel',
                 cardinality: 'n',
                 composition: false,
-                owner: true
+                owner: true,
+                unique: true
             },
             blueprint: {
                 type: 'BluePrint',
                 cardinality: 1,
                 composition: false,
-                owner: true
+                owner: true,
+                via: "podcast",
             },
             guests: {
                 type: 'Person',

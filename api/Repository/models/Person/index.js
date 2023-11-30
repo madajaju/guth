@@ -16,6 +16,14 @@ class Person {
             notes: {
                 type: 'string',
                 description: "Notes about the person",
+            },
+            bio: {
+                type: 'string',
+                description: "Biography"
+            },
+            thumbnail: {
+                type: 'string',
+                description: "Thumbnail"
             }
         },
         associations: {

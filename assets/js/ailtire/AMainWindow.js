@@ -147,8 +147,8 @@ export default class AMainWindow {
                         toolbar: {
                             style: "background-color: #00aaaa; color: black;",
                             items: [
-                                {type: 'button', id: 'editItem', text: 'Documentation', style: 'color: black;'},
-                                {type: 'button', id: 'errorItem', text: 'View Model Errors', style: 'color: black;'},
+                                {type: 'button', id: 'editItem', text: 'Edit', style: 'color: black;'},
+                                {type: 'button', id: 'errorItem', text: 'Errors', style: 'color: black;'},
                             ],
                             onClick: function (event) {
                                 AMainWindow.processTopMenu(event);
@@ -386,7 +386,7 @@ export default class AMainWindow {
             {path: window.location.pathname + '/socket.io'}
         );
         socket.onAny((event, msg) => {
-            AMainWindow.showEvent(event);
+            AMainWindow.showEvent(event,msg);
             if (event.includes('.create')) {
                 let [eventClass, methodClass] = event.split('.');
                 let rec = w2ui['rightbar'].get(eventClass);
@@ -499,10 +499,10 @@ export default class AMainWindow {
             name: 'eventlist',
             show: {header: false, columnHeaders: true},
             columns: [
-                {field: 'object', caption: 'Object', size: '33%', attr: "align=right", sortable: true},
-                {field: 'count', caption: 'Count', size: '33%', attr: "align=right", sortable: true},
+                {field: 'object', caption: 'Object', size: '25%', attr: "align=right", sortable: true},
+                {field: 'count', caption: 'Count', size: '5%', attr: "align=right", sortable: true},
                 {
-                    field: 'events', caption: 'Event', size: '33%', render: function (record) {
+                    field: 'events', caption: 'Event', size: '30%', render: function (record) {
                         let retval = "";
 
                         for (let i in record.events) {
@@ -512,12 +512,13 @@ export default class AMainWindow {
                         }
                         return retval;
                     }
-                }
+                },
+                {field: 'message', caption: 'Message', size: '40%', attr: "align=left", sortable: true},
             ]
         });
     }
 
-    static showEvent(event) {
+    static showEvent(event,msg) {
         if (w2ui['eventlist']) {
             let [object, ename] = event.split(/\./);
             let rec = w2ui['eventlist'].get(object);
@@ -532,6 +533,7 @@ export default class AMainWindow {
                 rec.events[ename]++;
             }
             rec.count++;
+            rec.message = msg.message;
             w2ui['eventlist'].set(object, rec);
             w2ui['eventlist'].select(object);
             AEventHUD.updateHUD(rec);

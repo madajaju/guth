@@ -4,7 +4,6 @@ class Youtube {
         extends: 'Channel',
         name: 'Youtube',
         description: 'Youtube Channel',
-        extends: ["Channel"],
         attributes: {
 
         },

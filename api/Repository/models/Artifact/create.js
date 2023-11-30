@@ -4,8 +4,7 @@ module.exports = {
     friendlyName: 'create',
     description: 'Create the artifact',
     static: true, // True is for Class methods. False is for object based.
-    inputs: {
-    },
+    inputs: {},
 
     exits: {
         success: {},
@@ -20,25 +19,32 @@ module.exports = {
         obj.name = inputs.name || obj.name;
         obj.url = inputs.url || obj.url || "TBD";
         obj.ext = inputs.ext || undefined;
-        if(inputs.artType) {
+        obj.summary = inputs.summary || "";
+        obj.title = inputs.title || "";
+        if (inputs.artType) {
             let tobj = new ArtifactType({name: inputs.artType});
             obj.artType = tobj;
             tobj.addToArtifacts(obj);
         }
-        if(inputs.episode) {
-            let episode = Episode.find(inputs.episode)
-            if(episode) {
-                obj.episode = episode;
-                episode.addToArtifacts(obj);
+        if (inputs.episode) {
+            if (typeof inputs.episode === 'string') {
+                let episode = Episode.find(inputs.episode)
+                if (episode) {
+                    obj.episode = episode;
+                    episode.addToArtifacts(obj);
+                }
+            } else {
+                obj.episode  = inputs.episode;
+                inputs.episode.addToArtifacts(obj);
             }
         }
-        if(inputs.file) {
-            if(inputs.file.type) {
+        if (inputs.file) {
+            if (inputs.file.type) {
                 let tobj = new ArtifactType({name: inputs.file.type});
                 obj.artType = tobj;
                 tobj.addToArtifacts(obj);
             }
-            if(inputs.file.url) {
+            if (inputs.file.url) {
                 obj.url = inputs.file.url;
             }
         }

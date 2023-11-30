@@ -2,20 +2,26 @@ class Channel {
     static definition = {
         name: 'Channel',
         unique: (obj) => {
-            return obj.name;
+            return obj.name.toLowerCase();
         },
         description: 'This is the channel that assets are published or posts are created',
         attributes: {
             name: {
                 type: 'string',
                 description: 'Name of the channel',
+                limit: 128,
             },
             user: {
                 type: 'string',
                 description: 'User Login',
+                limit: 128
+            },
+            authorized: {
+                type: 'boolean',
+                description: 'Can I access the channel',
             },
             creds: {
-                type: 'string',
+                type: 'json',
                 description: 'User Credentials',
             }
         },
@@ -43,6 +49,10 @@ class Channel {
                 cardinality: 'n',
                 composition: true,
                 owner: true
+            },
+            podcast: {
+                type: 'Podcast',
+                cardinality: 1
             }
         },
         /*

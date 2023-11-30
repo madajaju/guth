@@ -32,6 +32,24 @@ class Post {
                 composition: false,
                 owner: false,
             },
+            stats: {
+                type: 'Stats',
+                cardinality: 'n',
+                composition: true,
+                owner: true,
+            },
+            episode: {
+                type: 'Episode',
+                cardinality: 1,
+                composition: false,
+                owner: false,
+            },
+            channel: {
+                type: 'Channel',
+                cardinality: 1,
+                composition: false,
+                owner: false
+            }
         },
         view: {
             color: "#cccccc",

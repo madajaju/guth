@@ -40,7 +40,13 @@ module.exports = {
                 obj.email = inputs.file.email;
             }
             if (inputs.file.notes) {
-                obj.email = inputs.file.notes;
+                obj.notes = inputs.file.notes;
+            }
+            if (inputs.file.bio) {
+                obj.bio = inputs.file.bio;
+            }
+            if (inputs.file.thumbnail) {
+                obj.thumbnail = inputs.file.thumbnail;
             }
         }
         if(inputs.name) {
@@ -49,7 +55,13 @@ module.exports = {
         if(inputs.email) {
             obj.email = inputs.email;
         }
-            obj.name = obj.id;
+        if(inputs.bio) {
+            obj.bio = inputs.bio;
+        }
+        if(inputs.thumbnail) {
+            obj.thumbnail = inputs.thumbnail;
+        }
+        obj.name = obj.id;
         if(inputs.socials) {
             for(let stype in inputs.socials) {
                 obj.addToSocials({name: inputs.socials[stype], stype:stype });

@@ -77,6 +77,7 @@ function create(obj, inputs) {
         let person = Person.find({name: pname});
         if (!person) {
             person = new Person({name: pname});
+            person.save();
         }
         obj.addToGuests(person);
         person.addToEpisodes(obj);

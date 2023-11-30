@@ -412,7 +412,7 @@ export default class AModel {
                                         return re1.test(item.name.name);
                                     }
                                 },
-                            }, html: {text: col.name, attr: 'style="width:375px"'}
+                            }, html: {text: col.name, attr: 'style="width:500px"'}
                         });
                     } else {
                         fields.push({
@@ -440,7 +440,7 @@ export default class AModel {
                                         return re1.test(item.name.name);
                                     }
                                 }, openOnFocus: true,
-                            }, html: {text: col.name, attr: 'style="width:375px"'}
+                            }, html: {text: col.name, attr: 'style="width:500px"'}
                         });
                     }
                 } else {
@@ -451,7 +451,7 @@ export default class AModel {
                             limit: limit,
                             type: 'text',
                             required: true,
-                            html: {text: col.name, attr: `size="${limit}" style="width:375px"`}
+                            html: {text: col.name, attr: `size="${limit}" style="width:500px"`}
                         });
                     } else {
                         let limit = col.limit || 100;
@@ -459,7 +459,7 @@ export default class AModel {
                             field: cname.toLowerCase(),
                             type: 'textarea',
                             required: true,
-                            html: {text: col.name, attr: `size="${limit}" style="width:375px; height:150px"`}
+                            html: {text: col.name, attr: `size="${limit}" style="width:500px; height:150px"`}
                         });
                     }
                 }
@@ -675,7 +675,7 @@ export default class AModel {
                                         return re1.test(item.name.name);
                                     }
                                 },
-                            }, html: {text: col.name, attr: 'style="width:375px"'}
+                            }, html: {text: col.name, attr: 'style="width:500px"'}
                         });
                     } else {
                         fields.push({
@@ -703,7 +703,7 @@ export default class AModel {
                                         return re1.test(item.name.name);
                                     }
                                 }, openOnFocus: true,
-                            }, html: {text: col.name, attr: 'style="width:375px"'}
+                            }, html: {text: col.name, attr: 'style="width:500px"'}
                         });
                     }
                 } else {

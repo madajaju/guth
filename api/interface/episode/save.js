@@ -31,7 +31,9 @@ module.exports = {
             episode = Episode.find(inputs.name);
         }
         if(episode) {
-            episode.save(inputs);
+            episode.saveMe(inputs);
+            console.log("Saving episode:", inputs);
+            //episode.saveMe(inputs);
             env.res.status(200);
             env.res.json({results:"Episode Saved!"});
         } else {

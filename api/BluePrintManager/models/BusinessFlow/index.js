@@ -4,6 +4,10 @@ class BusinessFlow {
         name: 'BusinessFlow',
         description: 'Business Flow is a workflow that runs when called.',
         attributes: {
+            path: {
+                type: 'string',
+                description:"URL Path to the workflow",
+            },
             name: {
                 type: 'string',
                 description: 'Name of the business flow',
@@ -27,13 +31,6 @@ class BusinessFlow {
             }
         },
         associations: {
-            mappings: {
-                type: 'Mapping',
-                cardinality: 'n',
-                composition: false,
-                owner: true,
-                via: 'parent'
-            },
         },
     }
 }

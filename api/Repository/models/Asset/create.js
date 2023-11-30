@@ -19,18 +19,35 @@ module.exports = {
         obj.name = inputs.name || obj.name;
         obj.url = inputs.url || obj.url;
         obj.title = inputs.title || obj.title;
-        obj.episode = inputs.episode || obj.episode;
+        obj.cid = inputs.cid || obj.cid;
+        let episode = inputs.episode || obj.episode;
+        obj.summary = inputs.summary || "";
+        obj.title = inputs.title || "";
+        if(typeof episode === 'string') {
+            obj.episode = Episode.find(episode);
+        } else {
+            obj.episode = inputs.episode;
+        }
 
         if(inputs.channel) {
-            let channel = Channel.find(inputs.channel);
-            if(channel) {
-                obj.channel = channel;
+            if(inputs.channel) {
+                if(typeof inputs.channel === 'string' ) {
+                    let channelNormalized = inputs.channel.toLowerCase();
+                    let channel = Channel.find(channelNormalized);
+                    if (channel) {
+                        obj.channel = channel;
+                    } else {
+                        console.log("Channel Missing:", inputs.channel);
+                    }
+                } else {
+                    obj.channel = inputs.channel;
+                }
             }
         }
         if(inputs.artifact) {
-            for(let i in inputs.episode.artifacts) {
-                if(inputs.artifact === inputs.episode.artifacts[i].name) {
-                    let artifact = inputs.episode.artifacts[i];
+            for(let i in obj.episode.artifacts) {
+                if(inputs.artifact === obj.episode.artifacts[i].name) {
+                    let artifact = obj.episode.artifacts[i];
                     if(artifact) {
                         obj.artifact = artifact;
                         artifact.addToAssets(obj);
@@ -38,9 +55,16 @@ module.exports = {
                 }
             }
             if(!obj.artifact) {
-                console.error("Asset mapped to non-existent artifact:", inputs.artifact, obj.episode.number);
+                // console.error("Asset mapped to non-existent artifact:", inputs.artifact.id, obj.episode.number);
+                if(inputs.artifact.id) {
+                    obj.artifact = Artifact.find(inputs.artifact.id);
+                    obj.artifact.addToAssets(obj);
+                }
             }
         }
+        // Add the asset to the episode.
+        obj.episode.addToAssets(obj);
+
         return obj;
     }
 };

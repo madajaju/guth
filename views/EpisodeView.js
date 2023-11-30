@@ -1,18 +1,26 @@
+import ArtifactView from "./ArtifactView.js";
+import AssetView from "./AssetView.js";
+import ActionView from './ActionView.js';
+import ChartView from "./ChartView.js";
+
+
 let artifactTypes = [
-    {id: 1, text: 'Video'},
-    {id: 2, text: 'Audio'},
-    {id: 3, text: 'Blog'},
+    {id: 1, text: 'video'},
+    {id: 2, text: 'audio'},
+    {id: 3, text: 'blog'},
 ];
 let channelList = [
-    {id: 1, text: 'Video'},
-    {id: 2, text: 'Audio'},
-    {id: 3, text: 'Blog'},
+    {id: 1, text: 'video'},
+    {id: 2, text: 'audio'},
+    {id: 3, text: 'blog'},
 ];
 let artifactList = [
-    {id: 1, text: 'Video'},
-    {id: 2, text: 'Audio'},
-    {id: 3, text: 'Blog'},
+    {id: 1, text: 'video'},
+    {id: 2, text: 'audio'},
+    {id: 3, text: 'blog'},
 ];
+
+let _artifactRecID = 0;
 
 export default class EpisodeView {
     constructor(config) {
@@ -33,65 +41,62 @@ export default class EpisodeView {
     }
 
     static createList() {
-        if (!w2ui['EpispodeList']) {
+        if (!w2ui['EpisodeList']) {
         }
     }
 
     static createDetail() {
-        if (!w2ui['EpispodeList']) {
+        if (!w2ui['EpisodeList']) {
         }
     }
 
     static createEdit() {
         if (!w2ui['EpisodeEdit']) {
             let fields = [];
-            fields.push(lookUpItem('Podcast', 'owner', "podcast"));
             fields.push({
-                field: 'name',
+                field: 'state',
                 type: 'textarea',
-                required: true,
-                html: {label: "Name", attr: `size="20" style="width:375px"`}
+                required: false,
+                html: {label: "State", attr: `size="12" style="width:500px"`}
             });
             fields.push({
                 field: 'number',
                 type: 'textarea',
                 required: true,
-                html: {label: "Number", attr: `size="10" style="width:375px"`}
+                html: {label: "Number", attr: `size="10" style="width:500px"`}
             });
             fields.push({
                 field: 'title',
                 type: 'textarea',
                 required: true,
-                html: {label: "Title", attr: `size="75" style="width:375px"`}
+                html: {label: "Title", attr: `size="50" style="width:500px"`}
+            });
+            fields.push(lookUpList('Tags', 'tags', "tag"));
+            fields.push(lookUpList('Guests', 'guests', "person"));
+            fields.push({
+                field: 'releaseDate',
+                type: 'date',
+                required: false,
+                html: {label: "Release Date", attr: `size="12" style="width:500px"`}
             });
             fields.push({
-                field: 'tagline',
-                type: 'textarea',
+                field: 'scheduledDate',
+                type: 'date',
                 required: false,
-                html: {label: "Tag Line", attr: `size="150" style="width:375px; height:30px"`}
+                html: {label: "Scheduled Date", attr: `size="12" style="width:500px"`}
             });
             fields.push({
                 field: 'summary',
                 type: 'textarea',
-                required: true,
-                html: {label: "Summary", attr: `size="1000" style="width:375px; height:100px"`}
+                required: false,
+                html: {label: "Summary", attr: `size="1000" style="width:500px; height:100px"`}
             });
             fields.push({
-                field: 'meta',
+                field: 'script',
                 type: 'textarea',
-                required: true,
-                html: {label: "Meta Summary", attr: `size="300" style="width:375px; height:100px"`}
+                required: false,
+                html: {label: "Meta Summary", attr: `size="2048" style="width:500px; height:500px"`}
             });
-            fields.push({
-                field: 'notes',
-                type: 'textarea',
-                required: true,
-                html: {label: "Show Notes", attr: `size="10000" style="width:375px; height:300px"`}
-            });
-            fields.push(lookUpList('Tags', 'tags', "tag"));
-            // fields.push(lookUpList('Solutions', 'solutions', "solution"));
-            //fields.push(lookUpList('Products', 'products', "product"));
-            fields.push(lookUpList('Guests', 'guests', "person"));
             $().w2layout({
                 name: 'EpisodeEdit',
                 panels: [
@@ -99,20 +104,7 @@ export default class EpisodeView {
                     {
                         type: 'main', size: 550, overflow: 'hidden',
                         toolbar: {
-                            items: [
-                                {id: 'schedule', type: 'button', caption: 'Schedule'},
-                                {id: 'cancel', type: 'button', caption: 'Cancel'},
-                                {id: 'edit', type: 'button', caption: 'Edit'},
-                                {id: 'write', type: 'button', caption: 'Write'},
-                                {id: 'publish', type: 'button', caption: 'Publish'},
-                                {id: 'promote', type: 'button', caption: 'Promote'},
-                            ],
-                            onClick(event) {
-                                if (w2ui.EpisodeEdit.record && w2ui[`EpisodeActions${event.target}`]) {
-                                    w2ui[`EpisodeActions${event.target}`].record = w2ui.EpisodeEdit.record;
-                                    w2ui['EpisodeEdit'].html('main', w2ui[`EpisodeActions${event.target}`]);
-                                }
-                            }
+                            items: [],
                         }
                     }
                 ],
@@ -124,94 +116,70 @@ export default class EpisodeView {
                             w2ui.EpisodeEditGeneral.record = {};
                             // Enums Must be in an array
                             w2ui.EpisodeEditGeneral.record.owner = w2ui.EpisodeEdit.record.owner;
-                            w2ui.EpisodeEditGeneral.record.name = w2ui.EpisodeEdit.record.name.name;
+                            w2ui.EpisodeEditGeneral.record.id = w2ui.EpisodeEdit.record._id;
+                            w2ui.EpisodeEditGeneral.record.name = w2ui.EpisodeEdit.record._name;
                             w2ui.EpisodeEditGeneral.record.number = w2ui.EpisodeEdit.record.number.name;
                             w2ui.EpisodeEditGeneral.record.title = w2ui.EpisodeEdit.record.title.name;
                             w2ui.EpisodeEditGeneral.record.summary = w2ui.EpisodeEdit.record.summary.name;
-                            w2ui.EpisodeEditGeneral.record.tagline = w2ui.EpisodeEdit.record.tagline.name;
-                            w2ui.EpisodeEditGeneral.record.meta = w2ui.EpisodeEdit.record.meta.name;
-                            w2ui.EpisodeEditGeneral.record.notes = w2ui.EpisodeEdit.record.notes.name;
+                            w2ui.EpisodeEditGeneral.record.releaseDate = w2ui.EpisodeEdit.record.releaseDate.name;
+                            w2ui.EpisodeEditGeneral.record.scheduledDate = w2ui.EpisodeEdit.record.scheduledDate.name;
+                            w2ui.EpisodeEditGeneral.record.state = w2ui.EpisodeEdit.record._state;
+                            w2ui.EpisodeEditGeneral.record.script = w2ui.EpisodeEdit.record.script;
                             w2ui.EpisodeEditGeneral.record.tags = w2ui.EpisodeEdit.record.tags.values;
-                            // w2ui.EpisodeEditGeneral.record.solutions = w2ui.EpisodeEdit.record.solutions.values;
-                            // w2ui.EpisodeEditGeneral.record.products = w2ui.EpisodeEdit.record.products.values;
                             w2ui.EpisodeEditGeneral.record.guests = w2ui.EpisodeEdit.record.guests.values;
                             w2ui.EpisodeEditGeneral.refresh();
 
                             // Artifact Panel
-                            let arecords = [];
-                            let counter = 0;
-                            for (let i in w2ui.EpisodeEdit.record.artifacts.values) {
-                                let artifact = w2ui.EpisodeEdit.record.artifacts.values[i];
-                                arecords.push({
-                                    "recid": counter++,
-                                    "id": artifact._id,
-                                    "name": artifact._name,
-                                    "artType": artifact.artType,
-                                    "summary": artifact.summary,
-                                    "link": artifact._link
-                                });
-                            }
-                            w2ui.EpisodeEditArtifacts.add(arecords);
+                            let arecords = _artifactGrid(w2ui.EpisodeEdit.record.artifacts.values);
+                            w2ui.EpisodeEditArtifacts.records = arecords;
                             w2ui.EpisodeEditArtifacts.refresh();
-                            for(let i in arecords) {
-                                $.ajax( {
-                                    url: arecords[i].link,
-                                    success: function (results) {
-                                        w2ui.EpisodeEditArtifacts.set(i, {summary: results.record.summary.name, assets: results.record.assets.count});
-                                    },
-                                });
-                            }
-
+                            _artifactGetInfo(arecords);
 
                             // Asset Panel
-                            let asrecs = [];
-                            counter = 0;
-                            for (let i in w2ui.EpisodeEdit.record.assets.values) {
-                                let asset = w2ui.EpisodeEdit.record.assets.values[i];
-                                asrecs.push({
-                                    "recid": counter++,
-                                    "id": asset._id,
-                                    "name": asset._name,
-                                    "url": asset.url,
-                                    "summary": asset.summary,
-                                    "link": asset._link,
-                                });
-                            }
-                            w2ui.EpisodeEditAssets.add(asrecs);
+                            let asrecs = _assetGrid(w2ui.EpisodeEdit.record.assets.values);
+                            w2ui.EpisodeEditAssets.records = asrecs;
                             w2ui.EpisodeEditAssets.refresh();
-                            for(let i in asrecs) {
-                                $.ajax({
-                                    url: asrecs[i].link,
-                                    success: function (results) {
-                                        let aName = "";
-                                        if(results.record.artifact) { aName = results.record.artifact.name; }
-                                        let cName = "";
-                                        if(results.record.channel) { cName = results.record.channel.name; }
-
-                                        w2ui.EpisodeEditAssets.set(i, { artifact: aName, channel: cName });
-                                    },
-                                });
-                            }
+                            _assetGetInfo(asrecs);
 
                             // Post Panel
                             let precs = [];
-                            counter = 0;
+                            let counter = 0;
                             for (let i in w2ui.EpisodeEdit.record.posts.values) {
                                 let post = w2ui.EpisodeEdit.record.posts.values[i];
                                 precs.push({
                                     "recid": counter++,
                                     "id": post._id,
                                     "name": post._name,
-                                    "asset": post._asset,
-                                    "text": post._text,
+                                    "channel": post.channel,
+                                    "text": post.text,
                                     "createdDate": post.createdDate,
                                 });
                             }
-                            w2ui.EpisodeEditPosts.add(precs);
+                            w2ui.EpisodeEditPosts.records = precs;
                             w2ui.EpisodeEditPosts.refresh();
+                            let bpurl = w2ui.PodcastEdit.record.blueprint._link;
+                            $.ajax({
+                                url: bpurl,
+                                success: function (results) {
+                                    let workflows = results.record.workflows.values
+                                    for (let i in workflows) {
+                                        let workflow = workflows[i];
+                                        let [target, name] = workflow.name.split('/');
+                                        if (target === 'episode') {
+                                            // Ignore Promote
+                                            if (name !== "promote") {
+                                                w2ui.EpisodeEditGeneral.toolbar.items.push(
+                                                    {id: workflow._id, type: 'button', text: name}
+                                                );
+                                                w2ui.EpisodeEditGeneral.toolbar.factions[workflow._id] = workflow;
+                                            }
+                                        }
+                                    }
+                                    w2ui.EpisodeEditGeneral.refresh();
+                                }
+                            });
                         }
                     }
-                    // w2ui.EpisodeEditGeneral.refresh();
                     w2ui.EpisodeEdit.html('left', w2ui.EpisodeEditTabs);
                     w2ui.EpisodeEdit.html('main', w2ui.EpisodeEditGeneral);
                 }
@@ -262,6 +230,73 @@ export default class EpisodeView {
                 modelType: 'Episode',
                 style: 'border: 0px; background-color: transparent;',
                 fields: fields,
+                toolbar: {
+                    items: [
+                        {id: 'promote', type: 'button', text: "Promote"},
+                        {id: 'generatePDF', type: 'button', text: "Generate PDF"},
+                        {id: 'getStats', type: 'button', text: "Stats"}
+                    ],
+                    factions: {},
+                    onClick(event) {
+                        let podcast = w2ui.PodcastEdit.record;
+                        let episode = w2ui.EpisodeEdit.record;
+                        if (event.target === "promote") {
+                            w2popup.close();
+                            EpisodeView.openPromoteDialog(podcast, episode, undefined, "EpisodeEdit");
+                        } else if(event.target === 'generatePDF') {
+                            let url = `episode/generatepdf?id=${episode._id}`;
+                            $.ajax({
+                                url: url,
+                                success: function (results) {
+                                    alert("Completed" + results);
+                                    console.log("results", results);
+                                }
+                            });
+
+                        } else if (event.target === 'getStats') {
+                            let data = {id: w2ui.EpisodeEditGeneral.record.name};
+                            let url = 'episode/getstats';
+                            $.post({
+                                url: url,
+                                data: data,
+                                dataType: 'json',
+                                success: function (results) {
+                                    console.log(results);
+                                    let html = `<canvas id="StatsChart">`;
+                                    w2ui.EpisodeEdit.html('main', html);
+                                    ChartView.showGraph(results.totals, "StatsChart");
+                                },
+                                failure: function (results) {
+                                    console.error(results);
+                                    alert(results.status);
+                                    w2popup.close();
+                                }
+                            });
+                        } else {
+                            let workflow = w2ui.EpisodeEditGeneral.toolbar.factions[event.target];
+                            if (workflow) {
+                                let data = {
+                                    id: workflow._id,
+                                    pid: w2ui.PodcastEditGeneral.record.name,
+                                    episode: w2ui.EpisodeEdit.record._id
+                                };
+                                let url = workflow.path.replaceAll(/\s/g, '');
+                                // if there are inputs then they should be asked by a popup up here and asked of the user.
+                                let inputs = {};
+                                for (let name in workflow.inputs) {
+                                    if (name !== "id" && name !== "episode") {
+                                        inputs[name] = workflow.inputs[name];
+                                    }
+                                }
+                                if (Object.keys(inputs).length > 0) {
+                                    ActionView.openDialog(url, inputs, data, _callAction, "EpisodeEdit");
+                                } else {
+                                    _callAction(url, data);
+                                }
+                            }
+                        }
+                    }
+                },
                 actions: {
                     Save: function () {
                         this.validate();
@@ -269,10 +304,14 @@ export default class EpisodeView {
                         let url = `episode/save?id=${this.record.name}`;
                         let data = {};
                         for (let name in this.record) {
-                            if (name === 'owner') {
+                            if(name === 'guests') {
+                                data.guests = [];
+                                for(let i in this.record[name]) {
+                                    data.guests.push(this.record[name][i]._name);
+                                }
+                            }
+                            else if (name !== 'owner') {
                                 data.owner = this.record.owner[0];
-                            } else {
-                                data[name] = this.record[name];
                             }
                         }
 
@@ -282,7 +321,7 @@ export default class EpisodeView {
                             dataType: 'json',
                             success: function (results) {
                                 console.log(results);
-                                w2popup.close();
+                                $('#popupContent').w2render(w2ui[w2ui.EpisodeEdit.previousWindow]);
                             },
                             failure: function (results) {
                                 console.error(results);
@@ -297,7 +336,7 @@ export default class EpisodeView {
                         caption: "Cancel",
                         style: 'background: pink;',
                         onClick(event) {
-                            w2popup.close();
+                            $('#popupContent').w2render(w2ui[w2ui.EpisodeEdit.previousWindow]);
                         }
                     }
                 }
@@ -306,26 +345,41 @@ export default class EpisodeView {
             $().w2grid({
                 name: 'EpisodeEditArtifacts',
                 header: 'Artifacts',
+                toolbar: {
+                    items: [
+                        {id: 'submit', type: 'button', text: "Submit"},
+                    ],
+                    onClick(event) {
+                        if (event.target === 'submit') {
+                            let selected = w2ui['EpisodeEditArtifacts'].getSelection();
+                            let episode = w2ui.EpisodeEdit.record;
+                            let sObj = w2ui.EpisodeEditArtifacts.get(selected[0]);
+                            w2popup.close();
+                            ArtifactView.openPublishDialog(episode, sObj, "EpisodeEdit");
+                        }
+                    },
+                },
                 show: {
                     header: true,
                     columnHeaders: true,
                     toolbar: true,
-                    toolbarSave: true,
-                    toolbarAdd: true,
                     toolbarEdit: true,
-                    toolbarDelete: true
-                },
-                onAdd: (event) => {
-                    let anum = w2ui['EpisodeEditArtifacts'].records.length;
-                    w2ui['EpisodeEditArtifacts'].add({
-                        "recid": anum,
-                        "name": "Enter Name",
-                        "type": "video",
-                        "url": "URL here"
-                    });
+                    toolbarSave: true,
                 },
                 onEdit: (event) => {
-                    console.log("Edit");
+                    // Open the Episode Edit Dialog
+
+                    let record = w2ui['EpisodeEditArtifacts'].records[event.recid];
+                    if (record.recid != event.recid) {
+                        for (let i in w2ui.EpisodeEditArtifacts.records) {
+                            if (w2ui.EpisodeEditArtifacts.records[i].recid === event.recid) {
+                                record = w2ui.EpisodeEditArtifacts.records[i];
+                                break;
+                            }
+                        }
+                    }
+                    record._id = record.id;
+                    ArtifactView.openDialog(record, "EpisodeEdit");
                 },
                 onSave: (event) => {
                     let changes = w2ui['EpisodeEditArtifacts'].getChanges();
@@ -387,30 +441,56 @@ export default class EpisodeView {
                         w2ui.EpisodeEditArtifacts.refreshBody();
                     }, 10);
                 },
+                onSelect: (event) => {
+                    let selected = null;
+                    for (let i in w2ui.EpisodeEditArtifacts.records) {
+                        let record = w2ui.EpisodeEditArtifacts.records[i];
+                        if (record.recid === parseInt(event.recid)) {
+                            selected = record;
+                        }
+                    }
+                    // Now set the toolbar with the right states.
+                    if (selected.children) {
+                        w2ui.EpisodeEditArtifacts.toolbar.disable('promote');
+                        w2ui.EpisodeEditArtifacts.toolbar.disable('submit');
+                        // traverse the artifacts and get the information
+
+                    } else if (selected.assets > 0) {
+                        w2ui.EpisodeEditArtifacts.toolbar.enable('promote');
+                        w2ui.EpisodeEditArtifacts.toolbar.enable('submit');
+                    } else {
+                        w2ui.EpisodeEditArtifacts.toolbar.disable('promote');
+                        w2ui.EpisodeEditArtifacts.toolbar.enable('submit');
+                    }
+                },
                 columns: [
                     {
                         field: 'name',
                         caption: 'Name',
                         size: '25%',
                         resizable: true,
+                        sortable: true,
                         editable: {type: 'text'}
                     },
                     {
                         field: 'artType', caption: 'Type',
                         size: '10%',
                         resizable: true,
+                        sortable: true,
                         editable: {type: 'list', items: artifactTypes, showAll: true},
                     },
                     {
                         field: 'assets', caption: 'Assets',
                         size: '25%',
                         resizable: true,
+                        sortable: true,
                         editable: {type: 'text'}
                     },
                     {
                         field: 'summary', caption: 'Summary',
                         size: '35%',
                         resizable: true,
+                        sortable: true,
                         editable: {type: 'text'}
                     }
                 ]
@@ -421,78 +501,27 @@ export default class EpisodeView {
                 show: {
                     header: true,
                     columnHeaders: true,
-                    toolbar: false,
+                    toolbar: true,
                     toolbarSave: true,
-                    toolbarAdd: true,
+                    toolbarAdd: false,
                     toolbarEdit: true,
-                    toolbarDelete: true
+                    toolbarDelete: false
                 },
-                onAdd: (event) => {
-                    let anum = w2ui['EpisodeEditPosts'].records.length;
-                    w2ui['EpisodeEditPosts'].add({
-                        "recid": anum,
-                        "name": "Enter Name",
-                        "type": "video",
-                        "url": "URL here"
-                    });
+                toolbar: {
+                    items: [
+                        {id: 'clone', type: 'button', text: "Clone"}
+                    ],
+                    onClick(event) {
+                        if (event.target === 'clone') {
+                            let podcast = w2ui.PodcastEdit.record;
+                            let selected = w2ui['EpisodeEditAssets'].getSelection();
+                            let episode = w2ui.EpisodeEdit.record;
+                            let sObj = w2ui.EpisodeEditAssets.records[selected];
+                        }
+                    },
                 },
                 onEdit: (event) => {
                     console.log("Edit");
-
-                },
-                onSave: (event) => {
-                    let changes = w2ui['EpisodeEditPosts'].getChanges();
-                    let records = w2ui['EpisodeEditPosts'].records
-                    for (let i in changes) {
-                        let change = changes[i];
-                        let rec = records[change.recid];
-                        // Just updating the artifact
-                        if (rec.id) {
-                            let url = "Post/update?id=rec.id";
-                            if (change.url) {
-                                url += `&${change.url}`;
-                            }
-                            if (change.name) {
-                                name += `&${change.name}`
-                            }
-                            if (change.artType) {
-                                name += `&${change.artType.text}`
-                            }
-                            $.ajax({
-                                url: url,
-                                success: function (results) {
-                                    console.log("results", results);
-                                }
-                            });
-                        } else {
-                            // Create a new artifact
-                            let eid = w2ui['EpisodeEditGeneral'].record.name;
-                            let url = `Post/create?episode=${eid}`;
-                            // Update the record with all of the changes
-                            if (change.url) {
-                                rec.url = change.url;
-                            }
-                            if (change.name) {
-                                rec.name = change.name;
-                            }
-                            if (change.artType) {
-                                rec.artType = change.artType.text;
-                            }
-                            for (let rname in rec) {
-                                url += `&${rname}=${rec[rname]}`;
-                            }
-                            $.ajax({
-                                url: url,
-                                success: function (results) {
-                                    console.log("results", results);
-                                }
-                            });
-                        }
-                    }
-                },
-                onDelete: (event) => {
-                    let selected = w2ui['EpisodeEditPosts'].getSelection();
-                    console.log("Delete", selected);
 
                 },
                 onRender: (event) => {
@@ -502,74 +531,113 @@ export default class EpisodeView {
                 },
                 columns: [
                     {
-                        field: 'name',
-                        label: 'Name',
-                        size: '10%',
+                        field: 'channel', caption: 'Channel',
+                        size: '20%',
                         resizable: true,
-                        editable: {type: 'text'}
                     },
                     {
-                        field: 'asset', label: 'Asset',
+                        field: 'createdDate', caption: 'Created',
                         size: '15%',
                         resizable: true,
                     },
                     {
-                        field: 'text', label: 'Type',
-                        size: '50%',
+                        field: 'publishDate', caption: 'Published',
+                        size: '15%',
                         resizable: true,
-                        editable: {type: 'list', items: artifactTypes, showAll: true},
                     },
                     {
-                        field: 'createdDate', label: 'CreatedDate',
-                        size: '25%',
+                        field: 'text', caption: 'Text',
+                        size: '50%',
                         resizable: true,
+                        editable: {type: 'text'},
                     },
-
                 ]
             });
             $().w2grid({
                 name: 'EpisodeEditAssets',
                 header: 'Assets',
+                toolbar: {
+                    items: [
+                        {id: 'promote', type: 'button', text: "Promote"}
+                    ],
+                    onClick(event) {
+                        if (event.target === 'promote') {
+                            let podcast = w2ui.PodcastEdit.record;
+                            let selected = w2ui['EpisodeEditAssets'].getSelection();
+                            let episode = w2ui.EpisodeEdit.record;
+                            let sObj = w2ui.EpisodeEditAssets.get(selected);
+                            w2popup.close();
+                            EpisodeView.openPromoteDialog(podcast, episode, sObj[0], "EpisodeEdit");
+                        }
+                    },
+                },
                 show: {
                     header: true,
                     columnHeaders: true,
+                    toolbar: true,
+                    toolbarEdit: true,
+                    toolbarSave: true,
                 },
                 onRender: (event) => {
                     setTimeout(function () {
                         w2ui.EpisodeEditAssets.refreshBody();
                     }, 10);
                 },
+                onEdit: (event) => {
+                    // Open the Episode Edit Dialog
+
+                    let record = w2ui['EpisodeEditAssets'].records[event.recid];
+                    if (record.recid != event.recid) {
+                        for (let i in w2ui.EpisodeEditAssets.records) {
+                            if (w2ui.EpisodeEditAssets.records[i].recid === event.recid) {
+                                record = w2ui.EpisodeEditAssets.records[i];
+                                break;
+                            }
+                        }
+                    }
+                    record._id = record.id;
+                    let episode = w2ui.EpisodeEdit.record;
+                    AssetView.openDialog({
+                        asset: record,
+                        channel: record.channel,
+                        artifact: record.artifact,
+                        episode: episode,
+                        name: record.name,
+                        artType: "",
+                        fields: { summary: record.summary },
+                        url: record.url
+                    }, 'EpisodeEdit');
+                },
                 columns: [
                     {
                         field: 'name',
                         caption: 'Name',
-                        size: '10%',
+                        size: '15%',
                         resizable: true,
-                        editable: {type: 'text'}
                     },
                     {
                         field: 'channel', caption: 'Channel',
-                        size: '10%',
+                        size: '15%',
                         resizable: true,
-                        editable: {type: 'text' }
+                        // editable: {type: 'text'}
                     },
                     {
-                        field: 'artifact',caption: 'Artifact',
+                        field: 'artifact', caption: 'Artifact',
+                        size: '15%',
+                        resizable: true,
+                        // editable: {type: 'text'}
+                    },
+                    {
+                        field: 'url', caption: 'URL',
                         size: '25%',
                         resizable: true,
-                        editable: {type: 'text' }
+                        // editable: {type: 'text'}
                     },
                     {
-                        field: 'url',caption: 'URL',
-                        size: '25%',
-                        resizable: true,
-                        editable: {type: 'text'}
-                    },
-                    {
-                        field: 'summary',caption: 'Summary',
+                        field: 'summary', caption: 'Summary',
                         size: '30%',
                         resizable: true,
-                        editable: {type: 'text'}
+                        // editable: {type: 'text'}
                     }
                 ]
             });
@@ -577,14 +645,10 @@ export default class EpisodeView {
         return w2ui['EpisodeEdit'];
     }
 
-    show(obj) {
-
-    }
-
     static getEditForm(obj) {
         w2ui['EpisodeEdit'].clear();
         w2ui['EpisodeEdit'].record = obj;
-        let url = `episode?id=${obj._id}`;
+        let url = `episode/show?id=${obj._id}`;
         $.ajax({
             url: url,
             success: function (results) {
@@ -594,29 +658,262 @@ export default class EpisodeView {
         return w2ui['EpisodeEdit'];
     }
 
-    static openDialog(obj) {
+    static openDialog(obj, previousWindow) {
         let editForm = EpisodeView.getEditForm(obj);
+        editForm.previousWindow = previousWindow;
         w2popup.open({
             height: 850,
             width: 850,
-            title: `Edit ${obj._type}`,
-            body: '<div id="editObjectDialog" style="width: 100%; height: 100%;"></div>',
+            title: `Edit ${obj._name}`,
+            body: '<div id="popupContent" style="width: 100%; height: 100%;"></div>',
             showMax: true,
             onToggle: function (event) {
-                $(w2ui.editObjectDialog.box).hide();
+                $(w2ui.popupContent.box).hide();
                 event.onComplete = function () {
-                    $(w2ui.editObjectDialog.box).show();
-                    w2ui.editObjectDialog.resize();
+                    $(w2ui.popupContent.box).show();
+                    w2ui.popupContent.resize();
                 }
             },
             onOpen: function (event) {
                 event.onComplete = function () {
                     // specifying an onOpen handler instead is equivalent to specifying an onBeforeOpen handler,
                     // which would make this code execute too early and hence not deliver.
-                    $('#editObjectDialog').w2render(editForm);
+                    $('#popupContent').w2render(editForm);
                 }
             }
         });
+    }
+
+    static openPromoteDialog(podcast, episode, asset, previousWindow) {
+        let url = `blueprint?id=${podcast.blueprint._id}`;
+        $.ajax({
+            url: url,
+            success: function (results) {
+                let blueprint = results.record;
+                let mappings = blueprint.mappings.values;
+                let id = episode.id || episode._id;
+                let url = `episode/show?id=${id}`;
+                $.ajax({
+                    url: url,
+                    success: function (results) {
+                        let inputForm = EpisodeView.getPromoteForm(mappings, results.record, asset, previousWindow);
+                        inputForm.previousWindow = previousWindow;
+                        w2popup.open({
+                            height: 850,
+                            width: 850,
+                            title: `Promote Episode: ${episode._name}`,
+                            body: '<div id="popupContent" style="width: 100%; height: 100%;"></div>',
+                            showMax: true,
+                            onToggle: function (event) {
+                                $(w2ui.popupContent.box).hide();
+                                event.onComplete = function () {
+                                    $(w2ui.popupContent.box).show();
+                                    w2ui.popupContent.resize();
+                                }
+                            },
+                            onOpen: function (event) {
+                                event.onComplete = function () {
+                                    // specifying an onOpen handler instead is equivalent to specifying an onBeforeOpen handler,
+                                    // which would make this code execute too early and hence not deliver.
+                                    $('#popupContent').w2render(inputForm);
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+    static getPromoteForm(mappings, episode, asset, previousWindow) {
+        let publishForm = EpisodeView.createPromote(mappings, episode, asset, previousWindow);
+        let urls = "";
+        w2ui['EpisodeEdit'].record = episode;
+        let assets = episode.assets.values;
+        for (let i in assets) {
+            let tasset = assets[i];
+            urls += `${tasset.name}: ${tasset.url}\n`;
+        }
+        let tags = episode.tags.values;
+        let tagStrings = [];
+        for (let i in tags) {
+            let tag = tags[i];
+            tagStrings.push("#" + tag.name);
+        }
+        let record = {
+            number: episode.number.name,
+            summary: episode.summary.name,
+            title: episode.title.name,
+            tags: tagStrings.join(', '),
+            urls: urls
+        }
+
+        publishForm.record = record;
+        return publishForm;
+    }
+
+    static createPromote(mappings, episode, asset, previousWindow) {
+        $().w2layout({
+            name: "EpisodePromotePane",
+            panels: [
+                {type: 'left', size: 150, resizable: true},
+                {
+                    type: 'main', size: 500, overflow: 'hidden',
+                    toolbar: {
+                        name: 'LanguageToolBar',
+                        items: [
+                            {id: 'en', type: 'radio', group: 'lang', text: "English"},
+                            {id: 'fr', type: 'radio', group: 'lang', text: "French"},
+                            {id: 'de', type: 'radio', group: 'lang', text: "German"},
+                            {id: 'it', type: 'radio', group: 'lang', text: "Italian"},
+                            {id: 'pt', type: 'radio', group: 'lang', text: "Portuguese"},
+                            {id: 'es', type: 'radio', group: 'lang', text: "Spanish"},
+                        ],
+                        onClick(event) {
+                            w2ui.EpisodePromotePane.lang = event.target;
+                        }
+                    }
+                }
+            ],
+            onRender: (event) => {
+                w2ui.EpisodePromotePane.html('left', w2ui.EpisodePromoteTemplates);
+                w2ui.EpisodePromotePane.html('main', "Select the Channel Below");
+            }
+        });
+        let nodes = [];
+        let events = {};
+        for (let i in mappings) {
+            nodes.push({id: mappings[i]._id, text: mappings[i]._name});
+            events[mappings[i]._id] = mappings[i];
+        }
+        $().w2sidebar({
+            name: 'EpisodePromoteTemplates',
+            flatButton: true,
+            nodes: nodes,
+            onClick(event) {
+                let mapping = events[event.target];
+                let url = mapping._link;
+                w2ui.EpisodePromotePane.html('main', "<h1>Generating Post, Please Wait!</h1>");
+                $.ajax({
+                    url: url,
+                    success: function (results) {
+                        let mapping = results.record
+                        let channels = mapping.channels.values;
+                        let lang = w2ui.EpisodePromotePane.lang;
+                        let turl = `mapping/render?id=${mapping._id}&episode=${episode._id}&lang=${lang}`;
+                        if (asset) {
+                            turl += `&asset=${asset.id}`;
+                        }
+                        $.ajax({
+                            url: turl,
+                            success: function (results) {
+                                let html = EpisodeView.getTemplateForm(episode, channels, mapping, results.results, previousWindow);
+                                w2ui.EpisodePromotePane.html('main', html);
+                            }
+                        });
+                    }
+                })
+            }
+        });
+        return w2ui['EpisodePromotePane'];
+    }
+
+    static getTemplateForm(episode, channels, mappings, results, previousWindow) {
+        let fields = [];
+        let record = {};
+        for (let rname in results) {
+            record[rname] = results[rname];
+        }
+        let actions = {
+            Cancel: function () {
+                $('#popupContent').w2render(w2ui[w2ui.EpisodeTemplateForm.previousWindow]);
+            },
+            Save: function () {
+                // Get the channel.
+                // Call promoteAsset on it.
+                let url = `channel/promote`;
+                let data = w2ui.EpisodeChannelForm.record;
+                data.channel = data.channel._id || data.channel;
+                data.episode = data.episode._id || data.episode;
+                $.post({
+                    url: url,
+                    data: data,
+                    success: function (results) {
+                        if (results.redirect) {
+                            window.open(results.redirect, "popup");
+                        }
+                        alert(results.message);
+                    },
+                    failure: function (error) {
+                        alert(results.error);
+                    }
+                });
+            }
+        }
+        for (let i in channels) {
+            let channel = channels[i];
+            actions[channel._id] = {
+                caption: channel._name,
+                style: 'background: lightgreen',
+                onClick(event) {
+                    let episode = w2ui['EpisodeEdit'].record;
+                    let url = `channel/promoteInputs?id=${channel._id}`;
+                    console.log("Event:", event);
+                    $.ajax({
+                        url: url,
+                        success: function (results) {
+                            let fields = [];
+                            let record = w2ui.EpisodeTemplateForm.record;
+                            record.channel = channel;
+                            record.episode = episode;
+                            for (let iname in results.results) {
+                                let input = results.results[iname];
+                                if (input.type !== 'ref') {
+                                    let size = input.size || 100;
+                                    fields.push({
+                                        field: iname,
+                                        type: 'textarea',
+                                        required: input.required,
+                                        html: {
+                                            label: iname,
+                                            attr: `size="${size}" style="width:500px; height:${(Math.round(size / 100) + 1) * 30}px"`
+                                        }
+                                    });
+                                }
+                            }
+                            let actions = w2ui.EpisodeTemplateForm.actions;
+                            if (w2ui.hasOwnProperty('EpisodeChannelForm')) {
+                                $().w2destroy('EpisodeChannelForm');
+                            }
+                            $().w2form({
+                                name: 'EpisodeChannelForm',
+                                modelType: 'Episode',
+                                fields: fields,
+                                actions: actions,
+                                record: record
+                            });
+                            w2ui.EpisodePromotePane.html('main', w2ui.EpisodeChannelForm);
+                        }
+                    })
+                }
+            }
+        }
+        if (w2ui.hasOwnProperty('EpisodeTemplateForm')) {
+            $().w2destroy('EpisodeTemplateForm');
+        }
+        $().w2form({
+            name: 'EpisodeTemplateForm',
+            modelType: 'Episode',
+            fields: fields,
+            actions: actions,
+            record: record
+        });
+        w2ui.EpisodeTemplateForm.previousWindow = previousWindow;
+        return w2ui.EpisodeTemplateForm;
+    }
+
+    show(obj) {
+
     }
 }
 
@@ -654,7 +951,7 @@ function lookUpList(title, name, type) {
             },
             openOnFocus: true,
         },
-        html: {label: title, attr: 'style="width:375px"'}
+        html: {label: title, attr: 'style="width:500px"'}
     }
 }
 
@@ -696,7 +993,7 @@ function lookUpItem(title, name, type) {
             },
             openOnFocus: true,
         },
-        html: {label: title, attr: 'style="width:375px"'}
+        html: {label: title, attr: 'style="width:500px"'}
     }
 }
 
@@ -739,8 +1036,183 @@ function createActionForms() {
                 style: 'background: pink;',
                 onClick(event) {
                     w2popup.close();
+                    $('#popupContent').w2render(w2ui[w2ui.EpisodeEdit.previousWindow]);
                 }
             }
         }
     });
+}
+
+function _callAction(url, data) {
+    $.post({
+        url: url,
+        data: data,
+        dataType: 'json',
+        success: function (results) {
+            console.log(results);
+            alert(results.status);
+            w2popup.close();
+        },
+        failure: function (results) {
+            console.error(results);
+            alert(results.status);
+            w2popup.close();
+        }
+    });
+}
+
+function _artifactGrid(values) {
+    let records = [];
+    let map = {};
+    for (let i in values) {
+        let value = values[i];
+        let names = value._name.split('/');
+        let name = undefined;
+        _traverseArtifacts(map, names, value)
+    }
+    _artifactRecID = 1;
+    _createArtifactRecords(map, records);
+    return records;
+}
+
+function _traverseArtifacts(parent, names, item) {
+    if (names.length > 1) {
+        name = names.shift();
+        if (!parent.hasOwnProperty(name)) {
+            parent[name] = {
+                "id": name,
+                "name": name,
+                "artType": "all",
+                "summary": "",
+                "link": undefined,
+                "assets": 0,
+                "children": {},
+            }
+        }
+        parent[name].assets++;
+        _traverseArtifacts(parent[name].children, names, item);
+    } else {
+        parent[names[0]] = {
+            "id": item._id,
+            "name": item._name,
+            "artType": item.artType,
+            "summary": item.summary,
+            "link": item._link,
+        }
+    }
+    return parent;
+}
+
+function _createArtifactRecords(map, records) {
+
+    for (let name in map) {
+        let item = map[name];
+        item.recid = _artifactRecID++;
+        records.push(item);
+        if (item.children) {
+            item.w2ui = {children: []};
+            _createArtifactRecords(item.children, item.w2ui.children);
+        }
+    }
+}
+
+function _artifactGetInfo(arecords) {
+    for (let i in arecords) {
+        if (arecords[i].children) {
+            _artifactGetInfo(arecords[i].w2ui.children);
+        } else if (arecords[i].link) {
+            $.ajax({
+                url: arecords[i].link,
+                success: function (results) {
+                    arecords[i].summary = results.record.summary.name;
+                    arecords[i].assets = results.record.assets.count;
+                    arecords[i].title = results.record.title.name;
+                },
+            });
+        }
+    }
+}
+
+let _assetRecID = 0;
+
+function _assetGrid(values) {
+    let records = [];
+    let map = {};
+    for (let i in values) {
+        let value = values[i];
+        let names = value._name.split('/');
+        let name = undefined;
+        _traverseAssets(map, names, value)
+    }
+    _assetRecID = 1;
+    _createAssetRecords(map, records);
+    return records;
+}
+
+function _traverseAssets(parent, names, item) {
+    if (names.length > 1) {
+        name = names.shift();
+        if (!parent.hasOwnProperty(name)) {
+            parent[name] = {
+                "id": name,
+                "name": name,
+                "artType": "all",
+                "summary": "",
+                "link": undefined,
+                "artifacts": 0,
+                "children": {},
+            }
+        }
+        parent[name].artifacts++;
+        _traverseAssets(parent[name].children, names, item);
+    } else {
+        parent[names[0]] = {
+            "id": item._id,
+            "name": item._name,
+            "artType": item.artType,
+            "summary": item.summary,
+            "link": item._link,
+        }
+    }
+    return parent;
+}
+
+function _createAssetRecords(map, records) {
+
+    for (let name in map) {
+        let item = map[name];
+        item.recid = _assetRecID++;
+        records.push(item);
+        if (item.children) {
+            item.w2ui = {children: []};
+            _createAssetRecords(item.children, item.w2ui.children);
+        }
+    }
+}
+
+function _assetGetInfo(arecords) {
+    for (let i in arecords) {
+        if (arecords[i].children) {
+            _assetGetInfo(arecords[i].w2ui.children);
+        } else if (arecords[i].link) {
+            $.ajax({
+                url: arecords[i].link,
+                success: function (results) {
+                    if (results.record.artifact) {
+                        arecords[i].artifact = results.record.artifact.name;
+                        arecords[i].summary = results.record.artifact.summary;
+                    }
+                    if (results.record.channel) {
+                        arecords[i].channel = results.record.channel.name;
+                    }
+                    if (results.record.url.name) {
+                        arecords[i].url = results.record.url.name;
+                    }
+                    if (results.record.title.name) {
+                        arecords[i].title = results.record.title.name;
+                    }
+                },
+            });
+        }
+    }
 }

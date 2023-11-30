@@ -7,7 +7,8 @@ class ArtifactType {
         attributes: {
             name: {
                 type: 'string',
-                description: 'The Artifact Type'
+                description: 'The Artifact Type',
+                limit: 64
             }
         },
         associations: {

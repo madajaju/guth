@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 
 module.exports = {
     friendlyName: 'getJSON',
@@ -35,20 +36,46 @@ module.exports = {
             for(let atname in art._attributes) {
                 tempObj.artifacts[aname][atname]= art._attributes[atname];
             }
-            tempObj.artifacts[aname].artType = art.artType.name;
+            if(art.artType && typeof art.artType === 'object') {
+                tempObj.artifacts[aname].artType = art.artType.name;
+            }
+        }
+        // Tags
+        tempObj.tags = []
+        for(let tname in obj.tags) {
+            let tag = obj.tags[tname];
+            tempObj.tags.push(tag.name);
         }
         // Assets
         tempObj.assets = {};
         for(let aname in obj.assets) {
             let asset = obj.assets[aname];
             tempObj.assets[aname] = {};
-            for(let asname in asset._attributes) {
+            for (let asname in asset._attributes) {
                 tempObj.assets[aname][asname] = asset._attributes[asname];
             }
-
+            if (asset.channel && typeof asset.channel === 'object') {
+                tempObj.assets[aname].channel = asset.channel.name;
+            }
+            if (asset.artifact && typeof asset.artifact === 'object') {
+                tempObj.assets[aname].artifact = asset.artifact.name;
+            }
         }
-
+        tempObj.posts = {};
+        for(let pname in obj.posts) {
+            let post = obj.posts[pname];
+            tempObj.posts[pname] = {};
+            for (let asname in post._attributes) {
+                tempObj.posts[pname][asname] = post._attributes[asname];
+            }
+            if(post.channel && typeof post.channel === 'object') {
+                tempObj.posts[pname].channel = post.channel.id;
+            }
+            if(post.asset && typeof post.asset === 'object') {
+                tempObj.posts[pname].asset = post.asset.id;
+            }
+        }
         return tempObj;
     }
-};
+}
 

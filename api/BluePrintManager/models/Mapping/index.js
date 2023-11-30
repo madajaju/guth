@@ -2,38 +2,32 @@
 class Mapping {
     static definition = {
         name: 'Mapping',
-        description: 'Mapping of Guth resource attributes to channel attributes.',
-        unique: (obj) => { return obj.name; },
+        description: 'Mapping of Guth resource attributes to channel promotion attributes.',
+        unique: (obj) => { return obj.id; },
         attributes: {
             name: {
                 type: 'string',
                 description: 'Name of the Mapping',
             },
-            outputType: {
-                type: 'string',
-                description: 'Name of the resource type that maps to the channel',
-            },
-            file: {
-                type: 'string',
-                description: 'The template to be used for the generation',
-            },
-            outputName: {
-                type: 'string',
-                description: 'The output of the mapping generation. podcast, episode, and index are variables' +
-                    ' available. For example SoundCloud_${episode.id}_${index}. index is available for any mapping' +
-                    ' with cardinality greater than 1'
-            },
-            inputs: {
-                type: 'json',
-                description: 'inputs for the mapping. name:artifactName',
-            }
         },
         associations: {
             parent: {
-                type: 'BusinessFlow',
+                type: 'BluePrint',
                 cardinality: 1,
                 composition: false,
                 owner: false
+            },
+            channels: {
+                type: 'Channel',
+                cardinality: 'n',
+                composition: false,
+                owner: false,
+            },
+            templates: {
+                type: 'Template',
+                cardinality: 'n',
+                composition: true,
+                owner: true
             }
         },
         /*

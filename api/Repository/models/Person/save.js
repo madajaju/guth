@@ -18,8 +18,12 @@ module.exports = {
 
     fn: function (obj, inputs, env) {
         let person = obj;
+
+        if(!inputs) {
+            inputs = {};
+        }
         if(!person) {
-            console.error("Episode not found:", inputs.id);
+            console.error("Person not found:", inputs.id);
             if(env.res) {
                 env.res.status(404);
             }
@@ -37,6 +41,25 @@ module.exports = {
 function _save(obj, inputs) {
     obj.email = inputs.email || obj.email || "Email";
     obj.notes = inputs.notes || obj.notes || "Notes";
-    // The person is saved with the podcast.
-    obj.podcast.save();
+    obj.bio = inputs.bio || obj.bio || "TBD";
+    obj.thumbnail = inputs.thumbnail || obj.thumbnail || "thumbail.jpg";
+    let podcast = obj.podcast;
+    if(podcast) {
+        let gdir = podcast.baseDirectory + '/guests/' + obj.name.replace(/\s/g, '-').replace(/\./g, '')
+        fs.mkdirSync(gdir, {recursive: true});
+        let jobj = {}
+        let bioText = obj.bio;
+        obj.bio = "bio.md";
+        for (let i in obj._attributes) {
+            jobj[i] = obj._attributes[i];
+        }
+        jobj.socials = {};
+        for (let i in obj.socials) {
+            jobj.socials[i] = obj.socials._attributes;
+        }
+        let json = "module.exports = " + JSON.stringify(jobj);
+        fs.writeFileSync(gdir + '/index.js', json);
+        fs.writeFileSync(gdir + '/bio.md', bioText);
+    }
+
 }

@@ -29,45 +29,13 @@ module.exports = {
         // inputs contains the obj for the this method.
         let episode = obj;
         let podcast = episode.owner;
-        let channels = podcast.channels;
         let date = new Date();
         if(inputs.date) {
            date = new Date(inputs.date);
         }
-        if(inputs.channels) {
-            for(let cname in channels) {
-                if(inputs.channels.includes(cname)) {
-                    let channel = channels[cname];
-                    _publishToChannel(episode,channel);
-                }
-            }
-        } else {
-            for(let cname in channels) {
-                let channel = channels[cname];
-                _publishToChannel(episode, channel);
-            }
-        }
-        if(env && env.res) {
-            env.res.json(global.classes);
-            env.res.end("Done");
-        }
+        episode.releaseDate = date;
+        episode.state = "Published";
+        episode.saveMe();
         return episode;
     }
 };
-
-function _publishToChannel(episode, channel, date) {
-
-    for(let i in channel.types) {
-        let ctype = channel.types[i];
-
-        for(let j in episode.artifacts) {
-            let artifact = episode.artifacts[j];
-            let atype = artifact.artType;
-            if(ctype === atype) {
-                let asset = channel.publishArtifact({artifact:artifact, date:date});
-                episode.addToAssets(asset);
-                console.log("Asset Created", asset);
-            }
-        }
-    }
-}

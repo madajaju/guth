@@ -7,18 +7,27 @@ class Artifact {
             name: {
                 type: 'string',
                 description: 'Name of the artifact',
+                limit: 128,
             },
             url: {
                 type: 'string',
                 description: 'Location of the original artifact',
+                limit: 512,
             },
             summary: {
                 type: 'string',
                 description: 'Summary of the artifact. Used in generated derived artifacts and assets.',
+                limit: 1024,
             },
             ext: {
                 type: 'string',
                 description: 'Extension of the artifact',
+                limit: 24,
+            },
+            title: {
+                type: 'string',
+                description: 'Title of the artifact',
+                limit: 64,
             }
         },
         associations: {

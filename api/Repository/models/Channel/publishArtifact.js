@@ -11,6 +11,11 @@ module.exports = {
             type: 'ref', // string|boolean|number|json
             required: true
         },
+        name: {
+            description: "Name of the asset",
+            type: 'string',
+            required: false
+        },
         date: {
             description: 'Date to publish the artifact, if not supplied, publish now',
             type: 'string', // string|boolean|number|json
@@ -27,12 +32,14 @@ module.exports = {
     },
 
     fn: function (obj, inputs, env) {
-        let asset = new Asset({name:inputs.artifact.name, artifact: inputs.artifact});
+        let name = inputs.name || inputs.artifact.name;
+        let asset = new Asset({episode: inputs.episode, name:name, artifact: inputs.artifact});
         asset.channel = obj;
-        inputs.artifact.addToAssets(asset);
-        // Add the asset to the channel.
-        obj.addToAssets(asset);
-
+        for(let i in inputs) {
+            if(typeof inputs[i] === 'string') {
+                asset[i] = inputs[i];
+            }
+        }
         return asset;
     }
 };

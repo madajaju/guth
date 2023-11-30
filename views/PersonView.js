@@ -24,19 +24,25 @@ export default class PersonView {
                 field: 'name',
                 type: 'textarea',
                 required: true,
-                html: {label: "Name", attr: `size="20" style="width:375px"`}
+                html: {label: "Name", attr: `size="20" style="width:500px"`}
             });
             fields.push({
                 field: 'email',
                 type: 'textarea',
                 required: true,
-                html: {label: "Email", attr: `size="80" style="width:375px;"`}
+                html: {label: "Email", attr: `size="80" style="width:500px;"`}
+            });
+            fields.push({
+                field: 'bio',
+                type: 'textarea',
+                required: true,
+                html: {label: "Notes", attr: `size="5000" style="width:500px; height:100px"`}
             });
             fields.push({
                 field: 'notes',
                 type: 'textarea',
                 required: true,
-                html: {label: "Notes", attr: `size="1000" style="width:375px; height:100px"`}
+                html: {label: "Notes", attr: `size="500" style="width:500px; height:50px"`}
             });
             $().w2layout({
                 name: 'PersonEdit',
@@ -54,6 +60,7 @@ export default class PersonView {
                             w2ui.PersonEditGeneral.record.name = w2ui.PersonEdit.record.name.name;
                             w2ui.PersonEditGeneral.record.email = w2ui.PersonEdit.record.email.name;
                             w2ui.PersonEditGeneral.record.notes = w2ui.PersonEdit.record.notes.name;
+                            w2ui.PersonEditGeneral.record.bio = w2ui.PersonEdit.record.bio.name;
                             w2ui.PersonEditGeneral.refresh();
 
                             // Episodes Panel
@@ -276,6 +283,7 @@ export default class PersonView {
                         "name": "Enter Name",
                         "email": "nobody@email.com",
                         "notes": "Notes",
+                        "bio": "Biography",
                     });
                 },
                 onEdit: (event) => {
@@ -387,7 +395,7 @@ function lookUpList(title, name, type) {
             },
             openOnFocus: true,
         },
-        html: {label: title, attr: 'style="width:375px"'}
+        html: {label: title, attr: 'style="width:500px"'}
     }
 }
 
@@ -429,6 +437,6 @@ function lookUpItem(title, name, type) {
             },
             openOnFocus: true,
         },
-        html: {label: title, attr: 'style="width:375px"'}
+        html: {label: title, attr: 'style="width:500px"'}
     }
 }

@@ -1,8 +1,8 @@
 const path = require('path');
 
 module.exports = {
-    friendlyName: 'create',
-    description: 'Create the Channel',
+    friendlyName: 'post',
+    description: 'Post to the Channel',
     static: true, // True is for Class methods. False is for object based.
     inputs: {
     },

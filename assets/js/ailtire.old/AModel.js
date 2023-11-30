@@ -579,7 +579,7 @@ export default class AModel {
                                     }
                                 },
                             },
-                            html: {text: col.name, attr: 'style="width:375px"'}
+                            html: {text: col.name, attr: 'style="width:500px"'}
                         });
                     } else {
                         fields.push({
@@ -615,7 +615,7 @@ export default class AModel {
                                 },
                                 openOnFocus: true,
                             },
-                            html: {text: col.name, attr: 'style="width:375px"'}
+                            html: {text: col.name, attr: 'style="width:500px"'}
                         });
                     }
                 } else {
@@ -626,7 +626,7 @@ export default class AModel {
                             limit: limit,
                             type: 'text',
                             required: true,
-                            html: {text: col.name, attr: `size="${limit}" style="width:375px"`}
+                            html: {text: col.name, attr: `size="${limit}" style="width:500px"`}
                         });
                     } else {
                         let limit = col.limit || 100;
@@ -634,10 +634,13 @@ export default class AModel {
                             field: cname.toLowerCase(),
                             type: 'textarea',
                             required: true,
-                            html: {text: col.name, attr: `size="${limit}" style="width:375px; height:150px"`}
+                            html: {text: col.name, attr: `size="${limit}" style="width:500px; height:150px"`}
                         });
                     }
                 }
+            }
+            if(w2ui[model.name + 'Edit']) {
+                $().w2destroy(model.name + 'Edit');
             }
             $().w2form({
                 name: model.name + 'Edit',
@@ -889,7 +892,7 @@ export default class AModel {
                                     }
                                 },
                             },
-                            html: {text: col.name, attr: 'style="width:375px"'}
+                            html: {text: col.name, attr: 'style="width:500px"'}
                         });
                     } else {
                         fields.push({
@@ -925,7 +928,7 @@ export default class AModel {
                                 },
                                 openOnFocus: true,
                             },
-                            html: {text: col.name, attr: 'style="width:375px"'}
+                            html: {text: col.name, attr: 'style="width:500px"'}
                         });
                     }
                 } else {

@@ -7,14 +7,22 @@ class Asset {
             url: {
                 type: 'string',
                 description: 'URL of the published asset',
+                limit: 512,
             },
             name: {
                 type: 'string',
                 description: 'Name of the asset',
+                limit: 128
             },
             title: {
                 type: 'string',
                 description: 'Title of the asset',
+                limit: 64,
+            },
+            cid: {
+                type: 'string',
+                description: "Unique ID of the asset on the channel",
+                limit: 32
             }
         },
         associations: {
@@ -23,6 +31,12 @@ class Asset {
                 cardinality: 1,
                 composition: false,
                 owner: false,
+            },
+            stats: {
+                type: 'Stats',
+                cardinality: 'n',
+                composition: true,
+                owner: true,
             },
             artifact: {
                 type: 'Artifact',

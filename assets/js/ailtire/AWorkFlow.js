@@ -334,7 +334,7 @@ export default class AWorkFlow {
                 let next = activity.next[nname];
                 let nid = idprefix + nname.replace(/\s/g, '');
                 if (next.condition) {
-                    let cid = idprefix + next.condition.test.replace(/\s/g, '');
+                    let cid = idprefix + next.condition.test?.replace(/\s/g, '');
                     if (!data.nodes.hasOwnProperty(cid)) {
                         data.nodes[cid] = {
                             id: cid,

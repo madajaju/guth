@@ -1,6 +1,10 @@
 const fs = require('fs');
 const program = require('commander');
 const path = require('path');
+
+
+require('dotenv').config();
+
 // Check for node_modules directory. If it exists then continue. If not ask to run npm install.
 if(!fs.existsSync('./node_modules')) {
     console.error('Error: you must run "npm install" first');
@@ -23,7 +27,7 @@ let config = {
     host: host,
     urlPrefix: urlPrefix,
     listenPort: port,
-    post: async (config) => {
+    post: (config) => {
         uploadPodcast(config.podcastDir);
     }
 };
@@ -206,9 +210,11 @@ function updatePodcast(podcast) {
         // update channels
         for(let j in episode.assets) {
             let asset = episode.assets[j];
-            if(!podcast.channels.hasOwnProperty(asset.channel)) {
+            /*
+            if(!podcast.channels.hasOwnProperty(asset.channel.toLowerCase())) {
                 console.log("Channel (", asset.channel, ") not found for episode: ", j);
             }
+             */
         }
     }
 }

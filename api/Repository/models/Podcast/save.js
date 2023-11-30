@@ -1,6 +1,5 @@
 const path = require('path');
 const fs = require('fs');
-// const YAML = require('yaml');
 
 module.exports = {
     friendlyName: 'save',
@@ -12,19 +11,8 @@ module.exports = {
     },
     fn: function (obj, inputs, env) {
         // Save the podcast to the .guth.js file in the baseDirectory.
-
         let baseDir = obj.baseDirectory;
         _save(obj, baseDir);
-        // First save the yaml file describing the podcast.
-        /* let filename = path
-        let dirName = global.ailtire.config.persist.basedir + '/' + obj.name;
-        if(!fs.existsSync(dirName)) {
-            fs.mkdirSync(dirName, {recursive: true});
-        }
-        let apath = path.resolve(dirName + '/podcast.yaml');
-        let yamlString = YAML.stringify(obj._attributes);
-        fs.writeFileSync(apath,  yamlString);
-        */
         return obj;
     }
 };
@@ -40,25 +28,41 @@ function _save(obj, baseDir) {
     for(let i in obj.channels) {
         let channel = obj.channels[i];
         sobj.channels[channel.id] = channel._attributes;
+        // Save the artTypes
+        let types = [];
+        let artTypes = channel.types;
+        for(let i in artTypes) {
+            if(typeof artTypes[i] === 'string'){
+                types.push(artTypes[i]);
+            } else if(artTypes[i].name.length > 0) {
+                types.push(artTypes[i].name);
+            }
+       }
+        sobj.channels[channel.id].types = types.filter((value, index, self) => self.indexOf(value) === index);
     }
-    // Guests
-    sobj.guests = {};
-    for(let i in obj.guests) {
-        let guest = obj.guests[i];
-        let osocials = {};
-        for(let j in guest.socials) {
-            let social = guest.socials[j];
-            osocials[social.stype]= social.name;
+    // Add mappings and templates
+    sobj.mappings = {};
+    for(let i in obj.blueprint.mappings) {
+        let mapping = obj.blueprint.mappings[i];
+        let channels = [];
+        for (let k in mapping.channels) {
+            channels.push(mapping.channels[k].id);
         }
-        sobj.guests[guest.name] = {
-            name: guest.name,
-            email: guest.email,
-            notes: guest.notes,
-            socials: osocials
+        sobj.mappings[mapping.id] = {
+           id: mapping.id,
+           name: mapping.name,
+            templates: {},
+            channels: channels
+        };
+        for(let j in mapping.templates) {
+            let template = mapping.templates[j];
+            sobj.mappings[mapping.id].templates[template.name] = template.file;
         }
     }
+
     // Blueprints
     sobj.blueprints = {};
+    sobj.lang = obj.lang;
 
     let afile = path.resolve(baseDir + '/.guth.js');
 
