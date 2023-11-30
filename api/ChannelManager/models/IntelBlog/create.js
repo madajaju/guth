@@ -1,5 +1,3 @@
-const path = require('path');
-
 module.exports = {
     friendlyName: 'create',
     description: 'Create the Channel',
@@ -22,7 +20,7 @@ module.exports = {
         }
         let blogtype = new ArtifactType({name:"Blog"});
         obj.addToTypes(blogtype);
-
+        obj.authorized = true;
         return obj;
     }
 };

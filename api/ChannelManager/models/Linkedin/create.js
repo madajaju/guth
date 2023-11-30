@@ -1,5 +1,3 @@
-const path = require('path');
-
 module.exports = {
     friendlyName: 'create',
     description: 'Create the Channel',
@@ -31,6 +29,7 @@ module.exports = {
         let sdtype = new ArtifactType({name:"Slidedeck"});
         obj.addToTypes(sdtype);
 
+        obj.authorized = false;
         return obj;
     }
 };

@@ -1,6 +1,3 @@
-const path = require('path');
-const AClass = require('ailtire/src/Server/AClass');
-
 module.exports = {
     friendlyName: 'promoteAsset',
     description: 'Promote Asset on the Facebook Channel',
@@ -21,6 +18,11 @@ module.exports = {
             type: 'string', // string|boolean|number|json
             required: false
         },
+        lang: {
+            description: "Language of the post",
+            type: "string",
+            required: false,
+        }
     },
 
     exits: {
@@ -33,9 +35,13 @@ module.exports = {
 
     fn: function (obj, inputs, env) {
         let text = inputs.text || "Post:" + inputs.asset.name;
-        let post = new Post({text: text, name:'Post:' + inputs.asset.name, asset: inputs.asset});
+        let post = new Post({channel: obj, text: text, asset: inputs.asset, episode: inputs.episode, lang: inputs.lang || "en"});
         obj.addToPosts(post);
         inputs.asset.addToPosts(post);
+        if(inputs.episode){
+            inputs.episode.addToPosts(post);
+            inputs.episode.saveMe();
+        }
         return post;
     }
 };

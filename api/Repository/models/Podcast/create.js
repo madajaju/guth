@@ -1,5 +1,3 @@
-const path = require('path');
-
 module.exports = {
     friendlyName: 'create',
     description: 'Description of the action',
@@ -58,6 +56,7 @@ function _loadParameters(obj, params) {
             channel.name = cname;
             let cobj = Channel.factory(channel);
             obj.addToChannels(cobj);
+            cobj.podcast = obj;
         }
     }
     if (params.thumbnail) {

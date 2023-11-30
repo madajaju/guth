@@ -19,6 +19,10 @@ class Post {
             postedDate: {
                 type: 'number',
                 description: 'Date the post was posted',
+            },
+            lang: {
+                type: 'string',
+                description: "Language of the post",
             }
         },
         associations: {

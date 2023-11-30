@@ -1,11 +1,8 @@
-const path = require('path');
-
 module.exports = {
     friendlyName: 'create',
     description: 'Create the Channel',
     static: true, // True is for Class methods. False is for object based.
-    inputs: {
-    },
+    inputs: {},
 
     exits: {
         success: {},
@@ -17,13 +14,14 @@ module.exports = {
 
     fn: function (obj, inputs, env) {
         // inputs contains the obj for the this method.
-        for(let i in inputs) {
+        for (let i in inputs) {
             obj[i] = inputs[i];
         }
-        let posttype = new ArtifactType({name:"Post"});
+        let posttype = new ArtifactType({name: "Post"});
         obj.addToTypes(posttype);
-        let videotype = new ArtifactType({name:"Video"});
+        let videotype = new ArtifactType({name: "Video"});
         obj.addToTypes(videotype);
+        obj.authorized = !!obj.creds.tokens;
 
         return obj;
     }

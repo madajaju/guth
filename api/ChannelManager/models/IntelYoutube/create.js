@@ -1,5 +1,3 @@
-const path = require('path');
-
 module.exports = {
     friendlyName: 'create',
     description: 'Create the Channel',
@@ -22,6 +20,7 @@ module.exports = {
         }
         let videotype = new ArtifactType({name:"Video"});
         obj.addToTypes(videotype);
+        obj.authorized = true;
 
         return obj;
     }

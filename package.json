@@ -15,6 +15,10 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@event-calendar/core": "^2.3.3",
+    "@event-calendar/interaction": "^2.3.3",
+    "@event-calendar/time-grid": "^2.3.3",
+    "@microsoft/microsoft-graph-client": "^3.0.5",
     "ailtire": "latest",
     "request": "latest",
     "google-auth-library": "^8.7.0",

@@ -1,5 +1,3 @@
-const path = require('path');
-
 module.exports = {
     friendlyName: 'create',
     description: 'Create the Channel',
@@ -24,6 +22,7 @@ module.exports = {
         obj.addToTypes(posttype);
         let pctype = new ArtifactType({name:"Podcast"});
         obj.addToTypes(pctype);
+        obj.authorized = true;
 
         return obj;
     }
