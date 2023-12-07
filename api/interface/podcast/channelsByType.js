@@ -40,7 +40,7 @@ module.exports = {
             let artTypes = channel.types;
             for (let j in artTypes) {
                 let artType = artTypes[j];
-                if (artType === args.artType || args.artType === 'all') {
+                if (artType.toLowerCase() === args.artType.toLowerCase() || args.artType === 'all') {
                     retval[channel._attributes.name] = channel._attributes;
                 }
             }

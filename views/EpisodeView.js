@@ -302,16 +302,18 @@ export default class EpisodeView {
                         this.validate();
                         // Create the model.
                         let url = `episode/save?id=${this.record.name}`;
+                        let changes = this.getChanges();
                         let data = {};
-                        for (let name in this.record) {
+                        for (let name in changes) {
                             if(name === 'guests') {
                                 data.guests = [];
                                 for(let i in this.record[name]) {
                                     data.guests.push(this.record[name][i]._name);
                                 }
                             }
+                            // Skip the owner
                             else if (name !== 'owner') {
-                                data.owner = this.record.owner[0];
+                                data[name] = this.record[name];
                             }
                         }
 

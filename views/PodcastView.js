@@ -401,23 +401,12 @@ export default class PodcastView {
                         // Just updating the episode
                         if (rec.id) {
                             let url = `episode/save?id=${rec.id}`;
-                            if (change.name) {
-                                url += `&name=${change.name}`
-                            }
-                            if (change.number) {
-                                url += `&number=${change.number}`
-                            }
-                            if (change.summary) {
-                                url += `&summary=${change.summary}`
-                            }
-                            if (change.date) {
-                                url += `&releaseDate=${change.date}`
-                            }
-                            if (change.title) {
-                                url += `&title=${change.title}`
-                            }
-                            if (change.state) {
-                                url += `&state=${change.state}`
+                            for(let i in change) {
+                                if(i === "date") {
+                                    url += `&releaseDate=${change[i]}`;
+                                } else {
+                                    url += `&${i}=${change[i]}`;
+                                }
                             }
                             $.ajax({
                                 url: url,

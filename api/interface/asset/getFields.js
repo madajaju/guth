@@ -30,11 +30,6 @@ module.exports = {
     },
 
     exits: {
-        success: {},
-        json: {},
-        notFound: {
-            description: 'No item with the specified ID was found in the database.',
-        }
     },
 
     fn: async function (inputs, env) {
@@ -105,8 +100,13 @@ module.exports = {
                 console.error(e);
             }
         }
-        if (env && env.res) {
-            env.res.json({results: retval});
+        try {
+            if (env && env.res) {
+                env.res.json({results: retval});
+            }
+        }
+        catch(e) {
+            console.error("Error with Return:", e);
         }
         return retval;
     }
@@ -114,7 +114,7 @@ module.exports = {
 
 const _askAI = async (prompt) => {
     AEvent.emit('translation.start', {message: prompt});
-    const completion = await global.openai.createChatCompletion({
+    const completion = await global.openai.chat.completions.create({
         model: "gpt-4",
         messages: [
             {
@@ -125,5 +125,5 @@ const _askAI = async (prompt) => {
         ]
     });
     AEvent.emit('translation.complete', {message: prompt});
-    return completion.data.choices[0].message.content;
+    return completion.choices[0].message.content;
 }

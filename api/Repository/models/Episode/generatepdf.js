@@ -193,7 +193,7 @@ const _generatePDF = async (dirname, input, output, title) => {
 
 const _askAI = async (prompt) => {
     AEvent.emit('translation.start', {message: prompt});
-    const completion = await global.openai.createChatCompletion({
+    const completion = await global.openai.chat.compleitions.create({
         model: "gpt-4",
         messages: [
             {
@@ -204,5 +204,5 @@ const _askAI = async (prompt) => {
         ]
     });
     AEvent.emit('translation.complete', {message: prompt});
-    return completion.data.choices[0].message.content;
+    return completion.choices[0].message.content;
 }

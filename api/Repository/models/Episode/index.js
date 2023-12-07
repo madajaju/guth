@@ -140,11 +140,19 @@ class Episode {
         statenet: {
             Init: {
                 description: "Initial State",
+                events: {
+                    saveMe: {
+                        Created: {}
+                    },
+                    cancel: {
+                        Cancelled: {}
+                    }
+                }
             },
             Created: {
                 description: "Created State",
                 events: {
-                    save: {
+                    saveMe: {
                         Created: {}
                     },
                     schedule: {
@@ -158,9 +166,11 @@ class Episode {
             Backlog: {
                 description: "Idea for episode",
                 events: {
+                    saveMe: {
+                        Backlog: {}
+                    },
                     schedule: {
-                        Scheduled: {
-                        }
+                        Scheduled: { }
                     },
                     cancel: {
                         Cancelled: {}
@@ -171,8 +181,7 @@ class Episode {
                 description: "Episode is scheduled. This should create a directory for the episode.",
                 events: {
                     record: {
-                        Recorded: {
-                        }
+                        Recorded: { }
                     },
                     cancel: {
                         Cancelled: {}

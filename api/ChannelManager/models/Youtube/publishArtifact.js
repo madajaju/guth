@@ -40,12 +40,14 @@ module.exports = {
             tags: inputs.tags,
             name: inputs.name
         }
-        console.log("Upload to Youtube:", data);
-        let oauthclient = authorize(obj)
-        AEvent.emit("upload.started", {message:`Started Uploading Youtube Video, ${artifact.name}`});
-        let uploadedURL = await uploadVideo(artifact, data, oauthclient);
-        AEvent.emit("upload.completed", {message:`Started Uploading Youtube Video, ${artifact.name}`});
-        inputs.url = uploadedURL;
+        if(!inputs.url || inputs.url.length === 0) {
+            console.log("Upload to Youtube:", data);
+            let oauthclient = authorize(obj);
+            AEvent.emit("upload.started", {message: `Started Uploading Youtube Video, ${artifact.name}`});
+            let uploadedURL = await uploadVideo(artifact, data, oauthclient);
+            AEvent.emit("upload.completed", {message: `Started Uploading Youtube Video, ${artifact.name}, ${uploadedURL}`});
+            inputs.url = uploadedURL;
+        }
         return new Asset(inputs);
     }
 };

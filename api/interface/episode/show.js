@@ -95,7 +95,7 @@ module.exports = {
             // Get the script if it exists
             try {
                 let edir = path.dirname(obj.saveFile);
-                item.script = fs.readFileSync(edir + '/episode.md', 'utf-8');
+                item.script = fs.readFileSync(edir + '/Production/episode.md', 'utf-8');
             }
             catch(e) {
                 console.error("epsiode.md file does not exist", e);

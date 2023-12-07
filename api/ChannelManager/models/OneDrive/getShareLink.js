@@ -22,7 +22,7 @@ module.exports = {
 
     fn: async function (obj, inputs, env) {
         // inputs contains the obj for the this method.
-        let filename = inputs.filename.replace("C:\\Users\\dwpulsip\\OneDrive - Pulsipher Family\\", "").replaceAll(/\\/g,'/');
+        let filename = inputs.filename.replace("C:\\Users\\darre\\OneDrive - Pulsipher Family\\", "").replaceAll(/\\/g,'/');
         let atoken = await _getToken(obj.creds);
         let response = await axios.get(`https://graph.microsoft.com/v1.0/users/e32e3ae3-e580-47ad-89db-ee7d2cf6c25c/drive/root:/${filename}`, {
             headers: {

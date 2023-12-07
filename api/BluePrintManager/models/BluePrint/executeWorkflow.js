@@ -23,12 +23,12 @@ module.exports = {
         }
     },
 
-    fn: function (obj, inputs, env) {
+    fn: async function (obj, inputs, env) {
 
         for(let i in obj.workflows) {
             let workflow = obj.workflows[i];
             if(workflow.name === inputs.workflow)  {
-                return workflow.fn( {inputs: inputs.parameters});
+                return await workflow.fn( obj, inputs.parameters);
             }
         }
     }

@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require("fs");
 
 module.exports = {
     friendlyName: 'save',
@@ -31,9 +32,13 @@ module.exports = {
             episode = Episode.find(inputs.name);
         }
         if(episode) {
-            episode.saveMe(inputs);
+            // Save the script as the episode.md file in the Production directory.
+            if(inputs.script && inputs.script.length > 0) {
+                let edir = path.dirname(episode.saveFile);
+                fs.writeFileSync(edir + '/Production/episode.md', inputs.script);
+            }
             console.log("Saving episode:", inputs);
-            //episode.saveMe(inputs);
+            episode.saveMe(inputs);
             env.res.status(200);
             env.res.json({results:"Episode Saved!"});
         } else {
