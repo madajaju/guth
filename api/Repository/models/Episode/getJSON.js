@@ -68,6 +68,7 @@ module.exports = {
             for (let asname in post._attributes) {
                 tempObj.posts[pname][asname] = post._attributes[asname];
             }
+            tempObj.posts[pname]._state = post.state;
             if(post.channel && typeof post.channel === 'object') {
                 tempObj.posts[pname].channel = post.channel.id;
             }

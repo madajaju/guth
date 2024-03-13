@@ -36,7 +36,7 @@ module.exports = {
         }
     },
 
-    fn: async function (obj, inputs, env) {
+    fn: function (obj, inputs, env) {
 
         let text = inputs.text;
         // Upload post to LinkedIn

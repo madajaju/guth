@@ -2,6 +2,8 @@ import ArtifactView from "./ArtifactView.js";
 import AssetView from "./AssetView.js";
 import ActionView from './ActionView.js';
 import ChartView from "./ChartView.js";
+import CalendarView from "./CalendarView.js";
+import PostView from "./PostView.js";
 
 
 let artifactTypes = [
@@ -19,6 +21,20 @@ let artifactList = [
     {id: 2, text: 'audio'},
     {id: 3, text: 'blog'},
 ];
+
+const ecolor = {
+    "Created": "#aaaaff",
+    "Backlog": "#ffaa88",
+    "backlog": "#ffaa88",
+    "Scheduled": "#aaaa77",
+    "Recorded": "#66aaaa",
+    "Edited": "#88cc88",
+    "Written": "#44aa44",
+    "Published": "#aaaaaa",
+    "Posted": "#aaaaaa",
+    "Cancelled": "#ffaaaa",
+    "Failed": "#ff6666",
+}
 
 let _artifactRecID = 0;
 
@@ -153,6 +169,10 @@ export default class EpisodeView {
                                     "channel": post.channel,
                                     "text": post.text,
                                     "createdDate": post.createdDate,
+                                    "postedDate": post.postedDate,
+                                    "scheduledDate": post.scheduledDate,
+                                    "lang": post.lang,
+                                    "status": post._state,
                                 });
                             }
                             w2ui.EpisodeEditPosts.records = precs;
@@ -162,17 +182,34 @@ export default class EpisodeView {
                                 url: bpurl,
                                 success: function (results) {
                                     let workflows = results.record.workflows.values
+                                    let workflowMenuItem = w2ui.EpisodeEditGeneral.toolbar.get('workflows');
+                                    workflowMenuItem.items = [];
                                     for (let i in workflows) {
                                         let workflow = workflows[i];
+                                        workflow.url = `blueprint/workflow?id${workflow._id}`;
                                         let [target, name] = workflow.name.split('/');
                                         if (target === 'episode') {
-                                            // Ignore Promote
-                                            if (name !== "promote") {
-                                                w2ui.EpisodeEditGeneral.toolbar.items.push(
-                                                    {id: workflow._id, type: 'button', text: name}
-                                                );
-                                                w2ui.EpisodeEditGeneral.toolbar.factions[workflow._id] = workflow;
+                                            if(!workflowMenuItem.items) { workflowMenuItem.items = []; }
+                                            workflowMenuItem.items.push({id: workflow._id, type: 'button', text: name.replace('Process', '')});
+                                            w2ui.EpisodeEditGeneral.toolbar.factions[workflow._id] = workflow;
+                                        }
+                                    }
+                                    let actMenuItem = w2ui.EpisodeEditGeneral.toolbar.get('activities');
+                                    let activities = results.record.activities.values
+                                    actMenuItem.items = [];
+                                    for (let i in activities) {
+                                        let act = activities[i];
+                                        act.url = `blueprint/activity?id=${act._id}`;
+                                        let [target, name] = act.name.split('/');
+                                        if (target === 'episode') {
+                                            if (!actMenuItem.items) {
+                                                actMenuItem.items = [];
                                             }
+                                            actMenuItem.items.push({id: act._id, type: 'button', text: name});
+                                            /*w2ui.EpisodeEditGeneral.toolbar.items.push(
+                                                {id: act._id, type: 'button', text: name}
+                                            );*/
+                                            w2ui.EpisodeEditGeneral.toolbar.factions[act._id] = act;
                                         }
                                     }
                                     w2ui.EpisodeEditGeneral.refresh();
@@ -234,7 +271,9 @@ export default class EpisodeView {
                     items: [
                         {id: 'promote', type: 'button', text: "Promote"},
                         {id: 'generatePDF', type: 'button', text: "Generate PDF"},
-                        {id: 'getStats', type: 'button', text: "Stats"}
+                        {id: 'getStats', type: 'button', text: "Stats"},
+                        {id: 'workflows', type: 'menu', text:'Workflows'},
+                        {id: 'activities', type: 'menu', text:'Activities'}
                     ],
                     factions: {},
                     onClick(event) {
@@ -273,14 +312,15 @@ export default class EpisodeView {
                                 }
                             });
                         } else {
-                            let workflow = w2ui.EpisodeEditGeneral.toolbar.factions[event.target];
+                            let [parent,action] = event.target.split(':');
+                            let workflow = w2ui.EpisodeEditGeneral.toolbar.factions[action];
                             if (workflow) {
                                 let data = {
                                     id: workflow._id,
                                     pid: w2ui.PodcastEditGeneral.record.name,
                                     episode: w2ui.EpisodeEdit.record._id
                                 };
-                                let url = workflow.path.replaceAll(/\s/g, '');
+                                let url = workflow.url;
                                 // if there are inputs then they should be asked by a popup up here and asked of the user.
                                 let inputs = {};
                                 for (let name in workflow.inputs) {
@@ -511,7 +551,8 @@ export default class EpisodeView {
                 },
                 toolbar: {
                     items: [
-                        {id: 'clone', type: 'button', text: "Clone"}
+                        {id: 'clone', type: 'button', text: "Clone"},
+                        {id: 'calendar', type: 'button', text: "Calendar"}
                     ],
                     onClick(event) {
                         if (event.target === 'clone') {
@@ -519,6 +560,55 @@ export default class EpisodeView {
                             let selected = w2ui['EpisodeEditAssets'].getSelection();
                             let episode = w2ui.EpisodeEdit.record;
                             let sObj = w2ui.EpisodeEditAssets.records[selected];
+                        } else if (event.target === 'calendar') {
+                            let records = w2ui.EpisodeEditPosts.records;
+                            let items = [];
+                            for (let i in records) {
+                                let record = records[i];
+                                let endDate = record.postedDate || record.scheduledDate || record.createdDate || new Date();
+                                endDate = new Date(endDate);
+                                let postTime = `${endDate.getHours()}:${endDate.getMinutes()}`;
+                                endDate = `${endDate.getFullYear()}-${endDate.getMonth() +1}-${endDate.getDate()}`;
+                                let startDate = record.scheduledDate || record.createdDate || new Date();
+                                startDate = new Date(startDate);
+                                startDate = `${startDate.getFullYear()}-${startDate.getMonth() +1}-${startDate.getDate()}`;
+                                items.push({
+                                    id: record._id,
+                                    allDay: true,
+                                    start: endDate,
+                                    end: endDate,
+                                    text: record.text,
+                                    postedDate: record.postedDate,
+                                    channel: record.channel,
+                                    title: record.channel + '-' + postTime,
+                                    backgroundColor: ecolor[record.status],
+                                })
+                            }
+                            CalendarView.openDialog(items, "PodcastEdit", {
+                                onDrop: (info) => {
+                                    // update the Episode Release Date.
+                                    let releaseDate = info.event.end;
+                                    let url = `post/save?id=${info.event.id}`;
+                                    url += `&postedDate=${releaseDate}`
+                                    // $.ajax({
+                                    //     url: url,
+                                    //     success: function (results) {
+                                    //     }
+                                    // });
+                                },
+                                onClick: (info) => {
+                                    let record = null;
+                                    for (let i in w2ui.EpisodeEditPosts.records) {
+                                        record = w2ui.EpisodeEditPosts.records[i];
+                                        if (record._id === info.event.id) {
+                                            break;
+                                        }
+                                    }
+                                    if(record) {
+                                        PostView.openDialog(record, "PodcastEdit");
+                                    }
+                                }
+                            });
                         }
                     },
                 },
@@ -533,23 +623,28 @@ export default class EpisodeView {
                 },
                 columns: [
                     {
-                        field: 'channel', caption: 'Channel',
-                        size: '20%',
+                        field: 'status', caption: 'Status',
+                        size: '5%',
                         resizable: true,
                     },
                     {
-                        field: 'createdDate', caption: 'Created',
+                        field: 'lang', caption: 'Lang',
+                        size: '5%',
+                        resizable: true,
+                    },
+                    {
+                        field: 'channel', caption: 'Channel',
                         size: '15%',
                         resizable: true,
                     },
                     {
-                        field: 'publishDate', caption: 'Published',
+                        field: 'postedDate', caption: 'Published',
                         size: '15%',
                         resizable: true,
                     },
                     {
                         field: 'text', caption: 'Text',
-                        size: '50%',
+                        size: '60%',
                         resizable: true,
                         editable: {type: 'text'},
                     },
@@ -580,6 +675,33 @@ export default class EpisodeView {
                     toolbarEdit: true,
                     toolbarSave: true,
                 },
+                onSave: (event) => {
+                    let changes = w2ui['EpisodeEditAssets'].getChanges();
+                    let records = w2ui['EpisodeEditAssets'].records
+                    for (let i in changes) {
+                        let change = changes[i];
+                        let rec = records[change.recid];
+                        // Just updating the artifact
+                        if (rec.id) {
+                            let url = `asset/save?id=${rec.id}`;
+                            if (change.url) {
+                                url += `&url=${change.url}`;
+                            }
+                            if (change.title) {
+                                name += `&title=${change.title}`
+                            }
+                            if (change.summary) {
+                                name += `&summary=${change.summary}`
+                            }
+                            $.ajax({
+                                url: url,
+                                success: function (results) {
+                                    console.log("results", results);
+                                }
+                            });
+                        }
+                    }
+                },
                 onRender: (event) => {
                     setTimeout(function () {
                         w2ui.EpisodeEditAssets.refreshBody();
@@ -587,7 +709,6 @@ export default class EpisodeView {
                 },
                 onEdit: (event) => {
                     // Open the Episode Edit Dialog
-
                     let record = w2ui['EpisodeEditAssets'].records[event.recid];
                     if (record.recid != event.recid) {
                         for (let i in w2ui.EpisodeEditAssets.records) {
@@ -606,7 +727,7 @@ export default class EpisodeView {
                         episode: episode,
                         name: record.name,
                         artType: "",
-                        fields: { summary: record.summary },
+                        fields: { summary: record.summary, title: record.title },
                         url: record.url
                     }, 'EpisodeEdit');
                 },
@@ -619,28 +740,35 @@ export default class EpisodeView {
                     },
                     {
                         field: 'channel', caption: 'Channel',
-                        size: '15%',
+                        size: '5%',
                         resizable: true,
                         // editable: {type: 'text'}
                     },
                     {
                         field: 'artifact', caption: 'Artifact',
-                        size: '15%',
+                        size: '5%',
                         resizable: true,
                         // editable: {type: 'text'}
                     },
                     {
                         field: 'url', caption: 'URL',
-                        size: '25%',
+                        size: '10%',
                         resizable: true,
-                        // editable: {type: 'text'}
+                        editable: {type: 'text'}
+                    },
+                    {
+                        field: 'title', caption: 'Title',
+                        size: '20%',
+                        resizable: true,
+                        editable: {type: 'text'}
                     },
                     {
                         field: 'summary', caption: 'Summary',
                         size: '30%',
                         resizable: true,
-                        // editable: {type: 'text'}
+                        editable: {type: 'text'}
                     }
+
                 ]
             });
         }

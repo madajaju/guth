@@ -31,7 +31,9 @@ function create(obj, inputs) {
     obj.name = inputs.name || obj.name;
     obj.text = inputs.text || obj.text;
     obj.createdDate = inputs.createdDate || obj.createdDate || new Date();
+    obj.scheduledDate = inputs.scheduledDate || obj.scheduledDate;
     obj.postedDate = inputs.postedDate || obj.postedDate;
+    obj._state = inputs.state;
     obj.lang = inputs.lang || "en";
     if(inputs.asset) {
         if(typeof inputs.asset !== 'object') {

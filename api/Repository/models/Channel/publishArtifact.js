@@ -32,14 +32,6 @@ module.exports = {
     },
 
     fn: function (obj, inputs, env) {
-        let name = inputs.name || inputs.artifact.name;
-        let asset = new Asset({episode: inputs.episode, name:name, artifact: inputs.artifact});
-        asset.channel = obj;
-        for(let i in inputs) {
-            if(typeof inputs[i] === 'string') {
-                asset[i] = inputs[i];
-            }
-        }
-        return asset;
+        return "channel/publish";
     }
 };

@@ -197,7 +197,7 @@ export default class AssetView {
                         if(w2ui.AssetEdit.record.artType) {
                             w2ui.AssetEditGeneral.record.artType = w2ui.AssetEdit.record.artType.name || w2ui.AssetEdit.record.artType;
                         }
-                        w2ui.AssetEditGeneral.record.url = w2ui.AssetEdit.record.url.name || w2ui.AssetEdit.url;
+                        w2ui.AssetEditGeneral.record.url = w2ui.AssetEdit.record.url?.name || w2ui.AssetEdit.url;
 
                         w2ui.AssetEditGeneral.refresh();
                         // Must be here so the document is in focus
@@ -240,22 +240,32 @@ export default class AssetView {
                     let asset = w2ui.AssetEdit.record;
                     let newValues = w2ui.AssetEditGeneral.record;
                     let url = "asset/createNew";
-                    if (asset._id) {
+                    let data = {};
+                    if (asset?.asset?.id) {
                         // edit the asset.
-                        url = "asset/update?id=" + asset._id;
+                        url = "asset/save?id=" + asset.asset.id;
+                        data = {
+                            channel: asset.channel,
+                            artifact: asset.artifact,
+                            name: newValues.name,
+                            url: newValues.url,
+                            title: newValues.title,
+                            episode: asset.episode._id,
+                            summary: newValues.summary,
+                        };
+                    } else {
+                        data = {
+                            channel: asset.channel.id,
+                            artifact: asset.artifact.id,
+                            name: newValues.name,
+                            url: newValues.url,
+                            title: newValues.title || newValues.Title,
+                            episode: asset.episode._id,
+                            summary: newValues.summary || newValues.Description,
+                            image: newValues.Image,
+                            tags: newValues.Tags
+                        };
                     }
-                    let data = {
-                        channel: asset.channel.id,
-                        artifact: asset.artifact.id,
-                        name: newValues.name,
-                        url: newValues.url,
-                        tags: newValues.Tags,
-                        title: newValues.Title,
-                        image: newValues.Image,
-                        episode: asset.episode._id,
-                        summary: newValues.Description,
-                        artType: newValues.artType
-                    };
                     $('#popupContent').w2render(w2ui[w2ui.AssetEdit.previousWindow]);
                     $.post({
                         url: url,

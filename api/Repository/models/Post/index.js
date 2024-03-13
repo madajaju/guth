@@ -13,11 +13,15 @@ class Post {
                 description: 'Text in the post, should include all of the text that is in the post including generated text',
             },
             createdDate: {
-                type: 'number',
+                type: 'string',
                 description: 'Date the post was created',
             },
+            scheduledDate: {
+                type: 'string',
+                description: "Date the posts is scheduled to post.",
+            },
             postedDate: {
-                type: 'number',
+                type: 'string',
                 description: 'Date the post was posted',
             },
             lang: {
@@ -77,35 +81,38 @@ class Post {
                 }
                 return retval;
             }
-        }
-        /*
+        },
         statenet: {
             Init: {
-                description: "Initial State"
+                description: "Initial State",
                 events: {
                     create: {
-                        StateName: { }
+                        Created: { }
                     }
                 }
             },
-            StateName: {
-                description: "My Description of the state",
+            Created: {
+                description: "Post Created",
                 events: {
-                    eventName: {
-                        StateName: {
-                            condition: function(obj) { ... },
-                            action: function(obj) { ... },
-                        }
-                    },
-                    eventName2 ...
+                    schedule: {
+                        Scheduled: { }
+                    }
                 }
-                actions: {
-                    entry: { entry1: function(obj) { ... } },
-                    exit: { exit1: function(obj): { ... } }
+            },
+            Scheduled: {
+                description: "Post Scheduled",
+                events: {
+                    post: { Posted: {} },
+                    failed: { Failed: {} }
                 }
+            },
+            Posted: {
+                description: "Post Posted",
+            },
+            Failed: {
+                description: "Post Failed",
             }
         }
-        */
     }
 }
 

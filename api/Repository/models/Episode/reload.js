@@ -1,6 +1,23 @@
 const path = require('path');
 const fs = require('fs');
 
+const ftypeLookup = {
+    ".yaml": "info",
+    ".js": "info",
+    ".mp3": "audio",
+    ".mp4": "video",
+    ".srt": "captions",
+    ".txt": "transcript",
+    ".pdf": "pdf",
+    ".docx": 'doc',
+    ".md": 'doc',
+    ".jepg": 'image',
+    ".jpg": 'image',
+    ".png": 'image',
+    ".gif": 'image',
+    "" : 'unknown',
+};
+
 module.exports = {
     friendlyName: 'reload',
     description: 'Reload the Episode',
@@ -21,22 +38,20 @@ module.exports = {
 
         if(obj.saveFile) {
             let args = require(obj.saveFile);
-            load(obj, args);
+            _reload(obj, args);
             return obj;
         }
     }
 };
 
-function load(obj, inputs) {
-    obj.title = inputs.title;
-    obj.summary = inputs.summary;
-    obj.number = inputs.number;
-    obj.meta = inputs.meta;
-    obj.notes = inputs.notes;
+function _reload(obj, inputs) {
+    obj.title = inputs.title || obj.title;
+    obj.summary = inputs.summary || obj.summary;
+    obj.number = inputs.number || obj.number;
     obj.createdDate = inputs.createdDate || new Date();
-    obj.saveFile = inputs.saveFile;
-    obj.tagline = inputs.tagline;
-    obj.thumbnail = inputs.thumbnail;
+    obj.saveFile = inputs.saveFile || obj.saveFile;
+    obj.tagline = inputs.tagline || obj.tagLine;
+    obj.thumbnail = inputs.thumbnail || obj.thumbnail;
     obj.releaseDate = inputs.releaseDate || "";
     obj.recordedDate = inputs.recordedDate || "";
     if (obj.releaseDate.length > 0) {
@@ -54,9 +69,36 @@ function load(obj, inputs) {
         tag.addToEpisodes(obj);
         obj.addToTags(tag);
     }
-    obj.artifacts = {};
-    for (let aname in inputs.artifacts) {
-        let artifact = inputs.artifacts[aname];
+    let artifacts = {};
+    // Check for the artifacts.
+    // Get all the files in the production directory.
+    let saveDir = path.dirname(obj.saveFile);
+    let efiles = fs.readdirSync(saveDir + '/Production');
+    for (let k in efiles) {
+        let file = efiles[k];
+        let etype = path.extname(file);
+        let ftype = ftypeLookup[etype] || 'unknown';
+        let url = path.resolve(`${saveDir}/Production/${file}`);
+        if(fs.statSync(url).isDirectory()) {
+            // Traverse the directory.
+            _getArtifacts(file, `${saveDir}/Production`, artifacts);
+        } else {
+            // Do not change summary or title. Only update the physical things on the drive.
+            if(artifacts && artifacts.hasOwnProperty(file)) {
+                artifacts[file].ext = etype;
+                artifacts[file].type = ftype;
+                artifacts[file].url = url;
+            } else {
+                artifacts[file] = {
+                    ext: etype,
+                    type: ftype,
+                    url: url
+                };
+            }
+        }
+    }
+    for (let aname in artifacts) {
+        let artifact = artifacts[aname];
         obj.addToArtifacts({
             name: aname,
             url: artifact.url,
@@ -142,5 +184,27 @@ function load(obj, inputs) {
             }
         }
     }
+    obj.saveMe();
     return obj;
+}
+function _getArtifacts(file, base, artifacts) {
+    let files = fs.readdirSync(`${base}/${file}`);
+    files.forEach( (mfile) => {
+        let etype = path.extname(mfile);
+        let ftype = ftypeLookup[etype] || 'unknown';
+        let url = path.resolve(`${base}/${file}/${mfile}`);
+        // Only replace the things physically found in the directory.
+        // Other things like summary and title leave alone.
+        if(artifacts.hasOwnProperty(`${file}/${mfile}`)) {
+            artifacts[`${file}/${mfile}`].ext = etype;
+            artifacts[`${file}/${mfile}`].type = ftype;
+            artifacts[`${file}/${mfile}`].url = url;
+        } else {
+            artifacts[`${file}/${mfile}`] = {
+                ext: etype,
+                type: ftype,
+                url: url
+            };
+        }
+    });
 }

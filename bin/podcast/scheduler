@@ -1,0 +1,64 @@
+#!/usr/bin/env node
+
+const fs = require('fs');
+const program = require('commander');
+const path = require('path');
+// Check for node_modules directory. If it exists then continue. If not ask to run npm install.
+/* if(!fs.existsSync('./node_modules')) {
+    console.error('Error: you must run "npm install" first');
+    return;
+}
+ */
+
+const server = require('ailtire');
+let host = process.env.AITIRE_HOST || 'localhost'
+let port = process.env.AITIRE_PORT || 3000
+let urlPrefix = process.env.AITIRE_BASEURL || '/scheduler'
+
+program.description("Upload podcast to the manager")
+    .option('--dir <string>', "Directory with the podcast definition");
+
+program.parse(process.argv);
+
+let options = program.opts();
+let config = {
+    baseDir: `${__dirname}/../..`,
+    prefix: 'guth',
+    routes: {},
+    host: host,
+    urlPrefix: urlPrefix,
+    listenPort: port,
+    frequency: 10 * 60 * 1000,
+    post: async (config) => {
+        await schedulePosts();
+        setInterval(schedulePosts, config.frequency);
+    }
+};
+
+if(options.dir) {
+    config.podcastDirs = [];
+    let dirs = options.dir.split(',');
+    for(let i in dirs) {
+        config.podcastDirs.push(path.resolve(dirs[i]));
+    }
+}
+
+process.chdir(`${__dirname}/../..`);
+server.listen( config );
+
+async function schedulePosts() {
+
+    for(let i in config.podcastDirs) {
+        let epath = config.podcastDirs[i];
+        console.log(epath);
+        let podcast = Podcast.load({directory: epath});
+        console.log("Scheduling Posts");
+        await AService.call('/post/submitScheduled', {podcast: podcast.id});
+        console.log("Done Scheduling");
+        let keys = Object.keys(global._instances)
+        for (let i in keys) {
+            global._instances[keys[i]] = {};
+        }
+        global.workflows = {};
+    }
+}

@@ -63,6 +63,7 @@ module.exports = {
             lang: lang,
             podcast: episode.owner,
             askAI: _askAI,
+            path: path,
             fs: fs
         }
         retval = {};
@@ -82,7 +83,7 @@ module.exports = {
 
 const _askAI = async (prompt) => {
     AEvent.emit('translation.start', {message: prompt});
-    const completion = await global.openai.chat.compleitions.create({
+    const completion = await global.openai.chat.completions.create({
         model: "gpt-4",
         messages: [
             {

@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const path = require('path');
 
 module.exports = {
     friendlyName: 'promoteAsset',
@@ -27,6 +28,10 @@ module.exports = {
             type: 'string',
             required: true,
             limit: "2048"
+        },
+        attachments: {
+            description: "Attachments for the email",
+            type: "json",
         }
     },
 
@@ -39,6 +44,7 @@ module.exports = {
     },
 
     fn: async function (obj, inputs, env) {
+
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
@@ -51,11 +57,23 @@ module.exports = {
             from: obj.user,
             to: inputs.to,
             subject: inputs.subject,
-            html: inputs.body
+            html: inputs.body,
+        }
+        if(inputs.attachments) {
+            inputs.attachments = inputs.attachments.split(',');
+            let attachments = [];
+            for(let i in inputs.attachments) {
+                let file = inputs.attachments[i].replace('\r\n','');
+                attachments.push( {
+                    filename: path.basename(file),
+                    path: path.resolve(file),
+                    cid: path.basename(file),
+                })
+            }
+            mailOptions.attachments = attachments;
         }
         await _sendMail(transporter, mailOptions);
         let post = new Post({channel: obj, text: body, name: 'Email Promote', asset: inputs.asset, episode: inputs.episode});
-        obj.addToPosts(post);
         if(inputs.asset) {
             inputs.asset.addToPosts(post);
         }
@@ -72,7 +90,7 @@ async function _sendMail(transporter, mailOptions)
     return new Promise((resolve, reject) => {
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
-                console.error("error is " + error);
+                console.error("_sendMail Error is " + error);
                 resolve(false); // or use rejcet(false) but then you will have to handle errors
             } else {
                 console.log('Email sent: ' + info.response);

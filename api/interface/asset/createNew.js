@@ -70,7 +70,8 @@ module.exports = {
         } else { args.artifact = artifact;}
         // Submit the artifact to the channel for publishing here.
         if(channel) {
-            let asset = await channel.publishArtifact(args, env);
+            let service = channel.publishArtifact(args, env);
+            let asset = await AService.call(service, args);
             artifact.addToAssets(asset);
             episode.saveMe();
             if(env && env.res) {

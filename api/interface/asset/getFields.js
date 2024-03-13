@@ -1,10 +1,12 @@
 const ejs = require('ejs');
 const fs = require('fs');
+const path = require('path');
+
 const AEvent = require('ailtire/src/Server/AEvent');
 
 module.exports = {
-    friendlyName: 'createNew',
-    description: 'Create New Asset from an Artifact',
+    friendlyName: 'getFields',
+    description: 'Get Fields for New Asset from an Artifact',
     static: true, // True is for Class methods. False is for object based.
     inputs: {
         channel: {
@@ -22,6 +24,11 @@ module.exports = {
             type: 'string',
             required: true
         },
+        mapping: {
+            description: `Mapping to use to get fields.`,
+            type: 'string',
+            required: false,
+        },
         lang: {
             description: 'Language used 2 letter abbv.',
             type: 'string',
@@ -30,6 +37,7 @@ module.exports = {
     },
 
     exits: {
+        json: (obj) => { return obj },
     },
 
     fn: async function (inputs, env) {
@@ -55,6 +63,9 @@ module.exports = {
 
         let podcast = episode.owner;
         let mappingID = `${channel.name}Submit`;
+        if(inputs.mapping) {
+            mappingID = inputs.mapping;
+        }
         let mapping = Mapping.find(mappingID);
         if (!mapping) {
             mapping = Mapping.find('defaultSubmit');
@@ -88,25 +99,27 @@ module.exports = {
             lang: lang,
             podcast: episode.owner,
             askAI: _askAI,
+            path: path,
             fs: fs
         }
         let retval = {};
-        for (let i in mapping.templates) {
-            let template = mapping.templates[i];
+        if(mapping && mapping.templates) {
+            for (let i in mapping.templates) {
+                let template = mapping.templates[i];
+                try {
+                    retval[template.name] = await ejs.render(template.script, objects, {async: true});
+                } catch (e) {
+                    console.error("Error rendering page:", template.name);
+                    console.error(e);
+                }
+            }
             try {
-                retval[template.name] = await ejs.render(template.script, objects, {async: true});
+                if (env && env.res) {
+                    env.res.json({results: retval});
+                }
             } catch (e) {
-                console.error("Error rendering page:", template.name);
-                console.error(e);
+                console.error("Error with Return:", e);
             }
-        }
-        try {
-            if (env && env.res) {
-                env.res.json({results: retval});
-            }
-        }
-        catch(e) {
-            console.error("Error with Return:", e);
         }
         return retval;
     }

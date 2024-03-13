@@ -36,7 +36,7 @@ module.exports = {
         }
     },
 
-    fn: async function (obj, inputs, env) {
+    fn: function (obj, inputs, env) {
 
         let text = inputs.text;
         let post = new Post({channel: obj, text: text, asset: inputs.asset, episode: inputs.episode, lang: inputs.lang || "en"});

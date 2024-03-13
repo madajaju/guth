@@ -63,7 +63,7 @@ const uploadPodcast = (baseDir) => {
                 let efile = episodeDir + '/.episode.js';
                 let episode = {};
                 if (fs.existsSync(efile)) {
-                    console.log("Loading:", efile);
+                    delete require.cache[require.resolve(efile)];
                     episode = require(efile);
                     episode.saveFile = efile;
                 } else {
@@ -119,6 +119,9 @@ const uploadPodcast = (baseDir) => {
                             episode.artifacts[file].url = url;
                         } else {
                             console.log("Episode:", episode.number);
+                            if(!episode.artifacts) {
+                                episode.artifacts = {};
+                            }
                             episode.artifacts[file] = {
                                 ext: etype,
                                 type: ftype,

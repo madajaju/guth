@@ -129,14 +129,29 @@ export default class PodcastView {
                                 url: bpurl,
                                 success: function (results) {
                                     let workflows = results.record.workflows.values
+                                    let workflowMenuItem = w2ui.PodcastEditGeneral.toolbar.get('workflows');
                                     for (let i in workflows) {
                                         let workflow = workflows[i];
                                         let [target, name] = workflow.name.split('/');
                                         if (target === 'podcast') {
-                                            w2ui.PodcastEditGeneral.toolbar.items.push(
-                                                {id: workflow._id, type: 'button', text: name}
-                                            );
+                                            if(!workflowMenuItem.items) { workflowMenuItem.items = []; }
+                                            workflowMenuItem.items.push({id: workflow._id, type: 'button', text: name.replace('Process', '')});
                                             w2ui.PodcastEditGeneral.toolbar.factions[workflow._id] = workflow;
+                                        }
+                                    }
+                                    let actMenuItem = w2ui.PodcastEditGeneral.toolbar.get('activities');
+                                    let activities = results.record.activities.values
+                                    for (let i in activities) {
+                                        let act = activities[i];
+                                        act.url = `blueprint/activity?id=${act._id}`;
+                                        let [target, name] = act.name.split('/');
+                                        if (target === 'podcast') {
+                                            if(!actMenuItem.items) { actMenuItem.items = []; }
+                                            actMenuItem.items.push({id: act._id, type: 'button', text: name});
+                                            /*w2ui.PodcastEditGeneral.toolbar.items.push(
+                                                {id: act._id, type: 'button', text: name}
+                                            );*/
+                                            w2ui.PodcastEditGeneral.toolbar.factions[act._id] = act;
                                         }
                                     }
                                     w2ui.PodcastEditGeneral.refresh();
@@ -189,6 +204,8 @@ export default class PodcastView {
                     items: [
                         {id: 'getstats', type: 'button', text: 'Stats'},
                         {id: 'calendar', type: 'button', text: 'Calendar'},
+                        {id: 'activities', type: 'menu', text: 'Activities'},
+                        {id: 'workflows', type: 'menu', text: 'Workflows'},
                     ],
                     factions: {},
                     onClick(event) {
@@ -257,14 +274,15 @@ export default class PodcastView {
                                 }
                             });
                         } else {
-                            let workflow = w2ui.PodcastEditGeneral.toolbar.factions[event.target];
+                            let [parent,action] = event.target.split(':');
+                            let workflow = w2ui.PodcastEditGeneral.toolbar.factions[action];
                             if (workflow) {
                                 let data = {id: workflow._id, pid: w2ui.PodcastEditGeneral.record.name};
-                                let url = workflow.path.replaceAll(/\s/g, '');
+                                let url = workflow.url;
                                 // if there are inputs then they should be asked by a popup up here and asked of the user.
                                 let inputs = {};
                                 for (let name in workflow.inputs) {
-                                    if (name !== "id") {
+                                    if (name !== "id" && name !== "pid") {
                                         inputs[name] = workflow.inputs[name];
                                     }
                                 }

@@ -24,7 +24,6 @@ module.exports = {
     fn: function (obj, inputs, env) {
         // inputs contains the obj for this method.
         let blueprint = new BluePrint({podcast: inputs.podcast});
-        let wfFiles = fs.readdirSync(`${inputs.podcast.baseDirectory}/workflows`);
         _processWorkflowDirectory(blueprint, `${inputs.podcast.baseDirectory}/workflows`, '');
 
         return blueprint;
@@ -40,7 +39,10 @@ function _processWorkflowDirectory(blueprint, mdir, prefix) {
         // Do not go into hidden directories or files.
         if(file[0] !== '.') {
             let wfile = path.resolve(`${mdir}/${file}`);
-            if (fs.statSync(wfile).isDirectory()) {
+            if (file === "activities") {
+                let prefix = path.parse(mdir).name;
+                _processActivitiesDirectory(blueprint, wfile, prefix);
+            } else if (fs.statSync(wfile).isDirectory()) {
                 _processWorkflowDirectory(blueprint, wfile, file);
             } else if (fs.statSync(wfile).isFile()) {
                 let wfName = prefix + path.parse(file).name;
@@ -51,7 +53,33 @@ function _processWorkflowDirectory(blueprint, mdir, prefix) {
                     let fn = eval(wflowString);
                     blueprint[wfName] = fn;
                      */
-                    BusinessFlow.load({name:wfName, file:wfile, blueprint: blueprint});
+                    BusinessFlow.load({name:wfName, file:wfile, blueprint: blueprint, path: path});
+
+                } catch (e) {
+                    console.error("Cannot load workflow:", wfName, e);
+                }
+            }
+        }
+    });
+}
+
+function _processActivitiesDirectory(blueprint, mdir, prefix) {
+    let wfFiles = fs.readdirSync(mdir);
+    if(prefix.length > 0) {
+        prefix += '/';
+    }
+    wfFiles.forEach((file) => {
+        // Do not go into hidden directories or files.
+        if(file[0] !== '.') {
+            let wfile = path.resolve(`${mdir}/${file}`);
+            if (fs.statSync(wfile).isDirectory()) {
+                _processActivitiesDirectory(blueprint, wfile, file);
+            } else if (fs.statSync(wfile).isFile()) {
+                let actName = prefix + path.parse(file).name;
+                console.log("Activity:", actName);
+                let apath = actName;
+                try {
+                    BusinessActivity.load({name:actName, file:wfile, blueprint: blueprint, path: apath});
 
                 } catch (e) {
                     console.error("Cannot load workflow:", wfName, e);

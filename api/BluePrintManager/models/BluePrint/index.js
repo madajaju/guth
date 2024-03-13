@@ -28,6 +28,12 @@ class BluePrint {
                 cardinality: 1,
                 composition: false,
                 owner: false,
+            },
+            activities: {
+                type: 'BusinessActivity',
+                cardinality: 'n',
+                composition: true,
+                owner: true
             }
         },
     }

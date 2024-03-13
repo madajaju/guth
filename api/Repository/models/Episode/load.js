@@ -32,7 +32,7 @@ module.exports = {
 };
 
 function load(inputs) {
-    let state = inputs.state || 'backlog';
+    let state = inputs.state || 'Created';
     let obj = new Episode({name: inputs.name, state: state});
     obj.title = inputs.title;
     obj.summary = inputs.summary;
@@ -100,14 +100,16 @@ function load(inputs) {
 
     for (let pname in inputs.posts) {
         let post = inputs.posts[pname];
-        obj.addToPosts({
+        let postObj = obj.addToPosts({
             name: pname,
             text: post.text,
             createDate: post.createDate,
-            postDate: post.postDate,
+            postedDate: post.postedDate,
+            scheduledDate: post.scheduledDate,
             asset: post.asset,
             episode: obj,
-            channel: post.channel
+            channel: post.channel,
+            state: post._state || "Created",
         });
     }
 

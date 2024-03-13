@@ -1,12 +1,44 @@
-//re// quire('dotenv').config();
-
 const OpenAI = require('openai');
-// import OpenAI from "openai";
+const fs = require("fs");
+// const async_hooks = require("node:async_hooks");
 
 global.openai = new OpenAI({
     apiKey: process.env.OPENAI_KEY
 });
+/*
+const writeSomething = (phase, more) => {
+    fs.writeSync(
+        1,
+        `Phase: "${phase}", Exec. Id: ${async_hooks.executionAsyncId()}, Parent Id: ${async_hooks.triggerAsyncId()} ${
+            more ? ", " + more : ""
+        }\n`
+    );
+};
 
+// Create and enable the hook
+const timeoutHook = async_hooks.createHook({
+    init(asyncId, type, triggerAsyncId) {
+        writeSomething(
+            "Init",
+            `asyncId: ${asyncId}, type: "${type}", triggerAsyncId: ${triggerAsyncId}`
+        );
+    },
+    before(asyncId) {
+        writeSomething("Before", `asyncId: ${asyncId}`);
+    },
+    destroy(asyncId) {
+        writeSomething("Destroy", `asyncId: ${asyncId}`);
+    },
+    after(asyncId) {
+        writeSomething("After", `asyncId: ${asyncId}`);
+    },
+    promiseResolve(asyncId) {
+        writeSomething("PromiseResolved", `asyncId: ${asyncId}`);
+    },
+
+
+});
+*/
 
 module.exports = {
     friendlyName: 'workflow',
@@ -40,6 +72,7 @@ module.exports = {
 
     fn: function (inputs, env) {
         // inputs contains the obj for the this method.
+        // timeoutHook.enable();
         let args = env.req.body;
         let workflow = BusinessFlow.find(args.id);
         let podcast = Podcast.find(args.pid);
@@ -50,10 +83,12 @@ module.exports = {
             }
             return;
         }
-        workflow.fn(podcast, args, env);
+        args.podcast = podcast;
+        workflow.fn(args, env);
         if(env.res)  {
             env.res.json({results: {id: workflow.id, name: workflow.name}});
         }
+        // timeoutHook.disable();
         return;
     }
 }

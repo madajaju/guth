@@ -1,7 +1,6 @@
 const path = require('path');
 const fs = require('fs');
 const generator = require('ailtire/src/Documentation/Generator.js');
-// const pdf = require('html-pdf');
 const puppeteer = require('puppeteer');
 const AEvent = require("ailtire/src/Server/AEvent");
 
@@ -193,7 +192,7 @@ const _generatePDF = async (dirname, input, output, title) => {
 
 const _askAI = async (prompt) => {
     AEvent.emit('translation.start', {message: prompt});
-    const completion = await global.openai.chat.compleitions.create({
+    const completion = await global.openai.chat.completions.create({
         model: "gpt-4",
         messages: [
             {

@@ -2,7 +2,7 @@ const Action = require('ailtire/src/Server/Action');
 const Generator = require('ailtire/src/Documentation/Generator');
 const AEvent = require('ailtire/src/Server/AEvent');
 const AService = require('ailtire/src/Server/AService');
-const {jsPDF } = require("jspdf");
+const {jsPDF} = require("jspdf");
 const sharp = require("sharp");
 const ejs = require('ejs');
 
@@ -21,7 +21,7 @@ module.exports = {
             type: 'string',
             required: true,
         },
-        blueprint : {
+        blueprint: {
             description: 'Blueprint of the business flow',
             type: 'ref',
             required: true,
@@ -38,35 +38,41 @@ module.exports = {
 
     fn: function (obj, inputs, env) {
         // inputs contains the obj for this method.
-       global.Generator = Generator;
+        global.Generator = Generator;
         global.AEvent = AEvent;
         global.AService = AService;
         global.ejs = ejs;
         global.jsPDF = jsPDF;
         global.sharp = sharp;
         let name = inputs.name;
+        let filename = inputs.file;
         let retval = null;
-        try {
-            let tempwf = require(inputs.file);
-            let path = `blueprint/workflow`;
-            retval = new BusinessFlow({
-                name: inputs.name,
-                path: path,
-                fn: tempwf.fn,
-                inputs: tempwf.inputs,
-                friendlyName: tempwf.friendlyName,
-                exits: tempwf.exits,
-                description: tempwf.description
-            });
-            inputs.blueprint.addToWorkflows(retval);
-            // Now add this to the action list so it can be called via the REST interface.
-            // It should follow the pattern /blueprint/${podcastName}/${name}
-            Action.add(path, retval);
+        let tempwf = require(filename);
+        tempwf.name = name;
+        global.topPackage.workflows[tempwf.name] = tempwf;
+        tempwf.pkg = global.topPackage.shortname;
+        if (!global.hasOwnProperty('workflows')) {
+            global.workflows = {};
         }
-        catch(e) {
-            console.warn('Error loading workflow:', inputs.name, inputs. file);
-            console.error(e);
+        if (!global.workflows.hasOwnProperty(tempwf.name)) {
+            global.workflows[tempwf.name] = tempwf;
+        } else {
+            console.error("Workflow already defined:", tempwf.name);
         }
+        let wfInputs = undefined;
+        if (tempwf.activities && tempwf.activities.Init) {
+            wfInputs = tempwf.activities.Init.inputs;
+        } else {
+            console.error("Missing Init activity.", tempwf.name);
+        }
+        retval = new BusinessFlow({
+            name: tempwf.name,
+            path: tempwf.name,
+            inputs: wfInputs,
+            description: tempwf.description
+        });
+        inputs.blueprint.addToWorkflows(retval);
+
         return retval;
     }
 };

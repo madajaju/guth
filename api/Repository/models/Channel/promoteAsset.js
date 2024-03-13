@@ -42,7 +42,7 @@ module.exports = {
             }
             if (inputs.episode) {
                 post.episode.addToPosts(post);
-                post.epiosde.saveMe();
+                post.episode.saveMe();
             }
         }
         return {redirect: obj.url, message:"Cut and paste into Window"};
