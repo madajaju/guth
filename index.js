@@ -18,6 +18,8 @@ let urlPrefix = process.env.AITIRE_BASEURL || '/web'
 program.command('index [options]', "start podcast manager")
     .option('--dir <string>', "Directory with the podcast definition")
 
+program.parse(process.argv);
+
 let options = program.opts();
 
 let config = {

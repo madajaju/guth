@@ -528,11 +528,17 @@ export default class AMainWindow {
                 {
                     field: 'events', caption: 'Event', size: '30%', render: function (record) {
                         let retval = "";
+                        if(record.currentEvent) {
+                            let [pevent, sevent] = record.currentEvent.split('.');
+                            let bgcolor = AMainWindow.scolor[sevent] || '#ffbb88';
+                            retval = `<div style="background-color:${bgcolor};" >`;
 
-                        for (let i in record.events) {
-                            let val = record.events[i];
-                            let bcolor = AMainWindow.scolor[i] || '#ffbb88';
-                            retval += `<span title="${i}" style="padding: 3px; background-color:${bcolor};" >${val}</span>`;
+                            for (let i in record.events) {
+                                let val = record.events[i];
+                                let bcolor = AMainWindow.scolor[i] || '#ffbb88';
+                                retval += `<span title="${i}" style="padding: 3px; background-color:${bcolor};" >${val}</span>`;
+                            }
+                            retval += "</div>";
                         }
                         return retval;
                     }
@@ -556,8 +562,10 @@ export default class AMainWindow {
                 }
                 rec.events[ename]++;
             }
+            rec.currentEvent = event;
             rec.count++;
-            rec.message = msg.message;
+            rec.message = msg.message || msg.obj.description || "";
+            rec.currentEvent = event;
             w2ui['eventlist'].set(object, rec);
             w2ui['eventlist'].select(object);
             AEventHUD.updateHUD(rec);

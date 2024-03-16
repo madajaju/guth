@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "monitorEmail": "node monitorEmail.js",
-    "start": "node index.js --dir '~/OneDrive - Pulsipher Family/Podcasts/EDT'",
+    "start": "node index.js --dir dummy",
     "test": "npm run lint && npm run custom-tests && echo 'Done.'",
     "lint": "eslint . --max-warnings=0 --report-unused-disable-directives && echo '✔  Your .js files look good.'",
     "custom-tests": "mocha ./test/**/*.test.js",
