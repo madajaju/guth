@@ -21,6 +21,7 @@ import {
     AImage,
     A3DGraph,
     AEventHUD,
+    AEvent,
     ASelectedHUD,
     AUserActivity,
 } from './index.js';
@@ -478,6 +479,7 @@ export default class AMainWindow {
         graph.toolbar = graphPanel;
         AMainWindow.graphOpening();
         AEventHUD.setColors(AMainWindow.scolor);
+        AEvent.setColors(AMainWindow.scolor);
     }
 
     static showObjectList() {
@@ -569,7 +571,9 @@ export default class AMainWindow {
             w2ui['eventlist'].set(object, rec);
             w2ui['eventlist'].select(object);
             AEventHUD.updateHUD(rec);
+            AEvent.handle(event,msg, "add");
         }
+
     }
 
     setToolBar(tools) {
