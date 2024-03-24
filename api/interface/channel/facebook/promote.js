@@ -26,7 +26,6 @@ module.exports = {
 
     fn: async function (inputs, env) {
         return null;
-        // inputs contains the obj for the this method.
         let post = inputs.post;
         if (typeof asset === 'string') {
             post = Post.find(post);

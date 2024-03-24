@@ -36,19 +36,21 @@ module.exports = {
         if(typeof artifact === 'string') { artifact = Artifact.find(artifact); }
         if(typeof channel === 'string') { channel = Channel.find(channel);}
         let image = inputs.image.replaceAll(/\r\n/g,'');
-        let data = {
-            title: inputs.title,
-            summary: inputs.summary,
-            tags: inputs.tags,
-            name: inputs.name,
-            number: artifact.episode.number
-        }
-        AEvent.emit('upload.started', {message:`Starting Upload to Transistor, ${artifact.name}`});
-        let tepisode = await _uploadAudio(channel, artifact, image, data);
+        if(!inputs.url) {
+            let data = {
+                title: inputs.title,
+                summary: inputs.summary,
+                tags: inputs.tags,
+                name: inputs.name,
+                number: artifact.episode.number
+            }
+            AEvent.emit('upload.started', {message: `Starting Upload to Transistor, ${artifact.name}`});
+            let tepisode = await _uploadAudio(channel, artifact, image, data);
 
-        AEvent.emit('upload.completed', {message:`Starting Upload to Transistor, ${artifact.name}`});
-        inputs.url = tepisode.attributes.share_url;
-        inputs.cid = tepisode.id;
+            AEvent.emit('upload.completed', {message: `Starting Upload to Transistor, ${artifact.name}`});
+            inputs.url = tepisode.attributes.share_url;
+            inputs.cid = tepisode.id;
+        }
         return new Asset(inputs);
     }
 };

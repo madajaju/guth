@@ -6,7 +6,7 @@ export default class AEvent {
     static count = 0;
     static nodes = {};
     static legend = {};
-    static xOffset = 0;
+    static visible = false;
     static default = {
         fontSize: 5,
         height: 10,
@@ -14,11 +14,19 @@ export default class AEvent {
         depth: 5,
         corner: 1,
     }
+    static xOffset = AEvent.default.width * 1.20;
 
     constructor(config) {
         this.config = config;
     }
-
+    static showEvents() {
+        AEvent.visible = true;
+        window.graph.setData(AEvent.nodes, []);
+    }
+    static hideEvents() {
+        AEvent.visible = false;
+        window.graph.setData({}, []);
+    }
     static calculateBox(node) {
         let nameArray = node.name.split(/\s/).map(item => {
             return item.length;
@@ -79,7 +87,17 @@ export default class AEvent {
         });
         label.position.set(0, 0, (depth/2)+1);
         group.add(label);
-
+        if (node.rotate) {
+            if (node.rotate.x) {
+                group.applyMatrix4(new THREE.Matrix4().makeRotationX(node.rotate.x));
+            }
+            if (node.rotate.y) {
+                group.applyMatrix4(new THREE.Matrix4().makeRotationY(node.rotate.y));
+            }
+            if (node.rotate.z) {
+                group.applyMatrix4(new THREE.Matrix4().makeRotationZ(node.rotate.z));
+            }
+        }
         node.expandLink = `nolink`;
         node.description = node.description || node.name;
         node.getDetail = AEvent.getDetail;
@@ -105,7 +123,6 @@ export default class AEvent {
         } else if (type === 'Sourced') {
             color = "green";
         }
-
         let geometry = new THREE.BoxGeometry(width, height, depth);
         const material = new THREE.MeshPhysicalMaterial({
             color: color,
@@ -132,6 +149,17 @@ export default class AEvent {
         label.position.set(0, 0, (depth/2) + 1);
         group.add(label);
 
+        if (node.rotate) {
+            if (node.rotate.x) {
+                group.applyMatrix4(new THREE.Matrix4().makeRotationX(node.rotate.x));
+            }
+            if (node.rotate.y) {
+                group.applyMatrix4(new THREE.Matrix4().makeRotationY(node.rotate.y));
+            }
+            if (node.rotate.z) {
+                group.applyMatrix4(new THREE.Matrix4().makeRotationZ(node.rotate.z));
+            }
+        }
         node.expandLink = `nolink`;
         node.getDetail = AEvent.getDetail;
         node.description = node.description || node.name;
@@ -173,7 +201,17 @@ export default class AEvent {
         });
         label.position.set(0, 0, (depth/2) + 1);
         group.add(label);
-
+        if (node.rotate) {
+            if (node.rotate.x) {
+                group.applyMatrix4(new THREE.Matrix4().makeRotationX(node.rotate.x));
+            }
+            if (node.rotate.y) {
+                group.applyMatrix4(new THREE.Matrix4().makeRotationY(node.rotate.y));
+            }
+            if (node.rotate.z) {
+                group.applyMatrix4(new THREE.Matrix4().makeRotationZ(node.rotate.z));
+            }
+        }
         node.expandLink = `nolink`;
         node.getDetail = AEvent.getDetail;
         node.description = node.description || node.name;
@@ -254,25 +292,27 @@ export default class AEvent {
         let data = {nodes: {}, links: []};
         // parse the event and subevent.
         let [pevent, sevent] = event.split('.');
-        if (!AEvent.events.hasOwnProperty(pevent) || !AEvent.nodes[pevent]) {
+        let pid = `E:${pevent}`;
+        if (!AEvent.events.hasOwnProperty(pid) || !AEvent.nodes[pid]) {
             let numOfGroups = Object.keys(AEvent.events).length;
-            data.nodes[pevent] = AEvent.nodes[pevent] = {
-                id: pevent,
+            data.nodes[pid] = AEvent.nodes[pid] = {
+                id:pid,
                 name: pevent,
                 view: AEvent.viewGroup3D,
                 fx: 0,
-                fy: (numOfGroups * AEvent.default.height) * 1.20,
-                fz: 0,
+                fy: 0,
+                fz: -(numOfGroups * AEvent.default.height) * 1.20,
+                rotate: { x: -Math.PI/2 },
                 description: pevent,
             }
-            AEvent.events[pevent] = {
+            AEvent.events[pid] = {
                 name: pevent,
                 events: {},
-                node: AEvent.nodes[pevent]
+                node: AEvent.nodes[pid]
             }
         }
-        AEvent.nodes[pevent].color = AEvent.colors[sevent] || "#ffbb88";
-        AEvent.nodes[pevent].description = `${msg}`;
+        AEvent.nodes[pid].color = AEvent.colors[sevent] || "#ffbb88";
+        AEvent.nodes[pid].description = `${msg}`;
 
         let id = `E:${pevent}.${sevent}`;
         let iid = `${id}.${AEvent.count++}`;
@@ -280,20 +320,21 @@ export default class AEvent {
             AEvent.legend[sevent] = { name: sevent, x: AEvent.xOffset};
             AEvent.xOffset += (AEvent.default.width * 1.20);
         }
-        if (!AEvent.events[pevent].events.hasOwnProperty(id) || !AEvent.nodes[id]) {
+        if (!AEvent.events[pid].events.hasOwnProperty(id) || !AEvent.nodes[id]) {
 
             data.nodes[id] = AEvent.nodes[id] = {
                 id: id,
                 name: `${sevent} (1)`,
                 view: AEvent.viewEvent3D,
+                rotate: { x: -Math.PI/2 },
                 rbox: {
-                    parent: pevent,
+                    parent: pid,
                     fx: AEvent.legend[sevent].x,
                     fy: 0,
                     fz: 0
                 }
             }
-            AEvent.events[pevent].events[id] = {
+            AEvent.events[pid].events[id] = {
                 id: id,
                 name: sevent,
                 instances: [],
@@ -301,7 +342,7 @@ export default class AEvent {
             }
 
         }
-        let numOfIEvents = AEvent.events[pevent].events[id].instances.length;
+        let numOfIEvents = AEvent.events[pid].events[id].instances.length;
         AEvent.nodes[id].color = AEvent.colors[sevent] || "#ffbb88";
         AEvent.nodes[id].name = `${sevent}(${numOfIEvents+1})`;
         AEvent.nodes[id].description = `${msg}`;
@@ -309,26 +350,28 @@ export default class AEvent {
             id: iid,
             count: AEvent.count,
             name: `${AEvent.count}`,
-            description: `${msg}`,
+            description: `${pevent}.${sevent}\n${msg}`,
             view: AEvent.viewInstance3D,
             rbox: {
                 parent: id,
                 fx: 0,
-                fy: 0,
-                fz: -(AEvent.count * AEvent.default.depth) * 1.20
+                fy: -(AEvent.count * AEvent.default.height) * 1.20,
+                fz: 0,
             },
             color: AEvent.colors[sevent] || "#ffbb88"
         }
-        AEvent.events[pevent].events[id].instances.push({
+        AEvent.events[pid].events[id].instances.push({
             id: iid,
             name: sevent,
             message: `${msg}`,
             node: AEvent.nodes[iid]
         });
-        if (mode === 'add') {
-            window.graph.addData(data.nodes, []);
-        } else {
-            window.graph.setData(AEvent.nodes, []);
+        if(AEvent.visible) {
+            if (mode === 'add') {
+                window.graph.addData(data.nodes, []);
+            } else {
+                window.graph.setData(AEvent.nodes, []);
+            }
         }
     }
 

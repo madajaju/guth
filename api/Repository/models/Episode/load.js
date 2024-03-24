@@ -101,16 +101,19 @@ function load(inputs) {
     for (let pname in inputs.posts) {
         let post = inputs.posts[pname];
         let postObj = obj.addToPosts({
+            id: post.id,
             name: pname,
             text: post.text,
             createDate: post.createDate,
             postedDate: post.postedDate,
             scheduledDate: post.scheduledDate,
-            asset: post.asset,
             episode: obj,
             channel: post.channel,
             state: post._state || "Created",
         });
+        if(post.asset) {
+            postObj.asset = Asset.find(post.asset);
+        }
     }
 
     // Now load the stats

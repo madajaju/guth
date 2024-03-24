@@ -33,7 +33,7 @@ function create(obj, inputs) {
     obj.createdDate = inputs.createdDate || obj.createdDate || new Date();
     obj.scheduledDate = inputs.scheduledDate || obj.scheduledDate;
     obj.postedDate = inputs.postedDate || obj.postedDate;
-    obj._state = inputs.state;
+    obj._state = inputs.state || "Created";
     obj.lang = inputs.lang || "en";
     if(inputs.asset) {
         if(typeof inputs.asset !== 'object') {

@@ -69,6 +69,10 @@ module.exports = {
         retval = {};
         for (let i in mapping.templates) {
             let template = mapping.templates[i];
+            if(!template.script) {
+                let apath = path.resolve(podcast.baseDirectory + '/templates/' + template.file)
+                template.script = fs.readFileSync(apath);
+            }
             try {
                 retval[template.name] = await ejs.render(template.script, objects, {async: true});
             }

@@ -523,7 +523,20 @@ export default class AMainWindow {
     static showEventList() {
         $('#eventlist').w2grid({
             name: 'eventlist',
-            show: {header: false, columnHeaders: true},
+            show: {header: false, columnHeaders: true, toolbar: true},
+            toolbar: {
+                items: [
+                    {type: 'button', id: 'showEvents', text: 'Show Events', style: 'color: black;'},
+                    {type: 'button', id: 'hideEvents', text: 'Hide Events', style: 'color: black;'},
+                ],
+                onClick: function (event) {
+                    if(event.target === "showEvents") {
+                        AEvent.showEvents();
+                    } else if(event.target === "hideEvents") {
+                        AEvent.hideEvents();
+                    }
+                }
+            },
             columns: [
                 {field: 'object', caption: 'Object', size: '10%', attr: "align=right", sortable: true},
                 {field: 'count', caption: 'Count', size: '10%', attr: "align=right", sortable: true},
