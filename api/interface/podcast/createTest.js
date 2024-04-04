@@ -2,7 +2,7 @@ const path = require('path');
 const AEvent = require("ailtire/src/Server/AEvent");
 
 module.exports = {
-    friendlyName: 'create',
+    friendlyName: 'createTest',
     description: 'Description of the action',
     static: true, // True is for Class methods. False is for object based.
     inputs: {

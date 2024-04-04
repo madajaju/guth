@@ -16,7 +16,6 @@ import AUsecase from './AUsecase.js';
 import AActor from './AActor.js';
 import AAction from './AAction.js';
 import AAttribute from './AAttribute.js';
-import AText from './AText.js';
 import AState from './AState.js';
 import AStateNet from './AStateNet.js';
 import AStateCondition from './AStateCondition.js';
@@ -40,6 +39,7 @@ import AFlowCondition from "./AFlowCondition.js";
 import ASwimlane from "./ASwimlane.js";
 import AUserActivity from "./AUserActivity.js";
 import AEvent from "./AEvent.js";
+import AText from "./AText.js"
 
 
 // without default

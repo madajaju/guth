@@ -4,6 +4,9 @@ export default class AEvent {
     static colors = {};
     static events = {};
     static count = 0;
+    static eventOffset = 0;
+    static eventPosition = {row: 0, col: 0};
+    static previousEvent = undefined;
     static nodes = {};
     static legend = {};
     static visible = false;
@@ -13,6 +16,7 @@ export default class AEvent {
         width: 40,
         depth: 5,
         corner: 1,
+        cols: 40/10,
     }
     static xOffset = AEvent.default.width * 1.20;
 
@@ -36,7 +40,7 @@ export default class AEvent {
         }, -Infinity);
 
         let height = nameArray.length * AEvent.default.fontSize * 2;
-        let width = maxLetters * (AEvent.default.fontSize / 1.5);
+        let width = Math.max(maxLetters * (AEvent.default.fontSize / 1.5), AEvent.default.width);
         let depth = AEvent.default.depth;
         let radius = Math.max(Math.sqrt(width * width + height * height), Math.sqrt(height * height + depth * depth), Math.sqrt(width * width + depth * depth)) / 2;
 
@@ -106,12 +110,15 @@ export default class AEvent {
     }
     static viewEvent3D(node, type) {
         let size = AEvent.calculateBox(node);
-        // This is the rounded cube
+        // This is the cube for each event.
         let width = size.w;
         let height = size.h
         let halfWidth = width / 2;
         let halfHeight = height / 2;
         let depth = size.d;
+        node.width = width;
+        node.height = height;
+        node.depth = depth;
 
         let color = node.color || "#ffbb88";
         let opacity = node.opacity || 0.50;
@@ -168,8 +175,8 @@ export default class AEvent {
     }
     static viewInstance3D(node, type) {
         // This is the rounded cube
-        let width = AEvent.default.width;
-        let height = AEvent.default.height;
+        let width = AEvent.default.depth*2;
+        let height = AEvent.default.depth;
         let halfWidth = width / 2;
         let halfHeight = height / 2;
         let depth = AEvent.default.depth;
@@ -346,18 +353,40 @@ export default class AEvent {
         AEvent.nodes[id].color = AEvent.colors[sevent] || "#ffbb88";
         AEvent.nodes[id].name = `${sevent}(${numOfIEvents+1})`;
         AEvent.nodes[id].description = `${msg}`;
+        let rbox = {
+            parent: id,
+            fz: 0
+        }
+        if(AEvent.previousEvent === event) {
+            // Add the event on the same line as the previous
+            rbox.fy = -(AEvent.eventOffset * AEvent.default.depth) * 1.20;
+            rbox.fy -= (AEvent.eventPosition.row * AEvent.default.depth) * 1.20;
+
+            // Start on the left side of the width of the event.
+            rbox.fx = -((AEvent.default.width / 2) - AEvent.default.depth) + (AEvent.eventPosition.col * AEvent.default.depth*2) * 1.20;
+//            rbox.fx = ((AEvent.eventPosition.col - (AEvent.default.cols/2)) * AEvent.default.depth*2) * 1.20;
+            AEvent.eventPosition.col++;
+            if(AEvent.eventPosition.col >= AEvent.default.cols) {
+                AEvent.eventPosition = {
+                    col: 0,
+                    row: AEvent.eventPosition.row+1,
+                }
+            }
+        } else  {
+            AEvent.eventOffset = AEvent.eventOffset + AEvent.eventPosition.row+1;
+            AEvent.eventPosition= { col: 0, row: 0};
+            rbox.fx = -((AEvent.default.width / 2) - AEvent.default.depth) + (AEvent.eventPosition.col * AEvent.default.depth*2) * 1.20;
+            rbox.fy = -(AEvent.eventOffset * AEvent.default.depth) * 1.20;
+            AEvent.eventPosition.col++;
+        }
+        AEvent.previousEvent = event;
         data.nodes[iid] = AEvent.nodes[iid] = {
             id: iid,
             count: AEvent.count,
             name: `${AEvent.count}`,
             description: `${pevent}.${sevent}\n${msg}`,
             view: AEvent.viewInstance3D,
-            rbox: {
-                parent: id,
-                fx: 0,
-                fy: -(AEvent.count * AEvent.default.height) * 1.20,
-                fz: 0,
-            },
+            rbox: rbox,
             color: AEvent.colors[sevent] || "#ffbb88"
         }
         AEvent.events[pid].events[id].instances.push({
