@@ -1,0 +1,20 @@
+module.exports = {
+  "es/video": [],
+  "en/videoIntel": [],
+  "en/video": [],
+  "en/audio": [],
+  "es/audio": [],
+  "en/blog": [],
+  "fr/blog": [],
+  "it/blog": [],
+  "pt/blog": [],
+  "es/blog": [],
+  "de/blog": [],
+  "video": [],
+  "audio": [],
+  "blog": [],
+  "./blog": [],
+  "Post72": [],
+  "Post73": [],
+  "Post74": []
+};

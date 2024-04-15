@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<%
+let hostURL = global.ailtire.config.host;
+/*
+if (global.ailtire.config.listenPort) {
+    hostURL += ':' + global.ailtire.config.listenPort;
+}
+ */
+%>
+<head>
+    <title>Guth</title>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.5.1/less.min.js"></script>
+    <link rel="stylesheet/less" type="text/css" href="styles/importer.less"/>
+    <base href="http://<%= hostURL %><%= global.ailtire.config.urlPrefix %>/">
+    <script type="module" src="js/ckeditor.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/w2ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles/w2ui.css"/>
+    <!--  <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script> -->
+    <script src="js/aframe.js"></script>
+    <script src="js/three.js"></script>
+    <script src="js/3d-force-graph.js"></script>
+    <script src="js/d3-octree.js"></script>
+    <script src="js/d3-force-3d.js"></script>
+    <script src="js/Graph3D.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="js/event-calendar.min.css">
+    <script src="js/event-calendar.min.js"></script>
+</head>
+<body style="overflow: hidden;">
+
+<!--This is a garden of 3DObjects for the graphing-->
+
+<div id="main" style="position: absolute; width: 100%; height: 100%; overflow: hidden;"></div>
+<script type="module">
+    import CalendarView from './views/CalendarView.js';
+    const scolor = {
+        "Created": "#aaaaff",
+        "Backlog": "#ffaa88",
+        "backlog": "#ffaa88",
+        "Scheduled": "#aaaa77",
+        "Recorded": "#66aaaa",
+        "Edited": "#88cc88",
+        "Written": "#44aa44",
+        "Published": "#aaaaaa",
+        "Posted": "#aaaaaa",
+        "Cancelled": "#ffaaaa",
+        "Failed": "#ff6666",
+    }
+
+    $(function () {
+        $.ajax({
+            url: 'post/tasks',
+            success: function (request) {
+                let items = [];
+                for(let i in request) {
+                    let post = request[i];
+                    let now = new Date();
+                    let start = post.scheduledDate || now;
+                    start = new Date(start);
+                    let end = post.postedDate || new Date(start.getTime() + 60*60000);
+                    end = new Date(end);
+                    items.push({
+                        id: post.id,
+                        start: start,
+                        end: end,
+                        title: post.name + " - " + post.channel,
+                        description: post.message,
+                        backgroundColor: scolor[post.state]
+                    });
+                }
+            //        CalendarView.openDialog(items, "None", { view: "listWeek" });
+            //        CalendarView.openDialog(items, "None", { view: "listMonth" });
+            //        CalendarView.openDialog(items, "None", { view: "listYear" });
+                CalendarView.openDialog(items, "None", { view: "timeGridWeek" });
+            //        CalendarView.openDialog(items, "None", { view: "timeGridDay" });
+            //        CalendarView.openDialog(items, "None", { view: "resourceTimeGridWeek" });
+            //        CalendarView.openDialog(items, "None", { view: "resourceTimeGridDay" });
+            //        CalendarView.openDialog(items, "None", { view: "dayGridMonth" });
+            //       CalendarView.openDialog(items, "None", { view: "listWeek" });
+            },
+            error: function (req, text, err) {
+                console.log(text);
+            }
+        });
+        // initialization
+    });
+</script>
+<button>Hello World</button>
+</body>
+</html>
