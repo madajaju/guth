@@ -147,7 +147,6 @@ export default class AObject {
             window.graph.addData(data.nodes, data.links);
         } else {
             return;
-            console.log("Event:", obj);
             if (!AObject._ships.hasOwnProperty(obj.MMSI)) {
                 let obj3D = _getShip3D(obj);
                 AObject._ships[obj.MMSI] = obj;

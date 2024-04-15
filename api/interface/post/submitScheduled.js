@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require("fs");
+const AService = require('ailtire/src/Server/AService');
 
 module.exports = {
     friendlyName: 'submitScheduled',
@@ -18,6 +19,7 @@ module.exports = {
 
     fn: async function (inputs, env) {
         // inputs contains the obj for the this method.
+        if(!global._tasks) { global._tasks = {}};
         let podcast = Podcast.find(inputs.podcast);
         let successful = 0;
         let failed = 0;
@@ -28,6 +30,12 @@ module.exports = {
            let now = new Date();
            for(let j in posts) {
                let post = posts[j];
+               global._tasks[post.id] = {
+                   scheduledDate: post.scheduledDate,
+                   channel: post.channel.name,
+                   name: post.id,
+                   state: post.state
+               };
                if(post.state === "Scheduled") {
                    let sdate = new Date(post.scheduledDate);
                    if(sdate < now) {
@@ -39,16 +47,22 @@ module.exports = {
                                post: post.id,
                                channel: channel.id
                            });
+                           global._tasks[post.id].postDate = now;
                            if (postInfo) {
                                successful++;
+                               global._tasks[post.id].state = "Posted";
                                post.sid = postInfo;
                                post.post({postedDate: now});
                            } else {
                                post.failed({message: "Could not Post!"});
+                               global._tasks[post.id].state = "Failed";
+                               global._tasks[post.id].message = "Could not Post!";
                                console.log("Post Failed:", post.id, post.channel.name);
                                failed++;
                            }
                        } else {
+                           global._tasks[post.id].state = "Failed";
+                           global._tasks[post.id].message = "No Channel";
                            post.failed({message: "No Channel"});
                            console.log("Post does not have a channel!", post.id);
                            failed++;
@@ -56,6 +70,8 @@ module.exports = {
                    } else {
                        waiting++;
                    }
+               } else {
+                   global._tasks[post.id].postedDate = post.postedDate;
                }
            }
         }

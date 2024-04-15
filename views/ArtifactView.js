@@ -17,11 +17,6 @@ let artifactList = [
 ];
 
 export default class ArtifactView {
-    function
-    function
-
-    function
-
     constructor(config) {
         this.config = config;
         ArtifactView.createEdit();

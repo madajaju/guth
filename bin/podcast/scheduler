@@ -11,9 +11,10 @@ const path = require('path');
  */
 
 const server = require('ailtire');
+const AService = require('ailtire/src/Server/AService');
 let host = process.env.AITIRE_HOST || 'localhost'
-let port = process.env.AITIRE_PORT || 3000
-let urlPrefix = process.env.AITIRE_BASEURL || '/scheduler'
+let port = process.env.AITIRE_PORT || 80
+let urlPrefix = process.env.AITIRE_BASEURL || '/web'
 
 program.description("Upload podcast to the manager")
     .option('--dir <string>', "Directory with the podcast definition");
@@ -24,6 +25,7 @@ let options = program.opts();
 let config = {
     baseDir: `${__dirname}/../..`,
     prefix: 'guth',
+    layout: 'calendar',
     routes: {},
     host: host,
     urlPrefix: urlPrefix,

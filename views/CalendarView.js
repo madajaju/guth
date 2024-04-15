@@ -1,10 +1,11 @@
 export default class CalendarView {
     constructor(items, config) {
         this.config = config;
+        this.config.view = config.view || 'dayGridMonth';
         this.items = items;
         this.target = document.getElementById(this.config.target);
         this.calendar = new EventCalendar(document.getElementById(this.config.target), {
-            view: 'dayGridMonth',
+            view: this.config.view,
             events: items,
         });
         if(config.onDrop) {
