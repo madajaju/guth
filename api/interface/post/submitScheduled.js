@@ -32,7 +32,7 @@ module.exports = {
                let post = posts[j];
                global._tasks[post.id] = {
                    scheduledDate: post.scheduledDate,
-                   channel: post.channel.name,
+                   channel: post.channel?.name || "Default",
                    name: post.id,
                    state: post.state
                };
@@ -41,22 +41,34 @@ module.exports = {
                    if(sdate < now) {
                        let channel = post.channel;
                        if(channel) {
-                           console.log("Submitting Post to ", channel.name);
-                           let channelType = channel.type.toLowerCase();
-                           let postInfo = await AService.call(`channel/${channelType}/promote`, {
-                               post: post.id,
-                               channel: channel.id
-                           });
-                           global._tasks[post.id].postDate = now;
-                           if (postInfo) {
-                               successful++;
-                               global._tasks[post.id].state = "Posted";
-                               post.sid = postInfo;
-                               post.post({postedDate: now});
-                           } else {
-                               post.failed({message: "Could not Post!"});
+                           try {
+                               console.log("Submitting Post to ", channel.name);
+                               let channelType = channel.type.toLowerCase();
+                               // If the post is missing an asset then assign the thumbnail to the video to the asset.
+                               if(!post.asset) {
+
+                               }
+                               let postInfo = await AService.call(`channel/${channelType}/promote`, {
+                                   post: post,
+                                   channel: channel.id
+                               });
+                               global._tasks[post.id].postDate = now;
+                               if (postInfo) {
+                                   successful++;
+                                   global._tasks[post.id].state = "Posted";
+                                   post.sid = postInfo;
+                                   post.post({postedDate: now});
+                               } else {
+                                   post.failed({message: "Could not Post!"});
+                                   global._tasks[post.id].state = "Failed";
+                                   global._tasks[post.id].message = "Could not Post!";
+                                   console.log("Post Failed:", post.id, post.channel.name);
+                                   failed++;
+                               }
+                           }
+                           catch(e) {
                                global._tasks[post.id].state = "Failed";
-                               global._tasks[post.id].message = "Could not Post!";
+                               global._tasks[post.id].message = post.errorMessage;
                                console.log("Post Failed:", post.id, post.channel.name);
                                failed++;
                            }

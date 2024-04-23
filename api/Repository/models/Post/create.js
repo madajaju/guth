@@ -28,6 +28,7 @@ module.exports = {
 };
 
 function create(obj, inputs) {
+    obj.id = inputs.id;
     obj.name = inputs.name || obj.name;
     obj.text = inputs.text || obj.text;
     obj.createdDate = inputs.createdDate || obj.createdDate || new Date();

@@ -125,18 +125,22 @@ module.exports = {
     }
 };
 
-const _askAI = async (prompt) => {
-    AEvent.emit('translation.start', {message: prompt});
+const _askAI = async (prompt,scorecard) => {
+    AEvent.emit('translation.started', {message: prompt});
+    let messages = [];
+    if(scorecard) {
+        messages.push({
+            role: 'system',
+            content: `Use the following scorecard to generate, "${scorecard}"`,
+            name: 'guth',
+
+        });
+    }
+    messages.push({ role: 'user', content: prompt, name: 'guth', });
     const completion = await global.openai.chat.completions.create({
         model: "gpt-4",
-        messages: [
-            {
-                role: 'user',
-                content: prompt,
-                name: 'guth',
-            }
-        ]
+        messages: messages,
     });
-    AEvent.emit('translation.complete', {message: prompt});
+    AEvent.emit('translation.completed', {message: prompt});
     return completion.choices[0].message.content;
 }

@@ -60,29 +60,34 @@ module.exports = {
         }
         text += asset.url;
         let artifact = asset.artifact;
+        if(!artifact) { return null; }
         let afile = artifact.url;
         let extFile = path.extname(afile);
-
-        if (extFile === '.mp4') {
-            let photo = getCoverImage(artifact.url);
-            // url = await submitVideo(text, photo, artifact.url, creds);
-            url = await submitPhoto(text, photo, creds);
-        } else if(artifact.artType === 'image') {
-            let file = convertImage(artifact.url);
-            if(file) {
-                url = await submitPhoto(text, file, creds);
+        try {
+            if (extFile === '.mp4') {
+                let photo = getCoverImage(artifact.url);
+                // url = await submitVideo(text, photo, artifact.url, creds);
+                url = await submitPhoto(text, photo, creds);
+            } else if (artifact.artType === 'image') {
+                let file = convertImage(artifact.url);
+                if (file) {
+                    url = await submitPhoto(text, file, creds);
+                } else {
+                    url = await submitTweet(text, creds);
+                }
             } else {
-                url = await submitTweet(text,creds);
+                let file = convertImage(episodeFile);
+                if (file) {
+                    url = await submitPhoto(text, file, creds);
+                } else {
+                    url = await submitTweet(text, creds);
+                }
             }
-        } else {
-            let file = convertImage(episodeFile);
-            if(file) {
-                url = await submitPhoto(text, file, creds);
-            } else {
-                url = await submitTweet(text, creds);
-            }
+            return url;
+        } catch(e) {
+            post.failed({message:e });
+            throw new Error("Post Failed");
         }
-        return url;
     }
 };
 
@@ -96,7 +101,7 @@ function getCoverImage(video) {
             return file;
         } catch (e) {
             console.error("Could not convert video", command);
-            return null;
+            throw new Error("Could not conver video." + e);
         }
     } else {
         return file;
@@ -115,8 +120,8 @@ function convertImage(image) {
             execSync(command,{ stdio: 'ignore' }); // stdio: 'inherit' will display stdout/stderr in
             return file;
         } catch(e) {
-            console.log("Could not convert file:", command) ;
-            return null;
+            console.log("Could not convert image:", command) ;
+            throw new Error("Could not convert image." + e);
         }
     }
 }
@@ -131,7 +136,8 @@ async function submitTweet(text, creds) {
         let response = await client.v2.tweet({text: text});
         return response.data.id;
     } catch (e) {
-        console.log(e);
+        console.error(e);
+        throw new Error("Could not submit tweet." + e);
     }
 }
 async function submitPhoto(text, image, creds) {
@@ -149,7 +155,8 @@ async function submitPhoto(text, image, creds) {
         let response = await client.v2.tweet({text: text, media: {media_ids: [imageRep]}});
         return response.data.id;
     } catch (e) {
-        console.log(e);
+        console.error(e);
+        throw new Error("Could not submit photo." + e);
     }
 }
 
@@ -168,6 +175,7 @@ async function submitVideo(text, video, photo, creds) {
         let response = await client.v2.tweet({text: text, media: {media_ids: [videoRep]}});
         return response.data.id;
     } catch (e) {
-        console.log(e);
+        console.error(e);
+        throw new Error("Could not submit video." + e);
     }
 }

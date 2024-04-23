@@ -41,12 +41,12 @@ if (global.ailtire.config.listenPort) {
         "Created": "#aaaaff",
         "Backlog": "#ffaa88",
         "backlog": "#ffaa88",
-        "Scheduled": "#aaaa77",
+        "Scheduled": "#6666aa",
         "Recorded": "#66aaaa",
         "Edited": "#88cc88",
         "Written": "#44aa44",
         "Published": "#aaaaaa",
-        "Posted": "#aaaaaa",
+        "Posted": "#66aa66",
         "Cancelled": "#ffaaaa",
         "Failed": "#ff6666",
     }
@@ -55,28 +55,64 @@ if (global.ailtire.config.listenPort) {
         $.ajax({
             url: 'post/tasks',
             success: function (request) {
+                let channelLookUp = {};
+                let datetimes = {};
                 let items = [];
                 for(let i in request) {
                     let post = request[i];
                     let now = new Date();
-                    let start = post.scheduledDate || now;
-                    start = new Date(start);
-                    let end = post.postedDate || new Date(start.getTime() + 60*60000);
-                    end = new Date(end);
-                    items.push({
-                        id: post.id,
-                        start: start,
-                        end: end,
-                        title: post.name + " - " + post.channel,
-                        description: post.message,
-                        backgroundColor: scolor[post.state]
-                    });
+                    if(!channelLookUp.hasOwnProperty(post.channel)) {
+                        channelLookUp[post.channel] = {id:Object.keys(channelLookUp).length, title: post.channel};
+                    }
+                    if(post.scheduledDate) {
+                        let start = post.scheduledDate || now;
+                        start = new Date(start);
+                        let end = post.postedDate || new Date(start.getTime() + 60*60000);
+                        end = new Date(end);
+                        let dateValue = `${end.getFullYear()}-${end.getMonth()+1}-${end.getDate()}`;
+                        let timeValue = `${end.getHours()}`;
+                        if(!datetimes.hasOwnProperty(dateValue) ) {
+                            datetimes[dateValue] = {};
+                        }
+                        if(!datetimes[dateValue].hasOwnProperty(timeValue)) {
+                            datetimes[dateValue][timeValue] = [];
+                        }
+                        items.push({
+                            id: post.id,
+                            start: start,
+                            end: end,
+                            resourceId: channelLookUp[post.channel].id,
+                            title: post.name + " - " + post.channel,
+                            description: post.message,
+                            color: scolor[post.state]
+                        })
+                    }
                 }
             //        CalendarView.openDialog(items, "None", { view: "listWeek" });
             //        CalendarView.openDialog(items, "None", { view: "listMonth" });
             //        CalendarView.openDialog(items, "None", { view: "listYear" });
-                CalendarView.openDialog(items, "None", { view: "timeGridWeek" });
-            //        CalendarView.openDialog(items, "None", { view: "timeGridDay" });
+            //    CalendarView.openDialog(items, "None", { view: "timeGridWeek" });
+                    CalendarView.openDialog(items, "None", {
+                         view: "timeGridDay",
+                         headerToolbar: {
+                             start: 'prev,next today',
+                             center: 'title',
+                             end: 'dayGridMonth, timeGridWeek,timeGridDay,listWeek,resourceTimeGridWeek'
+                         },
+                         buttonText: function(texts) {
+                            texts.resourceTimeGridWeek = 'resources';
+                            return texts;
+                         },
+                         resources: Object.values(channelLookUp),
+                         scrollTime: '09:00:00',
+                         views: {
+                            timeGridWeek: {pointer: true},
+                            resourceTimeGridWeek: {pointer: true}
+                         },
+                         dayMaxEvents: true,
+                         nowIndicator: true,
+                         selectable: true
+                    });
             //        CalendarView.openDialog(items, "None", { view: "resourceTimeGridWeek" });
             //        CalendarView.openDialog(items, "None", { view: "resourceTimeGridDay" });
             //        CalendarView.openDialog(items, "None", { view: "dayGridMonth" });

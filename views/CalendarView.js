@@ -4,10 +4,8 @@ export default class CalendarView {
         this.config.view = config.view || 'dayGridMonth';
         this.items = items;
         this.target = document.getElementById(this.config.target);
-        this.calendar = new EventCalendar(document.getElementById(this.config.target), {
-            view: this.config.view,
-            events: items,
-        });
+        this.config.events = items;
+        this.calendar = new EventCalendar(document.getElementById(this.config.target), this.config);
         if(config.onDrop) {
             this.calendar.setOption('eventDrop', config.onDrop);
         }
@@ -37,8 +35,8 @@ export default class CalendarView {
 
     static openDialog(items,previousWindow, config) {
         w2popup.open({
-            height: 850,
-            width: 850,
+            height: config.height || 1600,
+            width: config.width || 1600,
             title: `Calendar`,
             body: '<div id="popupContent" style="width: 100%; height: 100%;"><div id="myCalendar"></div><div><button id="closeCalendar" class="btn dialogButton">Close</button></div></div>',
             showMax: true,

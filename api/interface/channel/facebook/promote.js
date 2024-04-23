@@ -25,11 +25,14 @@ module.exports = {
     },
 
     fn: async function (inputs, env) {
-        return null;
         let post = inputs.post;
-        if (typeof asset === 'string') {
+        if (typeof post === 'string') {
             post = Post.find(post);
         }
+        // Short circuit to throw exception.
+        post.failed({message:"Facebook channel broken!"});
+        throw new Error("Post Failed");
+
         let channel = post.channel;
         let asset = post.asset;
         let odChannel = Channel.find("onedrive");

@@ -34,9 +34,13 @@ module.exports = {
         let asset = post.asset;
         if(!asset) {
             console.log("Asset not Found", post.id) ;
-            return null;
+            throw new Error("Asset not found for linkedin");
         }
         let artifact = asset.artifact;
+        if(!artifact) {
+            throw new Error("Artifact not found for linkedin");
+        }
+
         let afile = artifact.url;
         let extFile = path.extname(afile);
         let url = "";
@@ -48,23 +52,27 @@ module.exports = {
         if (!fs.existsSync(episodeFile)) {
             episodeFile = path.resolve(path.dirname(post.episode.saveFile) + '/Production/en/' + episodePhoto);
         }
-
-        if (extFile === '.mp4') {
-            image = getCoverImage(artifact.url);
-        } else if (artifact.artType === 'image') {
-            image = convertImage(artifact.url);
-        } else {
-            image = convertImage(episodeFile);
+        try {
+            if (extFile === '.mp4') {
+                image = getCoverImage(artifact.url);
+            } else if (artifact.artType === 'image') {
+                image = convertImage(artifact.url);
+            } else {
+                image = convertImage(episodeFile);
+            }
+            // text = "@Embracing Digital Transformation\n" + text;
+            // url = await submitText(text, channel.creds);
+            // url = await submitArticle(text, asset.url, asset.title, asset.summary, channel.creds);
+            if (extFile === '.mp4') {
+                url = await submitVideo(text, asset.url, asset.title, asset.summary, afile, channel.creds);
+            } else {
+                url = await submitImage(text, asset.url, asset.title, asset.summary, image, channel.creds);
+            }
+            return url;
+        } catch(e) {
+            post.failed({message: e});
+            throw new Error("Post Failed." + e);
         }
-        // text = "@Embracing Digital Transformation\n" + text;
-        // url = await submitText(text, channel.creds);
-        // url = await submitArticle(text, asset.url, asset.title, asset.summary, channel.creds);
-        if (extFile === '.mp4') {
-            url = await submitVideo(text, asset.url, asset.title, asset.summary, afile, channel.creds);
-        } else {
-            url = await submitImage(text, asset.url, asset.title, asset.summary, image, channel.creds);
-        }
-        return url;
     }
 };
 
@@ -78,7 +86,7 @@ function getCoverImage(video) {
             return file;
         } catch (e) {
             console.error("Error calling:", command, e);
-            return null;
+            throw new Error("Could not get cover image." + e);
         }
     } else {
         return file;
@@ -96,7 +104,7 @@ function convertImage(image) {
             return file;
         } catch (e) {
             console.error("Error calling:", command, e);
-            return null;
+            throw new Error("Could not convert image." + e);
         }
     } else {
         return file;
@@ -174,7 +182,8 @@ async function submitVideo(text, url, title, description, video, creds) {
         });
         return response.data.id;
     } catch (e) {
-        console.log(e);
+        console.error(e);
+        throw new Error("Could not submit video." + e);
     }
     // Upload your image or video to LinkedIn.
     // Create the image or video share.
@@ -212,7 +221,8 @@ async function submitVideo(text, url, title, description, video, creds) {
         });
         return response.data.id;
     } catch (e) {
-        console.log(e);
+        console.error(e);
+        throw new Error("Could not submit video." + e);
     }
 
 }
@@ -255,7 +265,8 @@ async function submitArticle(text, url, title, description, creds) {
         });
         return response.data.id;
     } catch (e) {
-        console.log(e);
+        console.error(e);
+        throw new Error("Could not submit article." + e);
     }
 
 }
@@ -331,7 +342,8 @@ async function submitImage(text, url, title, description, image, creds) {
         });
         return response.data.id;
     } catch (e) {
-        console.log(e);
+        console.error(e);
+        throw new Error("Could not submit image." + e);
     }
     // Upload your image or video to LinkedIn.
     // Create the image or video share.
@@ -369,7 +381,8 @@ async function submitImage(text, url, title, description, image, creds) {
         });
         return response.data.id;
     } catch (e) {
-        console.log(e);
+        console.error(e);
+        throw new Error("Could not submit image." + e);
     }
 
 }
@@ -400,7 +413,8 @@ async function submitText(text, creds) {
         });
         return response.data.id;
     } catch (e) {
-        console.log(e);
+        console.error(e);
+        throw new Error("Could not submit text:" + e);
     }
 
 }
