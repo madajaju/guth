@@ -206,9 +206,6 @@ export default class EpisodeView {
                                                 actMenuItem.items = [];
                                             }
                                             actMenuItem.items.push({id: act._id, type: 'button', text: name});
-                                            /*w2ui.EpisodeEditGeneral.toolbar.items.push(
-                                                {id: act._id, type: 'button', text: name}
-                                            );*/
                                             w2ui.EpisodeEditGeneral.toolbar.factions[act._id] = act;
                                         }
                                     }
@@ -428,7 +425,14 @@ export default class EpisodeView {
                     let records = w2ui['EpisodeEditArtifacts'].records
                     for (let i in changes) {
                         let change = changes[i];
-                        let rec = records[change.recid];
+                        let rec = {};
+                        for(let ri in records) {
+                            let record = records[ri];
+                            if(change.recid === record.recid) {
+                                rec = record;
+                                break;
+                            }
+                        }
                         // Just updating the artifact
                         if (rec.id) {
                             let url = "Artifact/update?id=rec.id";

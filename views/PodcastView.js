@@ -130,27 +130,34 @@ export default class PodcastView {
                                 success: function (results) {
                                     let workflows = results.record.workflows.values
                                     let workflowMenuItem = w2ui.PodcastEditGeneral.toolbar.get('workflows');
+                                    workflowMenuItem.items = [];
                                     for (let i in workflows) {
                                         let workflow = workflows[i];
                                         let [target, name] = workflow.name.split('/');
                                         if (target === 'podcast') {
-                                            if(!workflowMenuItem.items) { workflowMenuItem.items = []; }
-                                            workflowMenuItem.items.push({id: workflow._id, type: 'button', text: name.replace('Process', '')});
+                                            if (!workflowMenuItem.items) {
+                                                workflowMenuItem.items = [];
+                                            }
+                                            workflowMenuItem.items.push({
+                                                id: workflow._id,
+                                                type: 'button',
+                                                text: name.replace('Process', '')
+                                            });
                                             w2ui.PodcastEditGeneral.toolbar.factions[workflow._id] = workflow;
                                         }
                                     }
                                     let actMenuItem = w2ui.PodcastEditGeneral.toolbar.get('activities');
-                                    let activities = results.record.activities.values
+                                    let activities = results.record.activities.values;
+                                    actMenuItem.items = [];
                                     for (let i in activities) {
                                         let act = activities[i];
                                         act.url = `blueprint/activity?id=${act._id}`;
                                         let [target, name] = act.name.split('/');
                                         if (target === 'podcast') {
-                                            if(!actMenuItem.items) { actMenuItem.items = []; }
+                                            if (!actMenuItem.items) {
+                                                actMenuItem.items = [];
+                                            }
                                             actMenuItem.items.push({id: act._id, type: 'button', text: name});
-                                            /*w2ui.PodcastEditGeneral.toolbar.items.push(
-                                                {id: act._id, type: 'button', text: name}
-                                            );*/
                                             w2ui.PodcastEditGeneral.toolbar.factions[act._id] = act;
                                         }
                                     }
@@ -235,10 +242,10 @@ export default class PodcastView {
                                 let record = records[i];
                                 let endDate = record.releaseDate || record.createdDate || new Date();
                                 endDate = new Date(endDate);
-                                endDate = `${endDate.getFullYear()}-${endDate.getMonth() +1}-${endDate.getDate()}`;
+                                endDate = `${endDate.getFullYear()}-${endDate.getMonth() + 1}-${endDate.getDate()}`;
                                 let startDate = record.createdDate || new Date();
                                 startDate = new Date(startDate);
-                                startDate = `${startDate.getFullYear()}-${startDate.getMonth() +1}-${startDate.getDate()}`;
+                                startDate = `${startDate.getFullYear()}-${startDate.getMonth() + 1}-${startDate.getDate()}`;
                                 items.push({
                                     id: record._id,
                                     allDay: true,
@@ -268,13 +275,13 @@ export default class PodcastView {
                                             break;
                                         }
                                     }
-                                    if(record) {
+                                    if (record) {
                                         EpisodeView.openDialog(record, "PodcastEdit");
                                     }
                                 }
                             });
                         } else {
-                            let [parent,action] = event.target.split(':');
+                            let [parent, action] = event.target.split(':');
                             let workflow = w2ui.PodcastEditGeneral.toolbar.factions[action];
                             if (workflow) {
                                 let data = {id: workflow._id, pid: w2ui.PodcastEditGeneral.record.name};
@@ -419,8 +426,8 @@ export default class PodcastView {
                         // Just updating the episode
                         if (rec.id) {
                             let url = `episode/save?id=${rec.id}`;
-                            for(let i in change) {
-                                if(i === "date") {
+                            for (let i in change) {
+                                if (i === "date") {
                                     url += `&releaseDate=${change[i]}`;
                                 } else {
                                     url += `&${i}=${change[i]}`;
