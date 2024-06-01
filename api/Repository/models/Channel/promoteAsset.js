@@ -28,19 +28,46 @@ module.exports = {
 
     fn: function (obj, inputs, env) {
         let body = inputs.body;
-        if(inputs.asset) {
+        let asset = inputs.asset;
+        if(typeof asset === 'string') { asset = Asset.find(asset); }
+        let episode = inputs.episode;
+        if(typeof asset === 'string') { episode = Episode.find(episode)}
+        let episodePhoto =null;
+        let thumbnailArtifact = episode.artifacts[episode.thumbnail];
+        if(thumbnailArtifact) {
+            episodePhoto = thumbnailArtifact.url;
+        }
+        if(!episodePhoto)  {
+            throw new Error(`Thumbnail is not set!! on ${episode.id} `);
+        }
+        let artifact = asset.artifact;
+        let video = null;
+        let photo = null;
+        if(artifact.artType.name === 'video') {
+            photo = Post.getCoverImage({artifact:artifact});
+            video = Post.limitDuration({artifact:artifact, duration:60});
+        } else if(artifact.artType.name === 'image') {
+            photo = Post.convertImage({artifact:artifact});
+        } else {
+            photo = episodePhoto;
+        }
+
+        if(asset) {
             let post = new Post({
                 channel: obj,
                 text: body,
                 name: 'Post: ' + inputs.asset.name,
                 asset: inputs.asset,
-                episode: inputs.episode
+                episode: inputs.episode,
+                video: video,
+                photo: photo,
+                shareURL: asset.url,
             });
             obj.addToPosts(post);
-            if (inputs.asset) {
-                inputs.asset.addToPosts(post);
+            if (asset) {
+                asset.addToPosts(post);
             }
-            if (inputs.episode) {
+            if (episode) {
                 post.episode.addToPosts(post);
                 post.episode.saveMe();
             }

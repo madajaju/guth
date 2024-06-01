@@ -684,7 +684,12 @@ export default class EpisodeView {
                     let records = w2ui['EpisodeEditAssets'].records
                     for (let i in changes) {
                         let change = changes[i];
-                        let rec = records[change.recid];
+                        let rec;
+                        for(let j in records) {
+                            if(records[j].recid  === change.recid) {
+                                rec = records[j];
+                            }
+                        }
                         // Just updating the artifact
                         if (rec.id) {
                             let url = `asset/save?id=${rec.id}`;

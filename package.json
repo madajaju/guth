@@ -16,6 +16,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@azure/storage-blob": "^12.18.0",
     "@event-calendar/core": "^2.3.3",
     "@event-calendar/interaction": "^2.3.3",
     "@event-calendar/time-grid": "^2.3.3",
@@ -24,6 +25,7 @@
     "axios": "^1.6.2",
     "chart.js": "^4.3.0",
     "dotenv": "^16.0.3",
+    "facebook-nodejs-business-sdk": "^19.0.3",
     "fluent-ffmpeg": "^2.1.2",
     "google-auth-library": "^8.7.0",
     "googleapis": "^109.0.1",

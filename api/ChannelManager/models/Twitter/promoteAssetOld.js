@@ -1,8 +1,15 @@
+const nodemailer = require('nodemailer');
+
 module.exports = {
-    friendlyName: 'promoteAsset',
-    description: 'Promote Asset on the Facebook Channel',
+    friendlyName: 'promoteAssetOld',
+    description: 'Promote Asset on the Twitter Channel',
     static: false, // True is for Class methods. False is for object based.
     inputs: {
+        episode: {
+            description: 'Episode Promoted',
+            type: 'ref', // string|boolean|number|json
+            required: true
+        },
         asset: {
             description: 'Promote Asset on the Channel',
             type: 'ref', // string|boolean|number|json
@@ -11,12 +18,8 @@ module.exports = {
         text: {
             description: 'Text of the post for the promotion of the asset',
             type: 'string',
-            required: false,
-        },
-        date: {
-            description: 'Date to publish the artifact, if not supplied, publish now',
-            type: 'string', // string|boolean|number|json
-            required: false
+            required: true,
+            limit: "2048"
         },
         lang: {
             description: "Language of the post",
@@ -34,10 +37,11 @@ module.exports = {
     },
 
     fn: function (obj, inputs, env) {
-        let text = inputs.text || "Post:" + inputs.asset.name;
+
+        let text = inputs.text;
         let post = new Post({channel: obj, text: text, asset: inputs.asset, episode: inputs.episode, lang: inputs.lang || "en"});
         obj.addToPosts(post);
-        if(inputs.assets) {
+        if(inputs.asset) {
             inputs.asset.addToPosts(post);
         }
         if(inputs.episode){

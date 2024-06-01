@@ -9,6 +9,10 @@ module.exports = {
         podcast: {
             description: "Podcast to schedule the posts",
             type: "string"
+        },
+        date: {
+            description: "Date to retrieve information",
+            type: "string"
         }
     },
 
@@ -20,6 +24,21 @@ module.exports = {
         if(!global._tasks) {
             global._tasks = {};
         }
-        return global._tasks;
+        let myDate = inputs.date || new Date();
+        myDate = new Date(myDate);
+        let beforeDate = new Date();
+        let afterDate = new Date();
+        beforeDate.setDate(myDate.getDate() - 45);
+        afterDate.setDate(myDate.getDate() + 45);
+        let retval = {};
+        for(let i in global._tasks) {
+            if(global._tasks[i].scheduledDate) {
+                let sDate = new Date(global._tasks[i].scheduledDate);
+                if (sDate > beforeDate && sDate < afterDate) {
+                    retval[i] = global._tasks[i];
+                }
+            }
+        }
+        return retval;
     }
 };

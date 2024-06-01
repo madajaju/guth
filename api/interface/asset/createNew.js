@@ -68,6 +68,16 @@ module.exports = {
         if(!artifact) {
             console.error("Artifact not found:", args.channel);
         } else { args.artifact = artifact;}
+        let tags = [];
+        for(let i in args.tags) {
+            let tag = args.tags[i];
+            if(typeof tag === 'string') {
+                tags.push(tag);
+            } else {
+                tags.push(tag.name);
+            }
+        }
+        args.tags = tags;
         // Submit the artifact to the channel for publishing here.
         if(channel) {
             let service = channel.publishArtifact(args, env);

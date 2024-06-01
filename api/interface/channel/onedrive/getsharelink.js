@@ -1,6 +1,7 @@
 const fs = require('fs');
 // const path = require('path');
 const axios = require("axios");
+const base64 = require('base-64');
 
 
 module.exports = {
@@ -34,14 +35,34 @@ module.exports = {
         if(typeof channel === "string") {
             channel = Channel.find(channel);
         }
-        let filename = inputs.filename.replace("C:\\Users\\darre\\OneDrive - Pulsipher Family\\", "").replaceAll(/\\/g,'/');
-        let atoken = await _getToken(channel.creds);
-        let response = await axios.get(`https://graph.microsoft.com/v1.0/users/e32e3ae3-e580-47ad-89db-ee7d2cf6c25c/drive/root:/${filename}`, {
-            headers: {
-                Authorization: `Bearer ${atoken}`
-            },
-        });
-        return response.data["@microsoft.graph.downloadUrl"];
+        try {
+            let filename = inputs.filename.replace("C:\\Users\\darre\\OneDrive - Pulsipher Family\\", "").replaceAll(/\\/g, '/');
+            let atoken = await _getToken(channel.creds);
+            let response = await axios.get(`https://graph.microsoft.com/v1.0/users/e32e3ae3-e580-47ad-89db-ee7d2cf6c25c/drive/root:/${filename}`, {
+                headers: {
+                    Authorization: `Bearer ${atoken}`
+                },
+            });
+            let res2 = await axios.post(`https://graph.microsoft.com/v1.0/users/e32e3ae3-e580-47ad-89db-ee7d2cf6c25c/drive/items/${response.data.id}/createLink`, {
+                    type: 'view',
+                    scope: 'anonymous'
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${atoken}`,
+                    },
+                }
+            );
+            const download1 = `${res2.data.link.webUrl}?download=1`;
+            // const encodedUrl = base64.encode(`${res2.data.link.webUrl}?download=1`).replace(/=/g,
+            // '').replace(/\//g, '_').replace(/\+/g, '-');
+            // Create the direct download URL
+            // const downloadUrl = `https://api.onedrive.com/v1.0/shares/u!${encodedUrl}/root/content`;
+            return download1;
+            // return response.data["@microsoft.graph.downloadUrl"];
+        } catch(e) {
+            console.error(e);
+        }
     }
 };
 

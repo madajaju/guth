@@ -32,10 +32,11 @@ module.exports = {
         // inputs contains the obj for this method.
         let artifact = inputs.artifact;
         let channel = inputs.channel;
+        let image = inputs.image.replaceAll(/\r\n/g,'');
 
         if(typeof artifact === 'string') { artifact = Artifact.find(artifact); }
         if(typeof channel === 'string') { channel = Channel.find(channel);}
-        let image = inputs.image.replaceAll(/\r\n/g,'');
+        if(typeof image === 'string') { image = Artifact.find(image); }
         if(!inputs.url) {
             let data = {
                 title: inputs.title,
@@ -45,13 +46,37 @@ module.exports = {
                 number: artifact.episode.number
             }
             AEvent.emit('upload.started', {message: `Starting Upload to Transistor, ${artifact.name}`});
+            let episode = artifact.episode;
             let tepisode = await _uploadAudio(channel, artifact, image, data);
+            // await _publishAudio(channel, tepisode, episode);
 
             AEvent.emit('upload.completed', {message: `Starting Upload to Transistor, ${artifact.name}`});
             inputs.url = tepisode.attributes.share_url;
             inputs.cid = tepisode.id;
         }
         return new Asset(inputs);
+    }
+};
+const _publishAudio = async (channel, tepisode, episode) => {
+    AEvent.emit('episode.publish', {message:'Publish'});
+    let api_key = channel.creds.api_key;
+    try {
+        let sDate = episode.releaseDate || new Date();
+        let requestData = {
+                "epsiode[status]": "scheduled",
+                "epsiode[published_at]": sDate,
+        };
+        let res = await axios({
+            method: 'post',
+            url: `https://api.transistor.fm/v1/${tepisode.id}/publish`,
+            headers: {
+                "x-api-key": channel.creds.api_key,
+            },
+            data: requestData
+        });
+        return res.data.data;
+    } catch (e) {
+        console.error("Error UploadingAudio File:", e);
     }
 };
 
@@ -73,9 +98,13 @@ const _uploadAudio = async (channel, artifact, image, data) => {
             showID = item.id;
         }
     }
-    let odChannel = OneDrive.find('onedrive');
 
-    let image_url = await AService.call("channel/onedrive/getsharelink", {channel: odChannel, filename:image});
+    let image_url = image.remoteURL;
+    // Store the image in the blob storage.
+    if(!image_url) {
+        await AService.call("channel/azure/upload", {channel: 'azure', artifact:image});
+        image_url = image.remoteURL;
+    }
     let audio_url = await _loadFile(channel, artifact.url, 'audio/mpeg');
     try {
         AEvent.emit('upload.inprogress', {message:'Creating Episode'});

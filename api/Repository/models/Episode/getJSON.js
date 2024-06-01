@@ -72,14 +72,14 @@ module.exports = {
             if(post.channel && typeof post.channel === 'object') {
                 tempObj.posts[pname].channel = post.channel.id;
             }
-            if(post.asset ) {
+            if(post.asset) {
                 if(typeof post.asset === 'object') {
                     tempObj.posts[pname].asset = post.asset.id;
                 } else {
                     tempObj.posts[pname].asset = post.asset;
                 }
             } else {
-                console.log("Missing asset for channel", post.channel.id);
+                console.log("Missing asset for post", post.id);
             }
         }
         return tempObj;

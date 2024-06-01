@@ -94,7 +94,7 @@ module.exports = {
 function getCoverImage(video) {
     let file = video.replace('.mp4', '-mp4.jpg');
     if(!fs.existsSync(file)) {
-        let command = `ffmpeg -y -ss 3 -i "${video}" -frames:v 1 "${file}"`;
+        let command = `ffmpeg -y -ss 15 -i "${video}" -frames:v 1 "${file}"`;
         try {
             console.log(command);
             execSync(command, {stdio: 'ignore'}); // stdio: 'inherit' will display stdout/stderr in

@@ -27,6 +27,22 @@ class Post {
             lang: {
                 type: 'string',
                 description: "Language of the post",
+            },
+            shareURL: {
+                type: 'string',
+                description: "URL to share with the post."
+            },
+            image: {
+                type: 'string',
+                description: "Image for the post.",
+            },
+            video: {
+                type: 'string',
+                description: "Video for the post.",
+            },
+            url: {
+                type: 'string',
+                description: 'url of the post.'
             }
         },
         associations: {

@@ -31,6 +31,10 @@ module.exports = {
             post.name = inputs.name || post.name;
             post.lang= inputs.name || post.name;
             post.text = inputs.text || post.text;
+            post.shareURL = inputs.shareURL || post.shareURL;
+            post.image = inputs.image || post.image;
+            post.video = inputs.video || post.video;
+            post.url = inputs.url || post.url;
             post.postedDate = new Date(inputs.postedDate) || post.postedDate;
 
 

@@ -51,7 +51,7 @@ module.exports = {
         if(args.asset) {
             args.asset = Asset.find(args.asset);
         }
-        let results = await channel.promoteAsset(args);
+        let results = channel.promoteAsset(args);
         if(env.res) {
             env.res.json(results);
         }

@@ -14,6 +14,10 @@ class Artifact {
                 description: 'Location of the original artifact',
                 limit: 512,
             },
+            remoteURL: {
+                type: 'string',
+                description: 'Publicly accessible URL of the original artifact',
+            },
             summary: {
                 type: 'string',
                 description: 'Summary of the artifact. Used in generated derived artifacts and assets.',

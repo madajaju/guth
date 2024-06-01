@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 
 module.exports = {
-    friendlyName: 'promoteAsset',
+    friendlyName: 'promoteAssetOld',
     description: 'Promote Asset on the Email Channel',
     static: false, // True is for Class methods. False is for object based.
     inputs: {

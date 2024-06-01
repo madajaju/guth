@@ -113,8 +113,6 @@ function load(inputs) {
             };
         if(post.id) {
             info.id = post.id;
-        } else {
-            console.log("No ID");
         }
         let postObj = obj.addToPosts(info);
     }

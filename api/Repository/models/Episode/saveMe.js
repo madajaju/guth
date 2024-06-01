@@ -45,6 +45,8 @@ function _save(obj, inputs) {
     obj.createdDate = inputs.createdDate || obj.createdDate || new Date();
     obj._state = inputs.state || obj._state;
     obj.number = inputs.number || obj.number;
+    obj.pillars = inputs.pillars;
+    obj.dimensions = inputs.dimensions;
     obj.releaseDate = inputs.releaseDate || obj.releaseDate || "";
     obj.scheduledDate = inputs.scheduledDate || obj.scheduledDate || "";
     if(obj.releaseDate.length > 0) {

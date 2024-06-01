@@ -49,12 +49,12 @@ process.chdir(`${__dirname}/../..`);
 server.listen( config );
 
 async function schedulePosts() {
-
+    console.log("posting posts");
     for(let i in config.podcastDirs) {
         let epath = config.podcastDirs[i];
         console.log(epath);
         let podcast = Podcast.load({directory: epath});
-        console.log("Scheduling Posts");
+        console.log("Scheduling Posts for: ", podcast.name);
         await AService.call('/post/submitScheduled', {podcast: podcast.id});
         console.log("Done Scheduling");
         let keys = Object.keys(global._instances)
